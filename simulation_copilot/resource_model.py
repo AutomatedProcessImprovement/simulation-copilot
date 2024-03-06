@@ -1,8 +1,7 @@
 from enum import Enum
 from uuid import uuid4
 
-from langchain.pydantic_v1 import BaseModel, Field
-from langchain.tools import tool
+from langchain.pydantic_v1 import BaseModel
 
 
 class Day(str, Enum):
@@ -169,94 +168,3 @@ example_model = ResourceModel(
         )
     ],
 )
-
-
-class IntervalDescriptionInput(BaseModel):
-    start_day: str = Field(description="The day of the week when the calendar starts")
-    end_day: str = Field(description="The day of the week when the calendar ends")
-    start_time: str = Field(
-        description="The time when the calendar starts in ISO format (HH:MM) where HH is the hour in 24-hour format and MM is the minute, 0-59."
-    )
-    end_time: str = Field(
-        description="The time when the calendar ends  in ISO format (HH:MM) where HH is the hour in 24-hour format and MM is the minute, 0-59."
-    )
-
-
-class GenerateCalendarInput(BaseModel):
-    intervals: list[IntervalDescriptionInput] = Field(
-        description="The intervals of the calendar"
-    )
-
-
-@tool("generate_calendar", args_schema=GenerateCalendarInput)
-def generate_calendar(
-    intervals: list[IntervalDescriptionInput],
-) -> Calendar:
-    """
-    Generate a calendar with the given intervals. Put distinct intervals in separate
-    calendar intervals.
-    """
-    return Calendar(
-        id=uuid4().hex,
-        intervals=[
-            CalendarInterval(
-                start_day=Day.from_string(interval.start_day),
-                end_day=Day.from_string(interval.end_day),
-                start_time=Time.from_iso_time(interval.start_time),
-                end_time=Time.from_iso_time(interval.end_time),
-            )
-            for interval in intervals
-        ],
-    )
-
-
-class ActivityDistributionInput(BaseModel):
-    activity_id: str = Field(description="The id of the activity")
-    distribution: Distribution = Field(
-        description="The distribution of the activity in the form of a name of the distribution and a list of parameters specific to the distribution"
-    )
-
-
-class ResourceInput(BaseModel):
-    resource_name: str = Field(description="The name of the resource")
-    amount: int = Field(description="The amount of the resource")
-    cost_per_hour: float = Field(description="The cost per hour of the resource")
-    calendar_id: str = Field(description="The id of the calendar")
-    activities: list[ActivityDistributionInput] = Field(
-        description="The distribution of the activity in the form of a name of the distribution and a list of parameters specific to the distribution"
-    )
-
-
-class GenerateResourceProfileInput(BaseModel):
-    resources: list[ResourceInput] = Field(
-        description="The resources with their assigned activities"
-    )
-
-
-@tool("generate_resource_profile", args_schema=GenerateResourceProfileInput)
-def generate_resource_profile(
-    resources: list[ResourceInput],
-) -> ResourceProfile:
-    """
-    Generate a resource profile with the given resources and their assigned activities.
-    """
-    return ResourceProfile(
-        id=uuid4().hex,
-        resources=[
-            Resource(
-                id=uuid4().hex,
-                name=resource.resource_name,
-                amount=resource.amount,
-                cost_per_hour=resource.cost_per_hour,
-                calendar_id=resource.calendar_id,
-                assigned_activities=[
-                    ActivityDistribution(
-                        activity_id=activity.activity_id,
-                        distribution=activity.distribution,
-                    )
-                    for activity in resource.activities
-                ],
-            )
-            for resource in resources
-        ],
-    )
