@@ -37,9 +37,7 @@ class BPSModel:
     BPS model class containing all the components to simulate a business process model.
     """
 
-    process_model: Optional[Path] = (
-        None  # A path to the model for now, in future the loaded BPMN model
-    )
+    process_model: Optional[Path] = None  # path to the BPMN model
     gateway_probabilities: Optional[List[GatewayProbabilities]] = None
     case_arrival_model: Optional[CaseArrivalModel] = None
     resource_model: Optional[ResourceModel] = None

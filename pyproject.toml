@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "simulation-copilot"
+version = "0.1.0"
+description = ""
+authors = ["Ihar Suvorau <ihar.suvorau@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.9, <3.12"
+langchain = "^0.1.10"
+beautifulsoup4 = "^4.12.3"
+faiss-cpu = "^1.8.0"
+pix-framework = "^0.13.10"
+pydantic = "^2.6.3"
+python-dotenv = "^1.0.1"
+langchain-openai = "^0.0.8"
+langchainhub = "^0.1.15"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
