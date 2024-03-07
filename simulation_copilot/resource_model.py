@@ -115,6 +115,7 @@ class Resource(BaseModel):
 
 class ResourceProfile(BaseModel):
     id: str
+    name: str
     resources: list[Resource]
 
 
@@ -130,6 +131,7 @@ class ResourceModel(BaseModel):
         profiles=[
             ResourceProfile(
                 id="profile_1",
+                name="Profile 1",
                 resources=[
                     Resource(
                         id="resource_1",

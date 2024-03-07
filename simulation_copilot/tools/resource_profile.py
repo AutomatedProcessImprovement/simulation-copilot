@@ -29,6 +29,7 @@ class ResourceInput(BaseModel):
 
 
 class GenerateResourceProfileInput(BaseModel):
+    name: str = Field(description="The name of the resource profile")
     resources: list[ResourceInput] = Field(
         description="The resources with their assigned activities"
     )
@@ -36,6 +37,7 @@ class GenerateResourceProfileInput(BaseModel):
 
 @tool("generate_resource_profile", args_schema=GenerateResourceProfileInput)
 def generate_resource_profile(
+    name: str,
     resources: list[ResourceInput],
 ) -> ResourceProfile:
     """
@@ -43,6 +45,7 @@ def generate_resource_profile(
     """
     return ResourceProfile(
         id=uuid4().hex,
+        name=name,
         resources=[
             Resource(
                 id=uuid4().hex,
