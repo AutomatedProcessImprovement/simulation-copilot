@@ -24,9 +24,7 @@ class GenerateCalendarInput(BaseModel):
 
 
 @tool("generate_calendar", args_schema=GenerateCalendarInput)
-def generate_calendar(
-    intervals: list[IntervalDescriptionInput],
-) -> Calendar:
+def generate_calendar(intervals: list[IntervalDescriptionInput]) -> Calendar:
     """
     Generate a calendar with the given intervals. Put distinct intervals in separate
     calendar intervals.

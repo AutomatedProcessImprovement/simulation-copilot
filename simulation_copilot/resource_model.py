@@ -125,46 +125,46 @@ class ResourceModel(BaseModel):
 
     It includes resource profiles, resource calendars, and distribution of activities
     among the given resources.
+
+    example_model = ResourceModel(
+        profiles=[
+            ResourceProfile(
+                id="profile_1",
+                resources=[
+                    Resource(
+                        id="resource_1",
+                        name="Resource 1",
+                        amount=5,
+                        cost_per_hour=10.0,
+                        calendar_id="calendar_1",
+                        assigned_activities=[
+                            ActivityDistribution(
+                                activity_id="activity_1",
+                                distribution=Distribution(
+                                    name="normal", parameters=[10, 2]
+                                ),
+                            )
+                        ],
+                    )
+                ],
+            )
+        ],
+        calendars=[
+            Calendar(
+                id="calendar_1",
+                intervals=[
+                    CalendarInterval(
+                        start_day=Day.MONDAY,
+                        end_day=Day.FRIDAY,
+                        start_time=Time(hour=8, minute=0),
+                        end_time=Time(hour=17, minute=0),
+                    )
+                ],
+            )
+        ],
+    )
     """
 
     profiles: list[ResourceProfile]
     calendars: list[Calendar]
 
-
-example_model = ResourceModel(
-    profiles=[
-        ResourceProfile(
-            id="profile_1",
-            resources=[
-                Resource(
-                    id="resource_1",
-                    name="Resource 1",
-                    amount=5,
-                    cost_per_hour=10.0,
-                    calendar_id="calendar_1",
-                    assigned_activities=[
-                        ActivityDistribution(
-                            activity_id="activity_1",
-                            distribution=Distribution(
-                                name="normal", parameters=[10, 2]
-                            ),
-                        )
-                    ],
-                )
-            ],
-        )
-    ],
-    calendars=[
-        Calendar(
-            id="calendar_1",
-            intervals=[
-                CalendarInterval(
-                    start_day=Day.MONDAY,
-                    end_day=Day.FRIDAY,
-                    start_time=Time(hour=8, minute=0),
-                    end_time=Time(hour=17, minute=0),
-                )
-            ],
-        )
-    ],
-)
