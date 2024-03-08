@@ -84,8 +84,6 @@ Invoking: `run_sql` with `{'sql': "UPDATE calendar_intervals SET start_time_hour
 <details><summary>Create a resource profile with resources, calendars, and assigned activities distributions</summary>
 
 ```shell
-python simulation_copilot/simulation_model_agent_sql.py
-
 Instructions: You are an assistant who helps with preparing of a business process simulation model.
 The model is represented by a set of tables in a SQL database.
 Reuse calendars for resources if possible.
@@ -213,8 +211,6 @@ Invoking: `run_sql` with `{'sql': "INSERT INTO distribution_parameters (id, acti
 resource's activity 'A'</summary>
 
 ```shell
-python simulation_copilot/simulation_model_agent_sql.py
-
 Instructions: You are an assistant who helps with preparing of a business process simulation model.
 The model is represented by a set of tables in a SQL database.
 Reuse calendars for resources if possible.
@@ -340,9 +336,6 @@ Prompt to the agent (model: gpt-3.5-turbo):
 Output:
 
 ```shell
-python simulation_copilot/demo_agent_calendar.py
-
-
 > Entering new AgentExecutor chain...
 
 Invoking: `generate_calendar` with `{'intervals': [{'start_day': 'Monday', 'end_day': 'Wednesday', 'start_time': '08:30', 'end_time': '19:30'}, {'start_day': 'Thursday', 'end_day': 'Friday', 'start_time': '11:00', 'end_time': '21:00'}, {'start_day': 'Saturday', 'end_day': 'Sunday', 'start_time': '09:00', 'end_time': '17:00'}]}`
@@ -375,9 +368,6 @@ Prompt to the agent (model: gpt-3.5-turbo):
 Output:
 
 ```shell
-python simulation_copilot/generating_calendars.py
-
-
 > Entering new AgentExecutor chain...
 
 Invoking: `generate_resource_profile` with `{'resources': [{'resource_name': 'Operator', 'amount': 4, 'cost_per_hour': 20, 'calendar_id': 'calendar_1', 'activities': [{'activity_id': 'A', 'distribution': {'name': 'uniform', 'parameters': [1, 3]}}, {'activity_id': 'B', 'distribution': {'name': 'normal', 'parameters': [2, 1]}}, {'activity_id': 'C', 'distribution': {'name': 'exponential', 'parameters': [0.5]}}]}]}`
@@ -417,9 +407,6 @@ Profile 'Normal' has 2 resources, 'Junior' and 'Senior', with the quantity of 1 
 Output:
 
 ```shell
-python simulation_copilot/resource_model_agent.py
-
-
 > Entering new AgentExecutor chain...
 
 Invoking: `generate_calendar` with `{'intervals': [{'start_day': 'Monday', 'end_day': 'Friday', 'start_time': '08:00', 'end_time': '21:00'}, {'start_day': 'Saturday', 'end_day': 'Saturday', 'start_time': '09:00', 'end_time': '17:00'}, {'start_day': 'Sunday', 'end_day': 'Sunday', 'start_time': '10:00', 'end_time': '16:00'}]}`
@@ -486,9 +473,6 @@ Also, add gateway probabilities for the gateways 'Gateway1' and 'Gateway2' with 
 Output:
 
 ```shell
-python simulation_copilot/resource_model_agent.py
-
-
 > Entering new AgentExecutor chain...
 
 Invoking: `generate_calendar` with `{'intervals': [{'start_day': 'Monday', 'end_day': 'Friday', 'start_time': '08:00', 'end_time': '21:00'}, {'start_day': 'Saturday', 'end_day': 'Saturday', 'start_time': '09:00', 'end_time': '17:00'}, {'start_day': 'Sunday', 'end_day': 'Sunday', 'start_time': '10:00', 'end_time': '16:00'}]}`
@@ -579,9 +563,6 @@ SimulationModel(resource_model=ResourceModel(profiles=[ResourceProfile(id='5bb14
 Output:
 
 ```shell
-python simulation_copilot/simulation_model_agent.py
-
-
 > Entering new AgentExecutor chain...
 
 Invoking: `generate_bps_model` with `{'gateway_probabilities': [{'gateway_id': 'Gateway1', 'outgoing_paths': [{'path_id': 'SequenceFlow1', 'probability': 0.3}, {'path_id': 'SequenceFlow2', 'probability': 0.7}]}, {'gateway_id': 'Gateway2', 'outgoing_paths': [{'path_id': 'SequenceFlow1', 'probability': 0.6}, {'path_id': 'SequenceFlow2', 'probability': 0.4}]}], 'resource_model': {'calendars': [{'id': 'c81ead98cd894ae39b90efe129d496c9', 'intervals': [{'end_day': 'Friday', 'end_time': {'hour': 21, 'minute': 0}, 'start_day': 'Monday', 'start_time': {'hour': 8, 'minute': 0}}, {'end_day': 'Saturday', 'end_time': {'hour': 17, 'minute': 0}, 'start_day': 'Saturday', 'start_time': {'hour': 9, 'minute': 0}}, {'end_day': 'Sunday', 'end_time': {'hour': 16, 'minute': 0}, 'start_day': 'Sunday', 'start_time': {'hour': 10, 'minute': 0}}]}, {'id': '3b474c4e76184526b3b91f67540045d4', 'intervals': [{'end_day': 'Friday', 'end_time': {'hour': 17, 'minute': 0}, 'start_day': 'Monday', 'start_time': {'hour': 9, 'minute': 0}}, {'end_day': 'Sunday', 'end_time': {'hour': 16, 'minute': 0}, 'start_day': 'Saturday', 'start_time': {'hour': 10, 'minute': 0}}]}], 'profiles': [{'id': '5bb14ad39ac44a42b95e7e97c40cba75', 'name': 'Busy', 'resources': [{'amount': 10, 'assigned_activities': [{'activity_id': 'A', 'distribution': {'name': 'uniform', 'parameters': [1.0, 2.0]}}, {'activity_id': 'B', 'distribution': {'name': 'uniform', 'parameters': [1.0, 2.0]}}, {'activity_id': 'C', 'distribution': {'name': 'uniform', 'parameters': [1.0, 2.0]}}], 'calendar_id': 'c81ead98cd894ae39b90efe129d496c9', 'cost_per_hour': 10.0, 'id': '79e2bfd841a841e6a9122f01c2f1192e', 'name': 'Junior'}, {'amount': 3, 'assigned_activities': [{'activity_id': 'A', 'distribution': {'name': 'uniform', 'parameters': [1.0, 2.0]}}, {'activity_id': 'B', 'distribution': {'name': 'uniform', 'parameters': [1.0, 2.0]}}, {'activity_id': 'C', 'distribution': {'name': 'uniform', 'parameters': [1.0, 2.0]}}], 'calendar_id': 'c81ead98cd894ae39b90efe129d496c9', 'cost_per_hour': 20.0, 'id': '5f2bb5de72cb42d5ad06e188f0f8a9df', 'name': 'Senior'}]}, {'id': 'd8ac0d1650d54dc4aaedd4cfa3172190', 'name': 'Normal', 'resources': [{'amount': 1, 'assigned_activities': [{'activity_id': 'A', 'distribution': {'name': 'uniform', 'parameters': [1.0, 2.0]}}, {'activity_id': 'B', 'distribution': {'name': 'uniform', 'parameters': [1.0, 2.0]}}, {'activity_id': 'C', 'distribution': {'name': 'uniform', 'parameters': [1.0, 2.0]}}], 'calendar_id': '3b474c4e76184526b3b91f67540045d4', 'cost_per_hour': 10.0, 'id': 'da6f7a698f4943348a6eb998a98854a6', 'name': 'Junior'}, {'amount': 1, 'assigned_activities': [{'activity_id': 'A', 'distribution': {'name': 'uniform', 'parameters': [1.0, 2.0]}}, {'activity_id': 'B', 'distribution': {'name': 'uniform', 'parameters': [1.0, 2.0]}}, {'activity_id': 'C', 'distribution': {'name': 'uniform', 'parameters': [1.0, 2.0]}}], 'calendar_id': '3b474c4e76184526b3b91f67540045d4', 'cost_per_hour': 20.0, 'id': '6cc6686fdc4546e48ca41f0cec183d6f', 'name': 'Senior'}]}]}}`
