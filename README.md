@@ -1,11 +1,14 @@
 # Simulation Copilot
 
-A prototype to explore a possibility to handle simulation scenario generation using the conversational UI.
+A prototype to explore a possibility to handle simulation scenario generation using conversational UI.
 
 ## Approaches
 
-- Agent-based
+- Agent-based using tools
+  - Basic using Python functions for composing BPS models
+  - Using storage to make incremental changes (SQL)
 - Extractors
+- Multi-agent
 
 ## Milestones
 
@@ -16,9 +19,297 @@ A prototype to explore a possibility to handle simulation scenario generation us
 - [x] Generate a simple scenario with Python code
 - [x] Generate a simple scenario with LLM using the Python code as a "tool"
 - [x] Provide a simple scenario and ask LLM to apply some changes
+- [ ] Try storing the simulation model in a SQL format and query with `pandas.sql`
 - [ ] Increase complexity: add more components of the simulation scenario or more adjustments
+- [ ] Change average activity duration by N hours (models should change the mean value of the distribution of a certain activity)
 
-## Outputs
+## SQL-based approach outputs
+
+<details><summary>Creating a calendar</summary>
+
+```shell
+> Entering new AgentExecutor chain...
+
+Invoking: `run_sql` with `{'sql': 'INSERT INTO calendars DEFAULT VALUES;'}`
+
+
+<sqlalchemy.engine.cursor.CursorResult object at 0x14b324640>
+Invoking: `run_sql` with `{'sql': 'SELECT id FROM calendars ORDER BY id DESC LIMIT 1;'}`
+
+
+<sqlalchemy.engine.cursor.CursorResult object at 0x14b1951c0>
+Invoking: `run_sql` with `{'sql': "INSERT INTO calendar_intervals (start_day, end_day, start_time_hour, start_time_minute, end_time_hour, end_time_minute, calendar_id) VALUES ('Monday', 'Wednesday', 8, 30, 19, 30, '1'), ('Thursday', 'Friday', 11, 0, 21, 0, '1'), ('Saturday', 'Sunday', 9, 0, 17, 0, '1');"}`
+
+
+<sqlalchemy.engine.cursor.CursorResult object at 0x12ef92340>The calendar has been created successfully, and the ID of the calendar is **1**.
+
+> Finished chain.
+{'input': 'Using the SQL tool, create a calendar with the following intervals and give me back the ID of the calendar: 8.30am to 7.30pm Monday to Wednesday, 11am to 9pm Thursday and Friday, and 9am to 5pm Saturday and Sunday.', 'output': 'The calendar has been created successfully, and the ID of the calendar is **1**.'}
+```
+
+</details>
+
+<details><summary>Modifying a calendar</summary>
+
+```shell
+> Entering new AgentExecutor chain...
+
+Invoking: `run_sql` with `{'sql': "UPDATE calendar_intervals SET start_time_hour = 14, start_time_minute = 0, end_time_hour = 21, end_time_minute = 0 WHERE calendar_id = '1' AND (start_day = 'Saturday' OR start_day = 'Sunday')"}`
+
+
+<sqlalchemy.engine.cursor.CursorResult object at 0x1473f2460>The weekend working hours for the calendar with ID = 1 have been successfully updated to be from 2pm to 9pm.
+
+> Finished chain.
+{'input': 'Modify calendar with ID = 1 the week-end working hours, make it from 2pm to 9pm.', 'output': 'The weekend working hours for the calendar with ID = 1 have been successfully updated to be from 2pm to 9pm.'}
+```
+
+</details>
+
+<details><summary>Create a resource profile with resources, calendars, and assigned activities distributions</summary>
+
+```shell
+python simulation_copilot/simulation_model_agent_sql.py
+
+Instructions: You are an assistant who helps with preparing of a business process simulation model.
+The model is represented by a set of tables in a SQL database.
+Reuse calendars for resources if possible.
+
+Below are the SQL schemas for available models.
+
+Note: In activity distributions, the distribution name is the name of the distribution
+and the parameters is a list of parameters for this specific distribution serialized as a string joined with a comma.
+
+Note: Always use full column qualifiers in the SQL statement.
+
+Note: If you you are lacking some information, you can query the database given the table schemas below.
+Always try to figure out the information from the database first before asking the user.
+
+CREATE TABLE calendar_intervals (
+	id INTEGER NOT NULL,
+	start_day VARCHAR(9) NOT NULL,
+	end_day VARCHAR(9) NOT NULL,
+	start_time_hour INTEGER NOT NULL,
+	start_time_minute INTEGER NOT NULL,
+	end_time_hour INTEGER NOT NULL,
+	end_time_minute INTEGER NOT NULL,
+	calendar_id VARCHAR NOT NULL,
+	PRIMARY KEY (id),
+	FOREIGN KEY(calendar_id) REFERENCES calendars (id)
+)
+
+
+CREATE TABLE calendars (
+	id INTEGER NOT NULL,
+	PRIMARY KEY (id)
+)
+
+
+CREATE TABLE activities (
+	id INTEGER NOT NULL,
+	name VARCHAR NOT NULL,
+	resource_id VARCHAR NOT NULL,
+	PRIMARY KEY (id),
+	FOREIGN KEY(resource_id) REFERENCES resources (id)
+)
+
+
+CREATE TABLE distribution_parameters (
+	id INTEGER NOT NULL,
+	activity_distribution_id VARCHAR NOT NULL,
+	parameter_name VARCHAR NOT NULL,
+	parameter_value FLOAT NOT NULL,
+	PRIMARY KEY (id),
+	FOREIGN KEY(activity_distribution_id) REFERENCES activity_distributions (id)
+)
+
+
+CREATE TABLE activity_distributions (
+	id INTEGER NOT NULL,
+	resource_id VARCHAR NOT NULL,
+	activity_id VARCHAR NOT NULL,
+	distribution_name VARCHAR NOT NULL,
+	PRIMARY KEY (id),
+	FOREIGN KEY(resource_id) REFERENCES resources (id),
+	FOREIGN KEY(activity_id) REFERENCES activities (id)
+)
+
+
+CREATE TABLE resources (
+	id INTEGER NOT NULL,
+	name VARCHAR NOT NULL,
+	amount INTEGER NOT NULL,
+	cost_per_hour FLOAT NOT NULL,
+	calendar_id VARCHAR NOT NULL,
+	profile_id VARCHAR NOT NULL,
+	PRIMARY KEY (id),
+	FOREIGN KEY(calendar_id) REFERENCES calendars (id),
+	FOREIGN KEY(profile_id) REFERENCES resource_profiles (id)
+)
+
+
+CREATE TABLE resource_profiles (
+	id INTEGER NOT NULL,
+	name VARCHAR NOT NULL,
+	PRIMARY KEY (id)
+)
+
+
+
+
+> Entering new AgentExecutor chain...
+
+Invoking: `run_sql` with `{'sql': "INSERT INTO resource_profiles (id, name) VALUES (1, 'Basic')"}`
+
+
+<sqlalchemy.engine.cursor.CursorResult object at 0x127b7c100>
+Invoking: `run_sql` with `{'sql': 'INSERT INTO calendars (id) VALUES (1)'}`
+
+
+<sqlalchemy.engine.cursor.CursorResult object at 0x127b7c640>
+Invoking: `run_sql` with `{'sql': "INSERT INTO calendar_intervals (id, start_day, end_day, start_time_hour, start_time_minute, end_time_hour, end_time_minute, calendar_id) VALUES (1, 'Monday', 'Friday', 9, 0, 12, 0, '1'), (2, 'Monday', 'Friday', 13, 0, 17, 0, '1')"}`
+
+
+<sqlalchemy.engine.cursor.CursorResult object at 0x127b53760>
+Invoking: `run_sql` with `{'sql': "INSERT INTO resources (id, name, amount, cost_per_hour, calendar_id, profile_id) VALUES (1, 'Junior', 3, 20.0, '1', '1'), (2, 'Senior', 2, 30.0, '1', '1')"}`
+
+
+<sqlalchemy.engine.cursor.CursorResult object at 0x127b7c1c0>
+Invoking: `run_sql` with `{'sql': "INSERT INTO activities (id, name, resource_id) VALUES (1, 'A', '1'), (2, 'B', '2')"}`
+
+
+<sqlalchemy.engine.cursor.CursorResult object at 0x127b7c4c0>
+Invoking: `run_sql` with `{'sql': "INSERT INTO activity_distributions (id, resource_id, activity_id, distribution_name) VALUES ('1', '1', '1', 'Normal'), ('2', '2', '2', 'Normal')"}`
+
+
+<sqlalchemy.engine.cursor.CursorResult object at 0x127b7cc40>
+Invoking: `run_sql` with `{'sql': "INSERT INTO distribution_parameters (id, activity_distribution_id, parameter_name, parameter_value) VALUES (1, '1', 'mean', 60.0), (2, '1', 'stddev', 2.0), (3, '2', 'mean', 15.0), (4, '2', 'stddev', 3.0)"}`
+
+
+<sqlalchemy.engine.cursor.CursorResult object at 0x127b7c940>I have created a basic resource profile named 'Basic' with two resources: 'Junior' and 'Senior'. They work from 9 am to 5 pm Monday to Friday with a 1-hour lunch break. There are 3 Juniors at $20/hour and 2 Seniors at $30/hour. The Junior is assigned to activity 'A' with a normal distribution (mean 60, standard deviation 2), and the Senior is assigned to activity 'B' with a normal distribution (mean 15, standard deviation 3).
+
+> Finished chain.
+{'input': "\nCreate a basic resource profile with two resources with names 'Junior' and 'Senior'\nwho work from 9am to 5pm Monday to Friday with a 1-hour lunch break.\nThere're 3 Juniors and 2 Seniors.\nThe Juniors cost $20/hour and the Seniors cost $30/hour.\nThe Junior is assigned to activity 'A' with a normal distribution with mean 60 and standard deviation 2.\nThe Senior is assigned to activity 'B' with a normal distribution with mean 15 and standard deviation 3.\n", 'output': "I have created a basic resource profile named 'Basic' with two resources: 'Junior' and 'Senior'. They work from 9 am to 5 pm Monday to Friday with a 1-hour lunch break. There are 3 Juniors at $20/hour and 2 Seniors at $30/hour. The Junior is assigned to activity 'A' with a normal distribution (mean 60, standard deviation 2), and the Senior is assigned to activity 'B' with a normal distribution (mean 15, standard deviation 3)."}
+```
+
+</details>
+
+<details><summary>Modifying a the mean distribution parameter for the 'Junior'
+resource's activity 'A'</summary>
+
+```shell
+python simulation_copilot/simulation_model_agent_sql.py
+Instructions: You are an assistant who helps with preparing of a business process simulation model.
+The model is represented by a set of tables in a SQL database.
+Reuse calendars for resources if possible.
+
+Below are the SQL schemas for available models.
+
+Note: In activity distributions, the distribution name is the name of the distribution
+and the parameters is a list of parameters for this specific distribution serialized as a string joined with a comma.
+
+Note: Always use full column qualifiers in the SQL statement.
+
+Note: If you you are lacking some information, you can query the database given the table schemas below.
+Always try to figure out the information from the database first before asking the user.
+
+CREATE TABLE calendar_intervals (
+	id INTEGER NOT NULL,
+	start_day VARCHAR(9) NOT NULL,
+	end_day VARCHAR(9) NOT NULL,
+	start_time_hour INTEGER NOT NULL,
+	start_time_minute INTEGER NOT NULL,
+	end_time_hour INTEGER NOT NULL,
+	end_time_minute INTEGER NOT NULL,
+	calendar_id VARCHAR NOT NULL,
+	PRIMARY KEY (id),
+	FOREIGN KEY(calendar_id) REFERENCES calendars (id)
+)
+
+
+CREATE TABLE calendars (
+	id INTEGER NOT NULL,
+	PRIMARY KEY (id)
+)
+
+
+CREATE TABLE activities (
+	id INTEGER NOT NULL,
+	name VARCHAR NOT NULL,
+	resource_id VARCHAR NOT NULL,
+	PRIMARY KEY (id),
+	FOREIGN KEY(resource_id) REFERENCES resources (id)
+)
+
+
+CREATE TABLE distribution_parameters (
+	id INTEGER NOT NULL,
+	activity_distribution_id VARCHAR NOT NULL,
+	parameter_name VARCHAR NOT NULL,
+	parameter_value FLOAT NOT NULL,
+	PRIMARY KEY (id),
+	FOREIGN KEY(activity_distribution_id) REFERENCES activity_distributions (id)
+)
+
+
+CREATE TABLE activity_distributions (
+	id INTEGER NOT NULL,
+	resource_id VARCHAR NOT NULL,
+	activity_id VARCHAR NOT NULL,
+	distribution_name VARCHAR NOT NULL,
+	PRIMARY KEY (id),
+	FOREIGN KEY(resource_id) REFERENCES resources (id),
+	FOREIGN KEY(activity_id) REFERENCES activities (id)
+)
+
+
+CREATE TABLE resources (
+	id INTEGER NOT NULL,
+	name VARCHAR NOT NULL,
+	amount INTEGER NOT NULL,
+	cost_per_hour FLOAT NOT NULL,
+	calendar_id VARCHAR NOT NULL,
+	profile_id VARCHAR NOT NULL,
+	PRIMARY KEY (id),
+	FOREIGN KEY(calendar_id) REFERENCES calendars (id),
+	FOREIGN KEY(profile_id) REFERENCES resource_profiles (id)
+)
+
+
+CREATE TABLE resource_profiles (
+	id INTEGER NOT NULL,
+	name VARCHAR NOT NULL,
+	PRIMARY KEY (id)
+)
+
+
+
+
+> Entering new AgentExecutor chain...
+
+Invoking: `run_sql` with `{'sql': "SELECT activity_distributions.id, distribution_parameters.id AS param_id, distribution_parameters.parameter_name FROM activities JOIN activity_distributions ON activities.id = activity_distributions.activity_id JOIN distribution_parameters ON activity_distributions.id = distribution_parameters.activity_distribution_id WHERE activities.name = 'A' AND distribution_parameters.parameter_name = 'mean'"}`
+
+
+<sqlalchemy.engine.cursor.CursorResult object at 0x13c0bc160>
+Invoking: `run_sql` with `{'sql': "SELECT resources.id FROM resources WHERE resources.name = 'Junior'"}`
+responded: I have identified the distribution parameter related to the mean time for activity 'A'. However, to accurately update the distribution for the "Junior" resource, I need to identify the specific distribution associated with the "Junior" resource. Let me proceed to find that information.
+
+<sqlalchemy.engine.cursor.CursorResult object at 0x13c095580>
+Invoking: `run_sql` with `{'sql': "SELECT activity_distributions.id, distribution_parameters.id AS param_id FROM activities JOIN activity_distributions ON activities.id = activity_distributions.activity_id JOIN distribution_parameters ON activity_distributions.id = distribution_parameters.activity_distribution_id JOIN resources ON activity_distributions.resource_id = resources.id WHERE activities.name = 'A' AND distribution_parameters.parameter_name = 'mean' AND resources.name = 'Junior'"}`
+
+
+<sqlalchemy.engine.cursor.CursorResult object at 0x13c0bc640>
+Invoking: `run_sql` with `{'sql': "UPDATE distribution_parameters SET parameter_value = 90 WHERE id = (SELECT distribution_parameters.id FROM activities JOIN activity_distributions ON activities.id = activity_distributions.activity_id JOIN distribution_parameters ON activity_distributions.id = distribution_parameters.activity_distribution_id JOIN resources ON activity_distributions.resource_id = resources.id WHERE activities.name = 'A' AND distribution_parameters.parameter_name = 'mean' AND resources.name = 'Junior')"}`
+
+
+<sqlalchemy.engine.cursor.CursorResult object at 0x13c0bc9a0>The mean time for activity 'A' associated with the "Junior" resource has been successfully updated to 90 minutes. If there's anything more you need, feel free to ask!
+
+> Finished chain.
+{'input': "\nThe mean time for activity 'A' has increased to 90 minutes.\nUpdate the distribution for the Junior resource.\n", 'output': 'The mean time for activity \'A\' associated with the "Junior" resource has been successfully updated to 90 minutes. If there\'s anything more you need, feel free to ask!'}
+```
+
+</details>
+
+## Pure Python approach outputs
 
 <details>
 <summary>Generating calendars</summary>
@@ -67,7 +358,7 @@ Prompt to the agent (model: gpt-3.5-turbo):
 Output:
 
 ```shell
-python simulation_copilot/generating_calendars.py 
+python simulation_copilot/generating_calendars.py
 
 
 > Entering new AgentExecutor chain...
@@ -97,7 +388,7 @@ Prompt to the agent (model: gpt-3.5-turbo):
 
 ```python
 """
-Generate a resource model with 2 resource profiles and 2 calendars. 
+Generate a resource model with 2 resource profiles and 2 calendars.
 Calendar 'BusyHours' specifies working hours from 8am to 9pm Monday to Friday, from 9am to 5pm on Saturday, and from 10am to 4pm on Sunday.
 Calendar 'NormalHours' specifies working hours from 9am to 5pm Monday to Friday, and from 10am to 4pm on Saturday and Sunday.
 Resource model has 2 resource profiles, 'Busy' and 'Normal'.
@@ -109,7 +400,7 @@ Profile 'Normal' has 2 resources, 'Junior' and 'Senior', with the quantity of 1 
 Output:
 
 ```shell
-python simulation_copilot/resource_model_agent.py 
+python simulation_copilot/resource_model_agent.py
 
 
 > Entering new AgentExecutor chain...
@@ -263,7 +554,7 @@ resource_model=ResourceModel(profiles=[ResourceProfile(id='5bb14ad39ac44a42b95e7
 Prompt to the agent (model: gpt-4-0125-preview):
 
 ```python
-Given the following simulation model set the number of 'Junior' resources in the 'Busy' profile to 10: 
+Given the following simulation model set the number of 'Junior' resources in the 'Busy' profile to 10:
 
 SimulationModel(resource_model=ResourceModel(profiles=[ResourceProfile(id='5bb14ad39ac44a42b95e7e97c40cba75', name='Busy', resources=[Resource(id='79e2bfd841a841e6a9122f01c2f1192e', name='Junior', amount=5, cost_per_hour=10.0, calendar_id='c81ead98cd894ae39b90efe129d496c9', assigned_activities=[ActivityDistribution(activity_id='A', distribution=Distribution(name='uniform', parameters=[1.0, 2.0])), ActivityDistribution(activity_id='B', distribution=Distribution(name='uniform', parameters=[1.0, 2.0])), ActivityDistribution(activity_id='C', distribution=Distribution(name='uniform', parameters=[1.0, 2.0]))]), Resource(id='5f2bb5de72cb42d5ad06e188f0f8a9df', name='Senior', amount=3, cost_per_hour=20.0, calendar_id='c81ead98cd894ae39b90efe129d496c9', assigned_activities=[ActivityDistribution(activity_id='A', distribution=Distribution(name='uniform', parameters=[1.0, 2.0])), ActivityDistribution(activity_id='B', distribution=Distribution(name='uniform', parameters=[1.0, 2.0])), ActivityDistribution(activity_id='C', distribution=Distribution(name='uniform', parameters=[1.0, 2.0]))])]), ResourceProfile(id='d8ac0d1650d54dc4aaedd4cfa3172190', name='Normal', resources=[Resource(id='da6f7a698f4943348a6eb998a98854a6', name='Junior', amount=1, cost_per_hour=10.0, calendar_id='3b474c4e76184526b3b91f67540045d4', assigned_activities=[ActivityDistribution(activity_id='A', distribution=Distribution(name='uniform', parameters=[1.0, 2.0])), ActivityDistribution(activity_id='B', distribution=Distribution(name='uniform', parameters=[1.0, 2.0])), ActivityDistribution(activity_id='C', distribution=Distribution(name='uniform', parameters=[1.0, 2.0]))]), Resource(id='6cc6686fdc4546e48ca41f0cec183d6f', name='Senior', amount=1, cost_per_hour=20.0, calendar_id='3b474c4e76184526b3b91f67540045d4', assigned_activities=[ActivityDistribution(activity_id='A', distribution=Distribution(name='uniform', parameters=[1.0, 2.0])), ActivityDistribution(activity_id='B', distribution=Distribution(name='uniform', parameters=[1.0, 2.0])), ActivityDistribution(activity_id='C', distribution=Distribution(name='uniform', parameters=[1.0, 2.0]))])])], calendars=[Calendar(id='c81ead98cd894ae39b90efe129d496c9', intervals=[CalendarInterval(start_day=<Day.MONDAY: 'Monday'>, end_day=<Day.FRIDAY: 'Friday'>, start_time=Time(hour=8, minute=0), end_time=Time(hour=21, minute=0)), CalendarInterval(start_day=<Day.SATURDAY: 'Saturday'>, end_day=<Day.SATURDAY: 'Saturday'>, start_time=Time(hour=9, minute=0), end_time=Time(hour=17, minute=0)), CalendarInterval(start_day=<Day.SUNDAY: 'Sunday'>, end_day=<Day.SUNDAY: 'Sunday'>, start_time=Time(hour=10, minute=0), end_time=Time(hour=16, minute=0))]), Calendar(id='3b474c4e76184526b3b91f67540045d4', intervals=[CalendarInterval(start_day=<Day.MONDAY: 'Monday'>, end_day=<Day.FRIDAY: 'Friday'>, start_time=Time(hour=9, minute=0), end_time=Time(hour=17, minute=0)), CalendarInterval(start_day=<Day.SATURDAY: 'Saturday'>, end_day=<Day.SUNDAY: 'Sunday'>, start_time=Time(hour=10, minute=0), end_time=Time(hour=16, minute=0))])]), gateway_probabilities=[GatewayProbabilities(gateway_id='Gateway1', outgoing_paths=[PathProbability(path_id='SequenceFlow1', probability=0.3), PathProbability(path_id='SequenceFlow2', probability=0.7)]), GatewayProbabilities(gateway_id='Gateway2', outgoing_paths=[PathProbability(path_id='SequenceFlow1', probability=0.6), PathProbability(path_id='SequenceFlow2', probability=0.4)])])
 ```
