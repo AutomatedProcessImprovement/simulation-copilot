@@ -20,7 +20,8 @@ Reuse calendars for resources if possible.
 Below are the SQL schemas for available models.
 
 Note: In activity distributions, the distribution name is the name of the distribution
-and the parameters is a list of parameters for this specific distribution serialized as a string joined with a comma.
+and the parameters is a list of parameters for this specific distribution.
+The name and number of distribution parameters depend on the distribution.
 
 Note: Always use full column qualifiers in the SQL statement.
 
