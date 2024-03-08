@@ -21,6 +21,7 @@ CREATE TABLE calendars (
 
 CREATE TABLE activities (
 	id INTEGER NOT NULL, 
+	bpmn_id VARCHAR NOT NULL, 
 	name VARCHAR NOT NULL, 
 	resource_id VARCHAR NOT NULL, 
 	PRIMARY KEY (id), 
@@ -51,6 +52,7 @@ CREATE TABLE activity_distributions (
 
 CREATE TABLE resources (
 	id INTEGER NOT NULL, 
+	bpmn_id VARCHAR NOT NULL, 
 	name VARCHAR NOT NULL, 
 	amount INTEGER NOT NULL, 
 	cost_per_hour FLOAT NOT NULL, 
@@ -65,6 +67,33 @@ CREATE TABLE resources (
 CREATE TABLE resource_profiles (
 	id INTEGER NOT NULL, 
 	name VARCHAR NOT NULL, 
+	simulation_model_id VARCHAR NOT NULL, 
+	PRIMARY KEY (id), 
+	FOREIGN KEY(simulation_model_id) REFERENCES simulation_models (id)
+)
+
+
+CREATE TABLE sequence_flows (
+	id INTEGER NOT NULL, 
+	bpmn_id VARCHAR NOT NULL, 
+	probability FLOAT NOT NULL, 
+	source_gateway_id VARCHAR NOT NULL, 
+	PRIMARY KEY (id), 
+	FOREIGN KEY(source_gateway_id) REFERENCES gateways (id)
+)
+
+
+CREATE TABLE gateways (
+	id INTEGER NOT NULL, 
+	bpmn_id VARCHAR NOT NULL, 
+	simulation_model_id VARCHAR NOT NULL, 
+	PRIMARY KEY (id), 
+	FOREIGN KEY(simulation_model_id) REFERENCES simulation_models (id)
+)
+
+
+CREATE TABLE simulation_models (
+	id INTEGER NOT NULL, 
 	PRIMARY KEY (id)
 )
 

@@ -33,6 +33,9 @@ save_table_schemas(
         "activity_distributions",
         "resources",
         "resource_profiles",
+        "sequence_flows",
+        "gateways",
+        "simulation_models",
     ],
     "simulation_copilot/schemas.sql",
 )

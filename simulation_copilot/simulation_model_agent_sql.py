@@ -77,12 +77,29 @@ agent_executor = AgentExecutor(
 # )
 
 
+# print(
+#     agent_executor.invoke(
+#         {
+#             "input": """
+# The mean time for activity 'A' has increased to 90 minutes.
+# Update the distribution for the Junior resource.
+# """
+#         }
+#     )
+# )
+
+
 print(
     agent_executor.invoke(
         {
             "input": """
-The mean time for activity 'A' has increased to 90 minutes.
-Update the distribution for the Junior resource.
+Generate a simulation model with 2 resource profiles, which has 2 calendars, and gateway probabilties.
+Calendar 'BusyHours' specifies working hours from 8am to 9pm Monday to Friday, from 9am to 5pm on Saturday, and from 10am to 4pm on Sunday.
+Calendar 'NormalHours' specifies working hours from 9am to 5pm Monday to Friday, and from 10am to 4pm on Saturday and Sunday.
+There are 2 resource profiles, 'Busy' and 'Normal'.
+Profile 'Busy' has 2 resources, 'Junior' and 'Senior', with the quantity of 5 and 3, 10 and 20 EUR per hour, and assigned activities A, B, and C with the calendar 'BusyHours'.
+Profile 'Normal' has 2 resources, 'Junior' and 'Senior', with the quantity of 1 and 1, 10 and 20 EUR per hour, and assigned activities A, B, and C with the calendar 'NormalHours'.
+Also, add gateway probabilities for the gateways 'Gateway1' and 'Gateway2' with the outgoing sequence flows 'SequenceFlow1' and 'SequenceFlow2' with the probabilities 0.3 and 0.7 for 'Gateway1' and 0.6 and 0.4 for 'Gateway2'.
 """
         }
     )
