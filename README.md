@@ -7,8 +7,7 @@ A prototype to explore a possibility to handle simulation scenario generation us
 - Agent-based using tools
   - Basic using Python functions for composing BPS models
   - Using storage to make incremental changes (SQL)
-- Extractors
-- Multi-agent
+- Multi-agent when a single agent cannot handle the complexity
 
 ## Milestones
 
@@ -19,9 +18,26 @@ A prototype to explore a possibility to handle simulation scenario generation us
 - [x] Generate a simple scenario with Python code
 - [x] Generate a simple scenario with LLM using the Python code as a "tool"
 - [x] Provide a simple scenario and ask LLM to apply some changes
-- [ ] Try storing the simulation model in a SQL format and query with `pandas.sql`
+- [x] Try storing the simulation model in a SQL format
+- [x] Change average activity duration by N minutes (models should change the mean value of the distribution of a certain activity)
 - [ ] Increase complexity: add more components of the simulation scenario or more adjustments
-- [ ] Change average activity duration by N hours (models should change the mean value of the distribution of a certain activity)
+
+## Get started with the SQL approach
+
+```shell
+# set up the environment
+poetry install
+
+# activate the environment
+poetry shell
+
+# initialize the database
+# and write the table schemas to a file for the agent instructions
+python simulation_copilot/db.py
+
+# run the agent
+python simulation_copilot/simulation_model_agent_sql.py
+```
 
 ## SQL-based approach outputs
 
@@ -198,6 +214,7 @@ resource's activity 'A'</summary>
 
 ```shell
 python simulation_copilot/simulation_model_agent_sql.py
+
 Instructions: You are an assistant who helps with preparing of a business process simulation model.
 The model is represented by a set of tables in a SQL database.
 Reuse calendars for resources if possible.
