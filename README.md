@@ -26,17 +26,17 @@ A prototype to explore a possibility to handle simulation scenario generation us
 
 ```shell
 # set up the environment
-poetry install
+pipenv install
 
 # activate the environment
-poetry shell
+pipenv shell
 
 # initialize the database
 # and write the table schemas to a file for the agent instructions
-python simulation_copilot/sql_approach/init_db.py
+python src/simulation_copilot/sql_approach/init_db.py
 
 # run the agent
-python simulation_copilot/sql_approach/main.py
+python src/simulation_copilot/sql_approach/main.py
 ```
 
 ## SQL-based approach outputs

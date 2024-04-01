@@ -11,6 +11,7 @@ from langchain.agents import (
     BaseSingleActionAgent,
     create_openai_functions_agent,
 )
+from langchain_anthropic import ChatAnthropic
 from langchain_openai import ChatOpenAI
 
 from simulation_copilot.lib.tools.sql import run_sql
@@ -48,6 +49,11 @@ def make_openai_gpt4_agent(instructions: str, tools: list):
     base_prompt = hub.pull("langchain-ai/openai-functions-template")
     prompt = base_prompt.partial(instructions=instructions)
     return create_openai_functions_agent(llm, tools, prompt)
+
+
+def make_anthropic_claud3_agent(instructions: str, tools: list):
+    # llm = ChatAntropic
+    pass
 
 
 def make_agent_executor(

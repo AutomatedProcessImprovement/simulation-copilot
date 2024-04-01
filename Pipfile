@@ -1,0 +1,23 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+langchain = "*"
+langchainhub = "*"
+langchain-openai = "*"
+langchain-ai21 = "*"
+langchain-anthropic = "*"
+beautifulsoup4 = "*"
+faiss-cpu = "*"
+pix-framework = "*"
+python-dotenv = "*"
+pydantic = "*"
+sqlalchemy = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.9"
+python_full_version = "3.9.19"

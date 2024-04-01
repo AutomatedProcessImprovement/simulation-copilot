@@ -2,6 +2,8 @@
 *.pyc
 *.pyo
 .idea/
+.venv/
+dist/
 .env
 models/
 poetry.lock

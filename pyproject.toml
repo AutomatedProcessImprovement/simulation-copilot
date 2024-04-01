@@ -1,27 +1,19 @@
-[tool.poetry]
-name = "simulation-copilot"
-version = "0.1.0"
-description = ""
-authors = ["Ihar Suvorau <ihar.suvorau@gmail.com>"]
-readme = "README.md"
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
-[tool.poetry.dependencies]
-python = ">=3.9, <3.12"
-langchain = "^0.1.10"
-beautifulsoup4 = "^4.12.3"
-faiss-cpu = "^1.8.0"
-pix-framework = "^0.13.10"
-pydantic = "^2.6.3"
-python-dotenv = "^1.0.1"
-langchain-openai = "^0.0.8"
-langchainhub = "^0.1.15"
-sqlalchemy = "^2.0.28"
+[project]
+name = "simulation-copilot"
+version = "0.2.0"
+authors = [{ name = "Ihar Suvorau", email = "ihar.suvorau@gmail.com" }]
+description = "Package for generating business process simulation models with LLMs"
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.9,<3.12"
+
+[project.urls]
+Homepage = "https://github.com/AutomatedProcessImprovement/simulation-copilot"
 
 [tool.pyright]
 venvPath = "/Users/ihar/Library/Caches/pypoetry/virtualenvs/"
 venv = "simulation-copilot-6iLff24m-py3.9"
-
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
