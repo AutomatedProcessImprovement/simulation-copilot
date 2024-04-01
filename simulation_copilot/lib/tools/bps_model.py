@@ -2,8 +2,8 @@ from langchain.pydantic_v1 import BaseModel, Field
 from langchain_core.tools import StructuredTool
 from pix_framework.discovery.gateway_probabilities import GatewayProbabilities
 
-from simulation_copilot.bps_model_simplified import SimulationModel
-from simulation_copilot.resource_model import ResourceModel
+from simulation_copilot.lib.bps_model_simplified import SimulationModel
+from simulation_copilot.lib.resource_model import ResourceModel
 
 
 class SimulationModelInput(BaseModel):

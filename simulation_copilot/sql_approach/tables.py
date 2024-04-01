@@ -1,7 +1,7 @@
 import sqlalchemy as sa
 from sqlalchemy.ext.declarative import declarative_base
 
-from simulation_copilot.resource_model import Day
+from simulation_copilot.lib.resource_model import Day
 
 Base = declarative_base()
 

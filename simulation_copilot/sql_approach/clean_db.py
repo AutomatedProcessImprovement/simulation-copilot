@@ -1,5 +1,6 @@
 from sqlalchemy.sql import text
-from simulation_copilot.db import session
+
+from simulation_copilot.sql_approach.db import session
 
 
 def clean_db():

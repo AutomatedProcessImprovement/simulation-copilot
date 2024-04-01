@@ -2,7 +2,7 @@ from typing import Any
 from langchain.tools import tool
 from sqlalchemy import text, Result
 
-from simulation_copilot.db import session
+from simulation_copilot.sql_approach.db import session
 
 
 @tool("run_sql")

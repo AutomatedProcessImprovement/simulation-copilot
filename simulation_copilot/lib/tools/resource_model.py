@@ -1,7 +1,7 @@
 from langchain.pydantic_v1 import BaseModel, Field
 from langchain.tools import tool
 
-from simulation_copilot.resource_model import Calendar, ResourceModel, ResourceProfile
+from simulation_copilot.lib.resource_model import Calendar, ResourceModel, ResourceProfile
 
 
 class GenerateResourceModelInput(BaseModel):

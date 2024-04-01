@@ -33,10 +33,10 @@ poetry shell
 
 # initialize the database
 # and write the table schemas to a file for the agent instructions
-python simulation_copilot/db.py
+python simulation_copilot/sql_approach/init_db.py
 
 # run the agent
-python simulation_copilot/simulation_model_agent_sql.py
+python simulation_copilot/sql_approach/main.py
 ```
 
 ## SQL-based approach outputs

@@ -1,14 +1,7 @@
 import sqlalchemy as sa
-from sqlalchemy.orm import sessionmaker
 
-from simulation_copilot.tables import Base
-
-# Create the database engine
-engine = sa.create_engine("sqlite:///simulation_model.db")
-
-# Create a session
-Session = sessionmaker(bind=engine)
-session = Session()
+from simulation_copilot.sql_approach.db import engine
+from simulation_copilot.sql_approach.tables import Base
 
 
 def save_table_schemas(table_names, path):
@@ -22,7 +15,7 @@ def save_table_schemas(table_names, path):
 
 
 if __name__ == "__main__":
-    # Create the tables
+    # create the tables
     Base.metadata.create_all(engine)
 
     # Write SQL schemas to file. LLM uses it to understand the database structure.
