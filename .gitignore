@@ -2,8 +2,10 @@
 *.pyc
 *.pyo
 .idea/
+.vscode/
 .venv/
 dist/
+pkg/
 .env
 models/
 poetry.lock
