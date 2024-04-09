@@ -1,36 +1,46 @@
+from pathlib import Path
+
 import sqlalchemy as sa
 
 from simulation_copilot.sql_approach.db import engine
 from simulation_copilot.sql_approach.tables import Base
 
+SQL_SCHEMA_PATH = Path(__file__).parent / "schema.sql"
 
-def save_table_schemas(table_names, path):
+table_names = [
+    "calendar_intervals",
+    "calendars",
+    "activities",
+    "distribution_parameters",
+    "activity_distributions",
+    "resources",
+    "resource_profiles",
+    "sequence_flows",
+    "gateways",
+    "simulation_models",
+]
+
+
+def tables_schema(tables=None):
+    if tables is None:
+        tables = table_names
+
+    output = ""
+    for table in tables:
+        output += sa.schema.CreateTable(Base.metadata.tables[table]).compile(engine).string
+
+    return output
+
+
+def save_tables_schema(table_names, path):
     with open(path, "w") as f:
-        for table_name in table_names:
-            f.write(
-                sa.schema.CreateTable(Base.metadata.tables[table_name])
-                .compile(engine)
-                .string
-            )
+        f.write(tables_schema(table_names))
+
+
+def create_tables(engine):
+    Base.metadata.create_all(engine)
 
 
 if __name__ == "__main__":
-    # create the tables
-    Base.metadata.create_all(engine)
-
-    # Write SQL schemas to file. LLM uses it to understand the database structure.
-    save_table_schemas(
-        [
-            "calendar_intervals",
-            "calendars",
-            "activities",
-            "distribution_parameters",
-            "activity_distributions",
-            "resources",
-            "resource_profiles",
-            "sequence_flows",
-            "gateways",
-            "simulation_models",
-        ],
-        "simulation_copilot/schemas.sql",
-    )
+    create_tables(engine)
+    save_tables_schema(table_names, SQL_SCHEMA_PATH)
