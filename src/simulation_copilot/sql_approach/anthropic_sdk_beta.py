@@ -99,63 +99,90 @@ def simplify_tool_beta_message(msg: ToolsBetaMessage) -> dict:
 
 
 def format_tool(tool: StructuredTool):
-    return {"name": tool.name, "description": tool.description.strip(), "input_schema": tool.args_schema.schema()}
+    return {
+        "name": tool.name,
+        "description": tool.description.strip(),
+        "input_schema": tool.args_schema.schema(),
+    }
 
 
 def format_tools(tools: list[StructuredTool]):
     return [format_tool(tool) for tool in tools]
 
 
+def message_from_tools_output(tools_output: List[ToolResult]):
+    msg = {"role": Role.USER.value, "content": []}
+    for result in tools_output:
+        msg["content"].append(
+            {
+                "type": "tool_result",
+                "tool_use_id": result.tool_block.id,
+                "content": result.output,
+            }
+        )
+    return msg
+
+
+class Conversation:
+    def __init__(
+        self,
+        model: str,
+        tools: List[StructuredTool],
+        max_tokens: int = 4096,
+        max_tools_invocations: int = 10,
+        system_instructions: str = "",
+    ):
+        assert max_tokens <= 4096, "Maximum output is 4096 tokens"
+
+        self.client = Anthropic()
+        self.call = partial(
+            self.client.beta.tools.messages.create,
+            model=model,
+            tools=format_tools(tools),
+            max_tokens=max_tokens,
+            system=system_instructions,
+        )  # partial function with most of the parameters pre-filled
+        self.messages = []
+        self.max_tools_invocations = max_tools_invocations
+
+    def run(self, user_input: str):
+        # first request
+        self.messages.append({"role": Role.USER.value, "content": user_input})
+        last_response = self.call(messages=self.messages)
+        self.messages.append(simplify_tool_beta_message(last_response))
+        pretty_print(last_response)
+
+        # subsequent requests
+        tool_blocks = tool_blocks_from_response(last_response)
+        if len(tool_blocks) == 0:
+            return
+        while not (
+            last_response.stop_reason == "end_turn"
+            or last_response.stop_reason == "stop_sequence"
+            or self.max_tools_invocations == 0
+        ):
+            self.max_tools_invocations -= 1
+            tools_output = [run_tool_block(block, tools) for block in tool_blocks]
+
+            if len(tools_output) == 0:  # no tools output, nothing to send to LLM, exit
+                print("Done")
+                return
+
+            result_message = message_from_tools_output(tools_output)
+            self.messages.append(result_message)
+
+            print("Sending back to Claude:")
+            pretty_print(result_message)
+            last_response = self.call(messages=self.messages)
+            pretty_print(last_response)
+
+
 def main():
     load_dotenv()
     create_tables(engine)
 
-    client = Anthropic()
-    call = partial(
-        client.beta.tools.messages.create,
-        model=Claude3.OPUS.value,
-        max_tokens=4096,  # max output for all Anthropic models
-        tools=format_tools(tools),
-        system=instructions(),
-    )  # partial function with most of the parameters pre-filled
-
-    messages = [{"role": Role.USER.value, "content": "Create a calendar 9-5 pm."}]  # accumulates message history
-    response = None  # the most recent response
-    end_condition_met = False  # flag for stopping tool execution loop
-
-    # initial request
-    response = call(messages=messages)
-    messages.append(simplify_tool_beta_message(response))
-    pretty_print(response)
-
-    while not end_condition_met:  # tool execution loop
-        # tool calling
-        results = []
-        for block in tool_blocks_from_response(response):
-            results.append(run_tool_block(block, tools))
-
-        if len(results) == 0:
-            print("Done")
-            return
-
-        # sending tool results
-        result_message = {"role": Role.USER.value, "content": []}
-        for result in results:
-            result_message["content"].append(
-                {
-                    "type": "tool_result",
-                    "tool_use_id": result.tool_block.id,
-                    "content": result.output,
-                }
-            )
-        messages.append(result_message)
-
-        print("Sending back to Claude:")
-        pretty_print(result_message)
-        response = call(messages=messages)
-        pretty_print(response)
-        if response.stop_reason == "end_turn" or response.stop_reason == "stop_sequence":
-            end_condition_met = True
+    conversation = Conversation(model=Claude3.OPUS.value, tools=tools, system_instructions=instructions())
+    conversation.run("Create a calendar 9-5 pm.")
 
 
 if __name__ == "__main__":
@@ -165,3 +192,4 @@ if __name__ == "__main__":
 
 # TODO: add a function to dump database to a simulation model format
 # TODO: execute database dump at the end of the message exchange
+# TODO: handle error in tools
