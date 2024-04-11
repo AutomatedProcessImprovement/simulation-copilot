@@ -17,7 +17,7 @@ from langchain_core.tools import StructuredTool
 from tenacity import retry, stop_after_attempt
 from termcolor import colored
 
-from simulation_copilot.lib.anthropic import Role
+from simulation_copilot.anthropic import Role
 
 
 def pretty_print(msg: Union[ToolsBetaMessage, Dict]):

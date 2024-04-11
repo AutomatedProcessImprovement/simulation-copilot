@@ -2,11 +2,11 @@
 
 from dotenv import load_dotenv
 
-from simulation_copilot.lib.anthropic import Claude3
-from simulation_copilot.lib.anthropic.conversation import Conversation
-from simulation_copilot.lib.tools.sql import run_sqlite3_query
+from simulation_copilot.anthropic import Claude3
+from simulation_copilot.anthropic import Conversation
 from simulation_copilot.sql_approach.db import engine
 from simulation_copilot.sql_approach.init_db import tables_schema, create_tables
+from simulation_copilot.tools.sql import run_sqlite3_query
 
 tools = [run_sqlite3_query]
 
@@ -41,3 +41,4 @@ if __name__ == "__main__":
 # TODO: add a function to dump database to a simulation model format
 # TODO: execute database dump at the end of the message exchange
 # TODO: handle error in tools
+# TODO: instead of the generic SQL tool, use predefined SQL functions, so LLM needs to provide only params

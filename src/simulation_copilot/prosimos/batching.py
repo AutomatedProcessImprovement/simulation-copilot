@@ -1,3 +1,5 @@
+"""This file has been copied from Simod."""
+
 from dataclasses import dataclass
 from typing import Union
 
@@ -9,11 +11,7 @@ class BatchingFiringRule:
     value: str
 
     def __eq__(self, other: "BatchingFiringRule") -> bool:
-        return (
-            self.attribute == other.attribute
-            and self.comparison == other.comparison
-            and self.value == other.value
-        )
+        return self.attribute == other.attribute and self.comparison == other.comparison and self.value == other.value
 
     @staticmethod
     def from_dict(rule: dict) -> "BatchingFiringRule":
@@ -33,13 +31,9 @@ class BatchingFiringRule:
     @staticmethod
     def from_prosimos(rule: dict) -> "BatchingFiringRule":
         return BatchingFiringRule(
-            attribute=BatchingFiringRule._attribute_name_from_prosimos(
-                rule["attribute"]
-            ),
+            attribute=BatchingFiringRule._attribute_name_from_prosimos(rule["attribute"]),
             comparison=rule["comparison"],
-            value=BatchingFiringRule._attribute_value_from_prosimos_if_week_day(
-                rule["attribute"], rule["value"]
-            ),
+            value=BatchingFiringRule._attribute_value_from_prosimos_if_week_day(rule["attribute"], rule["value"]),
         )
 
     def to_prosimos(self) -> dict:
@@ -158,9 +152,7 @@ class AndRules:
             if isinstance(rule.value, list) or isinstance(rule.value, tuple):
                 # when there is an interval in the batch output, we transform it to two rules,
                 # one stating "greater than", and the other "lower than"
-                greater_than_rule = BatchingFiringRule(
-                    rule.attribute, ">", rule.value[0]
-                )
+                greater_than_rule = BatchingFiringRule(rule.attribute, ">", rule.value[0])
                 lower_than_rule = BatchingFiringRule(rule.attribute, "<", rule.value[1])
                 result.append(greater_than_rule.to_prosimos())
                 result.append(lower_than_rule.to_prosimos())
@@ -209,11 +201,7 @@ class BatchingFiringRules:
     rules: OrRules
 
     def __eq__(self, other: "BatchingFiringRules"):
-        return (
-            self.confidence == other.confidence
-            and self.support == other.support
-            and self.rules == other.rules
-        )
+        return self.confidence == other.confidence and self.support == other.support and self.rules == other.rules
 
     def __getitem__(self, rule_index: int) -> AndRules:
         return self.rules[rule_index]
@@ -221,9 +209,7 @@ class BatchingFiringRules:
     @staticmethod
     def from_dict(rules: dict) -> "BatchingFiringRules":
         return BatchingFiringRules(
-            confidence=rules["confidence"],
-            support=rules["support"],
-            rules=OrRules.from_list(rules["rules"]),
+            confidence=rules["confidence"], support=rules["support"], rules=OrRules.from_list(rules["rules"])
         )
 
     def to_dict(self) -> dict:
@@ -235,9 +221,7 @@ class BatchingFiringRules:
 
     @staticmethod
     def from_prosimos(rules: list) -> "BatchingFiringRules":
-        return BatchingFiringRules(
-            confidence=-1.0, support=-1.0, rules=OrRules.from_prosimos(rules)
-        )
+        return BatchingFiringRules(confidence=-1.0, support=-1.0, rules=OrRules.from_prosimos(rules))
 
     def to_prosimos(self) -> list:
         return self.rules.to_prosimos()
@@ -303,9 +287,7 @@ class BatchingRule:
         }
 
     @staticmethod
-    def from_prosimos(
-        rule: dict, activities_names_by_id: dict[str, str]
-    ) -> "BatchingRule":
+    def from_prosimos(rule: dict, activities_names_by_id: dict[str, str]) -> "BatchingRule":
         """
         Deserializes a BatchingRule from a dict coming from Prosimos.
         """
@@ -314,12 +296,8 @@ class BatchingRule:
             resources=None,
             type=rule["type"],
             batch_frequency=None,
-            size_distribution=BatchingRule._distribution_from_prosimos(
-                rule["size_distrib"]
-            ),
-            duration_distribution=BatchingRule._distribution_from_prosimos(
-                rule["duration_distrib"]
-            ),
+            size_distribution=BatchingRule._distribution_from_prosimos(rule["size_distrib"]),
+            duration_distribution=BatchingRule._distribution_from_prosimos(rule["duration_distrib"]),
             firing_rules=BatchingFiringRules(
                 confidence=-1.0,
                 support=-1.0,
@@ -328,9 +306,7 @@ class BatchingRule:
         )
 
     @staticmethod
-    def _distribution_from_prosimos(
-        distributions: list[dict[str, Union[int, float]]]
-    ) -> dict[str, Union[int, float]]:
+    def _distribution_from_prosimos(distributions: list[dict[str, Union[int, float]]]) -> dict[str, Union[int, float]]:
         result = {}
         for item in distributions:
             result[str(item["key"])] = item["value"]
@@ -349,17 +325,11 @@ class BatchingRule:
             "type": self.type,
             # NOTE: batch_frequency is not used in Prosimos
             # "batch_frequency": self.batch_frequency,
-            "size_distrib": self._distribution_items_to_prosimos(
-                self.size_distribution
-            ),
-            "duration_distrib": self._distribution_items_to_prosimos(
-                self.duration_distribution
-            ),
+            "size_distrib": self._distribution_items_to_prosimos(self.size_distribution),
+            "duration_distrib": self._distribution_items_to_prosimos(self.duration_distribution),
             "firing_rules": self.firing_rules.to_prosimos(),
         }
 
     @staticmethod
-    def _distribution_items_to_prosimos(
-        distribution: dict[str, Union[int, float]]
-    ) -> list[dict]:
+    def _distribution_items_to_prosimos(distribution: dict[str, Union[int, float]]) -> list[dict]:
         return [{"key": key, "value": value} for key, value in distribution.items()]

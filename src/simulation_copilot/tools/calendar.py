@@ -3,7 +3,7 @@ from uuid import uuid4
 from langchain.pydantic_v1 import BaseModel, Field
 from langchain.tools import tool
 
-from simulation_copilot.lib.resource_model import Calendar, CalendarInterval, Day, Time
+from simulation_copilot.prosimos.resource_model import Calendar, CalendarInterval, Day, Time
 
 
 class IntervalDescriptionInput(BaseModel):
@@ -18,9 +18,7 @@ class IntervalDescriptionInput(BaseModel):
 
 
 class GenerateCalendarInput(BaseModel):
-    intervals: list[IntervalDescriptionInput] = Field(
-        description="The intervals of the calendar"
-    )
+    intervals: list[IntervalDescriptionInput] = Field(description="The intervals of the calendar")
 
 
 @tool("generate_calendar", args_schema=GenerateCalendarInput)

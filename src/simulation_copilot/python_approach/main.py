@@ -15,13 +15,13 @@ from langchain.agents import AgentExecutor, create_openai_functions_agent
 from langchain_community.tools.tavily_search import TavilySearchResults
 from langchain_openai import ChatOpenAI
 
-from simulation_copilot.lib.tools.bps_model import generate_bps_model
-from simulation_copilot.lib.tools.calendar import generate_calendar
-from simulation_copilot.lib.tools.gateway_probabilities import (
+from simulation_copilot.tools.bps_model import generate_bps_model
+from simulation_copilot.tools.calendar import generate_calendar
+from simulation_copilot.tools.gateway_probabilities import (
     generate_gateway_probabilities,
 )
-from simulation_copilot.lib.tools.resource_model import generate_resource_model
-from simulation_copilot.lib.tools.resource_profile import generate_resource_profile
+from simulation_copilot.tools.resource_model import generate_resource_model
+from simulation_copilot.tools.resource_profile import generate_resource_profile
 
 # NOTE: TAVILY_API_KEY, OPENAI_ORGANIZATION_ID, OPENAI_API_KEY are required
 #   to be set in the .env file or as environment variables

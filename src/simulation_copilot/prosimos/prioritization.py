@@ -1,3 +1,5 @@
+"""This file has been copied from Simod."""
+
 from dataclasses import dataclass
 
 

@@ -9,6 +9,8 @@ TODO: ...
 
 from enum import Enum
 
+from .conversation import Conversation
+
 
 class Role(str, Enum):
     USER = "user"
