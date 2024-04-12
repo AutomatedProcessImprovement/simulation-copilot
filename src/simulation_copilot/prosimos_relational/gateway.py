@@ -1,21 +1,32 @@
 import sqlalchemy as sa
+import sqlalchemy.orm
 
 from simulation_copilot.prosimos_relational.base import _Base
 
 
 class SequenceFlow(_Base):
-    __tablename__ = "sequence_flows"
+    """A sequence flow in a BPMN model that connects activities and gateways."""
+
+    __tablename__ = "sequence_flow"
 
     id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)
     bpmn_id = sa.Column(sa.String, nullable=False)
+    """The BPMN ID of the sequence flow from the BPMN model."""
     probability = sa.Column(sa.Float, nullable=False)
-    source_gateway_id = sa.Column(sa.String, sa.ForeignKey("gateways.id"), nullable=False)
+    """The probability of this sequence flow being taken."""
+    source_gateway_id = sa.Column(sa.String, sa.ForeignKey("gateway.id"), nullable=False)
+    """The gateway from which this sequence flow originates."""
 
 
 class Gateway(_Base):
-    __tablename__ = "gateways"
+    """A gateway in a BPMN model that splits or joins the flow of tokens."""
+
+    __tablename__ = "gateway"
 
     id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)
     bpmn_id = sa.Column(sa.String, nullable=False)
-    outgoing_sequence_flows = sa.orm.relationship("SequenceFlow", backref="source_gateway")
-    simulation_model_id = sa.Column(sa.String, sa.ForeignKey("simulation_models.id"), nullable=False)
+    """The BPMN ID of the gateway from the BPMN model."""
+    outgoing_sequence_flows = sa.orm.relationship(SequenceFlow, backref="source_gateway")
+    """The sequence flows that leave this gateway."""
+    simulation_model_id = sa.Column(sa.String, sa.ForeignKey("simulation_model.id"), nullable=False)
+    """The simulation model to which this gateway belongs."""
