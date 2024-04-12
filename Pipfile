@@ -64,6 +64,7 @@ openai = "*"
 termcolor = "*"
 
 [dev-packages]
+sqlalchemy-schemadisplay = "*"
 
 [requires]
 python_version = "3.9"

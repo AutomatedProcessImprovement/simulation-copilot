@@ -39,7 +39,11 @@ python src/simulation_copilot/sql_approach/init_db.py
 python src/simulation_copilot/sql_approach/main.py
 ```
 
-## SQL-based approach outputs
+## SQL approach: relational simulation data  model
+
+![Relational simulation model](schema.png)
+
+## SQL approach: test outputs
 
 <details><summary>Creating a calendar</summary>
 

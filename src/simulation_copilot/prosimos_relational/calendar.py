@@ -1,10 +1,10 @@
 import sqlalchemy as sa
 
 from simulation_copilot.prosimos.resource_model import Day
-from simulation_copilot.prosimos_relational import Base
+from simulation_copilot.prosimos_relational.base import _Base
 
 
-class CalendarInterval(Base):
+class CalendarInterval(_Base):
     __tablename__ = "calendar_intervals"
 
     id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)
@@ -17,7 +17,7 @@ class CalendarInterval(Base):
     calendar_id = sa.Column(sa.String, sa.ForeignKey("calendars.id"), nullable=False)
 
 
-class Calendar(Base):
+class Calendar(_Base):
     __tablename__ = "calendars"
 
     id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)

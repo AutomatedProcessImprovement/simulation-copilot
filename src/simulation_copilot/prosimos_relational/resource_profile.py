@@ -1,9 +1,9 @@
 import sqlalchemy as sa
 
-from simulation_copilot.prosimos_relational import Base
+from simulation_copilot.prosimos_relational.base import _Base
 
 
-class Activity(Base):
+class Activity(_Base):
     __tablename__ = "activities"
 
     id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)
@@ -12,7 +12,7 @@ class Activity(Base):
     resource_id = sa.Column(sa.String, sa.ForeignKey("resources.id"), nullable=False)
 
 
-class ActivityDistribution(Base):
+class ActivityDistribution(_Base):
     __tablename__ = "activity_distributions"
 
     id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)
@@ -21,7 +21,7 @@ class ActivityDistribution(Base):
     distribution_id = sa.Column(sa.String, sa.ForeignKey("distributions.id"), nullable=False)
 
 
-class Resource(Base):
+class Resource(_Base):
     __tablename__ = "resources"
 
     id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)
@@ -34,7 +34,7 @@ class Resource(Base):
     assigned_activities = sa.orm.relationship("ActivityDistribution", backref="resource")
 
 
-class ResourceProfile(Base):
+class ResourceProfile(_Base):
     __tablename__ = "resource_profiles"
 
     id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)

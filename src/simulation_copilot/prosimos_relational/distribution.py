@@ -1,9 +1,9 @@
 import sqlalchemy as sa
 
-from simulation_copilot.prosimos_relational import Base
+from simulation_copilot.prosimos_relational.base import _Base
 
 
-class Distribution(Base):
+class Distribution(_Base):
     __tablename__ = "distributions"
 
     id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)
@@ -11,7 +11,7 @@ class Distribution(Base):
     distribution_parameters = sa.orm.relationship("DistributionParameters", backref="distribution")
 
 
-class DistributionParameters(Base):
+class DistributionParameters(_Base):
     __tablename__ = "distribution_parameters"
 
     id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)

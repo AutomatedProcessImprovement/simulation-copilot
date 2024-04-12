@@ -1,9 +1,9 @@
 import sqlalchemy as sa
 
-from simulation_copilot.prosimos_relational import Base
+from simulation_copilot.prosimos_relational.base import _Base
 
 
-class SequenceFlow(Base):
+class SequenceFlow(_Base):
     __tablename__ = "sequence_flows"
 
     id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)
@@ -12,7 +12,7 @@ class SequenceFlow(Base):
     source_gateway_id = sa.Column(sa.String, sa.ForeignKey("gateways.id"), nullable=False)
 
 
-class Gateway(Base):
+class Gateway(_Base):
     __tablename__ = "gateways"
 
     id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)

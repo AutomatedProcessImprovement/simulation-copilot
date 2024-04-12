@@ -1,9 +1,9 @@
 import sqlalchemy as sa
 
-from simulation_copilot.prosimos_relational import Base
+from simulation_copilot.prosimos_relational.base import _Base
 
 
-class SimulationModel(Base):
+class SimulationModel(_Base):
     __tablename__ = "simulation_models"
 
     id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)
@@ -12,5 +12,5 @@ class SimulationModel(Base):
     """Resource profiles with resources and their assigned activities."""
     gateways = sa.orm.relationship("Gateway", backref="simulation_model")
     """Gateways, their probabilities and sequence flows."""
-    case_arrival_id = sa.Column(sa.String, sa.ForeignKey("case_arrivals.id"), nullable=False)
-    """Case arrival model which includes the calendar and inter-arrival distribution."""
+    case_arrival = sa.orm.relationship("CaseArrival", backref="simulation_model")
+    """The calendar of case arrivals and distribution of inter-arrival times."""

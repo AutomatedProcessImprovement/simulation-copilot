@@ -2,8 +2,8 @@ from pathlib import Path
 
 import sqlalchemy as sa
 
+from simulation_copilot.prosimos_relational import Base
 from simulation_copilot.sql_approach.db import engine
-from simulation_copilot.sql_approach.tables import Base
 
 SQL_SCHEMA_PATH = Path(__file__).parent / "schema.sql"
 
