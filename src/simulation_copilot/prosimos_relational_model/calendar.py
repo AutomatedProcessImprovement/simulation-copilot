@@ -33,5 +33,5 @@ class Calendar(_Base):
     __tablename__ = "calendar"
 
     id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)
-    intervals = sa.orm.relationship(CalendarInterval, backref="calendar")
+    intervals = sa.orm.relationship(CalendarInterval, backref="calendar", cascade="all, delete-orphan")
     """The intervals that define the availability of resources or case arrival times."""

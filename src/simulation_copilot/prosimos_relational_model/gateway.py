@@ -26,7 +26,7 @@ class Gateway(_Base):
     id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)
     bpmn_id = sa.Column(sa.String, nullable=False)
     """The BPMN ID of the gateway from the BPMN model."""
-    outgoing_sequence_flows = sa.orm.relationship(SequenceFlow, backref="source_gateway")
+    outgoing_sequence_flows = sa.orm.relationship(SequenceFlow, backref="source_gateway", cascade="all, delete-orphan")
     """The sequence flows that leave this gateway."""
     simulation_model_id = sa.Column(sa.Integer, sa.ForeignKey("simulation_model.id"), nullable=False)
     """The simulation model to which this gateway belongs."""

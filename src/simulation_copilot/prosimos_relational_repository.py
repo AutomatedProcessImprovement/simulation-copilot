@@ -1,4 +1,3 @@
-from sqlalchemy import delete
 from sqlalchemy.orm import Session
 
 from simulation_copilot.prosimos_model.resource_model import Day
@@ -32,8 +31,14 @@ class SimulationModelRepository(BaseRepository):
         self.session.commit()
         return model
 
+    def get(self, id: int):
+        return self.session.query(SimulationModel).filter(SimulationModel.id == id).first()
+
     def delete(self, id: int):
-        return self.session.execute(delete(SimulationModel).where(SimulationModel.id == id))
+        model = self.get(id)
+        if model:
+            self.session.delete(model)
+            self.session.commit()
 
 
 class GatewayRepository(BaseRepository):
@@ -47,6 +52,12 @@ class GatewayRepository(BaseRepository):
         model.gateways.append(gateway)
         self.session.commit()
         return gateway
+
+    def get(self, id: int):
+        return self.session.query(Gateway).filter(Gateway.id == id).first()
+
+    def get_sequence_flow(self, id: int):
+        return self.session.query(SequenceFlow).filter(SequenceFlow.id == id).first()
 
     def add_sequence_flow(self, gateway_id: int, bpmn_id: str, probability: float):
         gateway = self.session.query(Gateway).filter(Gateway.id == gateway_id).first()

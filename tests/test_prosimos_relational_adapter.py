@@ -23,9 +23,12 @@ class TestProsimosRelationalAdapter(unittest.TestCase):
 
     def test_query_simulation_model(self):
         sql_model = self.repository.simulation_model.create()
+        gateway = self.repository.gateway.create(model_id=sql_model.id, bpmn_id="bpmn_id")
+        self.repository.gateway.add_sequence_flow(gateway_id=gateway.id, bpmn_id="bpmn_id_2", probability=0.9)
 
         model = query_simulation_model(session, sql_model.id)
         self.assertIsNotNone(model)
+        self.assertTrue(len(model.gateway_probabilities) > 0)
 
         self.repository.simulation_model.delete(sql_model.id)
 

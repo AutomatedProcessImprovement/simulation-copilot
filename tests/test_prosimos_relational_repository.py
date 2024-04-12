@@ -2,7 +2,9 @@ import os
 import unittest
 
 from simulation_copilot.database import create_tables, engine, session
-from simulation_copilot.prosimos_relational_repository import ProsimosRelationalRepository
+from simulation_copilot.prosimos_relational_repository import (
+    ProsimosRelationalRepository,
+)
 
 
 class TestProsimosRelationalRepository(unittest.TestCase):
@@ -19,6 +21,17 @@ class TestProsimosRelationalRepository(unittest.TestCase):
     def test_create_simulation_model(self):
         model = self.repository.simulation_model.create()
         self.assertIsNotNone(model)
+
+    def test_delete_simulation_model(self):
+        model = self.repository.simulation_model.create()
+        gateway = self.repository.gateway.create(model.id, "bpmn_id")
+        flow = self.repository.gateway.add_sequence_flow(gateway.id, "bpmn_id", 0.5)
+
+        self.repository.simulation_model.delete(model.id)
+
+        self.assertIsNone(self.repository.simulation_model.get(model.id))
+        self.assertIsNone(self.repository.gateway.get(gateway.id))
+        self.assertIsNone(self.repository.gateway.get_sequence_flow(flow.id))
 
     def test_create_gateway(self):
         model = self.repository.simulation_model.create()
@@ -56,7 +69,13 @@ class TestProsimosRelationalRepository(unittest.TestCase):
     def test_add_calendar_interval(self):
         calendar = self.repository.calendar.create()
         interval = self.repository.calendar.add_interval(
-            calendar.id, start_day="Monday", end_day="Tuesday", start_hour=9, end_hour=17, start_minute=0, end_minute=0
+            calendar.id,
+            start_day="Monday",
+            end_day="Tuesday",
+            start_hour=9,
+            end_hour=17,
+            start_minute=0,
+            end_minute=0,
         )
         self.assertIsNotNone(interval)
         self.assertEqual(interval.calendar_id, calendar.id)

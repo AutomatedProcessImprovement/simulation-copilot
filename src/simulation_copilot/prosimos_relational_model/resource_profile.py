@@ -49,7 +49,9 @@ class Resource(_Base):
     """The calendar of availability for this resource."""
     profile_id = sa.Column(sa.Integer, sa.ForeignKey("resource_profile.id"), nullable=False)
     """The profile this resource belongs to."""
-    assigned_activities = sa.orm.relationship(ActivityResourceDistribution, backref="resource")
+    assigned_activities = sa.orm.relationship(
+        ActivityResourceDistribution, backref="resource", cascade="all, delete-orphan"
+    )
     """The activities assigned to this resource and their distributions."""
 
 
@@ -61,7 +63,7 @@ class ResourceProfile(_Base):
     id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)
     name = sa.Column(sa.String, nullable=False)
     """The name of the resource profile, e.g., full-time, part-time, senior, junior."""
-    resources = sa.orm.relationship(Resource, backref="profile")
+    resources = sa.orm.relationship(Resource, backref="profile", cascade="all, delete-orphan")
     """The resources in this profile."""
     simulation_model_id = sa.Column(sa.Integer, sa.ForeignKey("simulation_model.id"), nullable=False)
     """The simulation model this profile belongs to."""

@@ -39,9 +39,8 @@ if __name__ == "__main__":
     main()
 
 
-# TODO: remodel BPSModel as relational model
 # TODO: ensure Prosimos compatibility
-
 # TODO: execute database dump at the end of the message exchange
+
 # TODO: handle error in tools
 # TODO: instead of the generic SQL tool, use predefined SQL functions, so LLM needs to provide only params

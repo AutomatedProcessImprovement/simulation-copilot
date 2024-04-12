@@ -14,9 +14,9 @@ class SimulationModel(_Base):
 
     id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)
 
-    resource_profiles = sa.orm.relationship(ResourceProfile, backref="simulation_model")
+    resource_profiles = sa.orm.relationship(ResourceProfile, backref="simulation_model", cascade="all, delete-orphan")
     """Resource profiles with resources and their assigned activities."""
-    gateways = sa.orm.relationship(Gateway, backref="simulation_model")
+    gateways = sa.orm.relationship(Gateway, backref="simulation_model", cascade="all, delete-orphan")
     """Gateways, their probabilities and sequence flows."""
-    case_arrival = sa.orm.relationship(CaseArrival, backref="simulation_model")
+    case_arrival = sa.orm.relationship(CaseArrival, backref="simulation_model", cascade="all, delete-orphan")
     """The calendar of case arrivals and distribution of inter-arrival times."""

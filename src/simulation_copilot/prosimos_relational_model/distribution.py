@@ -21,5 +21,5 @@ class Distribution(_Base):
     id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)
     name = sa.Column(sa.String, nullable=False)
     """The name of the distribution, e.g. "normal" or "exponential"."""
-    parameters = sa.orm.relationship(DistributionParameter, backref="distribution")
+    parameters = sa.orm.relationship(DistributionParameter, backref="distribution", cascade="all, delete-orphan")
     """The parameters of the distribution."""
