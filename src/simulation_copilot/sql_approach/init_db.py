@@ -2,8 +2,9 @@ from pathlib import Path
 
 import sqlalchemy as sa
 
+from simulation_copilot.database import create_tables
+from simulation_copilot.database import engine
 from simulation_copilot.prosimos_relational import Base
-from simulation_copilot.sql_approach.db import engine
 
 SQL_SCHEMA_PATH = Path(__file__).parent / "schema.sql"
 
@@ -35,10 +36,6 @@ def tables_schema(tables=None):
 def save_tables_schema(table_names, path):
     with open(path, "w") as f:
         f.write(tables_schema(table_names))
-
-
-def create_tables(engine):
-    Base.metadata.create_all(engine)
 
 
 if __name__ == "__main__":

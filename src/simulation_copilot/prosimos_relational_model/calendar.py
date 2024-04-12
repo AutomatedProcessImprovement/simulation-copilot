@@ -1,8 +1,8 @@
 import sqlalchemy as sa
 import sqlalchemy.orm
 
-from simulation_copilot.prosimos.resource_model import Day
-from simulation_copilot.prosimos_relational.base import _Base
+from simulation_copilot.prosimos_model.resource_model import Day
+from simulation_copilot.prosimos_relational_model.base import _Base
 
 
 class CalendarInterval(_Base):
@@ -15,15 +15,15 @@ class CalendarInterval(_Base):
     """The start day of the interval, e.g. Monday, Tuesday, etc."""
     end_day = sa.Column(sa.Enum(Day), nullable=False)
     """The end day of the interval, e.g. Monday, Tuesday, etc."""
-    start_time_hour = sa.Column(sa.Integer, nullable=False)
+    start_hour = sa.Column(sa.Integer, nullable=False)
     """The start hour of the interval, e.g. 8 for 8:00 AM, 13 for 1:00 PM, etc."""
-    start_time_minute = sa.Column(sa.Integer, nullable=False)
+    start_minute = sa.Column(sa.Integer, nullable=False)
     """The start minute of the interval, e.g. 0 for 8:00 AM, 30 for 8:30 AM, etc."""
-    end_time_hour = sa.Column(sa.Integer, nullable=False)
+    end_hour = sa.Column(sa.Integer, nullable=False)
     """The end hour of the interval, e.g. 8 for 8:00 AM, 13 for 1:00 PM, etc."""
-    end_time_minute = sa.Column(sa.Integer, nullable=False)
+    end_minute = sa.Column(sa.Integer, nullable=False)
     """The end minute of the interval, e.g. 0 for 8:00 AM, 30 for 8:30 AM, etc."""
-    calendar_id = sa.Column(sa.String, sa.ForeignKey("calendar.id"), nullable=False)
+    calendar_id = sa.Column(sa.Integer, sa.ForeignKey("calendar.id"), nullable=False)
     """The calendar to which this interval belongs."""
 
 

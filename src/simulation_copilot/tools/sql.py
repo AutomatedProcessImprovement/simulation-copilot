@@ -3,9 +3,8 @@ from typing import Optional, Sequence
 
 from langchain.tools import tool
 from langchain_core.pydantic_v1 import BaseModel, Field
+from simulation_copilot.db import session
 from sqlalchemy import text, Row
-
-from simulation_copilot.sql_approach.db import session
 
 
 class RunSQLite3QueryInput(BaseModel):

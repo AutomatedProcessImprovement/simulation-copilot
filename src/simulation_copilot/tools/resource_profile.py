@@ -3,7 +3,7 @@ from uuid import uuid4
 from langchain.pydantic_v1 import BaseModel, Field
 from langchain.tools import tool
 
-from simulation_copilot.prosimos.resource_model import (
+from simulation_copilot.prosimos_model.resource_model import (
     ActivityDistribution,
     Distribution,
     Resource,
@@ -30,9 +30,7 @@ class ResourceInput(BaseModel):
 
 class GenerateResourceProfileInput(BaseModel):
     name: str = Field(description="The name of the resource profile")
-    resources: list[ResourceInput] = Field(
-        description="The resources with their assigned activities"
-    )
+    resources: list[ResourceInput] = Field(description="The resources with their assigned activities")
 
 
 @tool("generate_resource_profile", args_schema=GenerateResourceProfileInput)

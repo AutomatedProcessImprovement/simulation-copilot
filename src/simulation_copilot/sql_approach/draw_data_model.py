@@ -1,8 +1,8 @@
 from sqlalchemy_schemadisplay import create_schema_graph
 
-from simulation_copilot.prosimos_relational import Base
-from simulation_copilot.sql_approach.db import engine, in_memory
-from simulation_copilot.sql_approach.init_db import create_tables
+from simulation_copilot.database import create_tables
+from simulation_copilot.database import engine, in_memory
+from simulation_copilot.prosimos_relational_model import Base
 
 if __name__ == "__main__":
     if in_memory:

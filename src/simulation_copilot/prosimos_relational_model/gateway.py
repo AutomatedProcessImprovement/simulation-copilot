@@ -1,7 +1,7 @@
 import sqlalchemy as sa
 import sqlalchemy.orm
 
-from simulation_copilot.prosimos_relational.base import _Base
+from simulation_copilot.prosimos_relational_model.base import _Base
 
 
 class SequenceFlow(_Base):
@@ -14,7 +14,7 @@ class SequenceFlow(_Base):
     """The BPMN ID of the sequence flow from the BPMN model."""
     probability = sa.Column(sa.Float, nullable=False)
     """The probability of this sequence flow being taken."""
-    source_gateway_id = sa.Column(sa.String, sa.ForeignKey("gateway.id"), nullable=False)
+    source_gateway_id = sa.Column(sa.Integer, sa.ForeignKey("gateway.id"), nullable=False)
     """The gateway from which this sequence flow originates."""
 
 
@@ -28,5 +28,5 @@ class Gateway(_Base):
     """The BPMN ID of the gateway from the BPMN model."""
     outgoing_sequence_flows = sa.orm.relationship(SequenceFlow, backref="source_gateway")
     """The sequence flows that leave this gateway."""
-    simulation_model_id = sa.Column(sa.String, sa.ForeignKey("simulation_model.id"), nullable=False)
+    simulation_model_id = sa.Column(sa.Integer, sa.ForeignKey("simulation_model.id"), nullable=False)
     """The simulation model to which this gateway belongs."""

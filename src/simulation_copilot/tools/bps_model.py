@@ -2,8 +2,8 @@ from langchain.pydantic_v1 import BaseModel, Field
 from langchain_core.tools import StructuredTool
 from pix_framework.discovery.gateway_probabilities import GatewayProbabilities
 
-from simulation_copilot.prosimos.bps_model_simplified import SimulationModel
-from simulation_copilot.prosimos.resource_model import ResourceModel
+from simulation_copilot.prosimos_model.bps_model_simplified import SimulationModel
+from simulation_copilot.prosimos_model.resource_model import ResourceModel
 
 
 class SimulationModelInput(BaseModel):
@@ -61,9 +61,7 @@ class SimulationModelInput(BaseModel):
     """
 
     resource_model: ResourceModel = Field(description="The resource model")
-    gateway_probabilities: list[GatewayProbabilities] = Field(
-        description="The gateway probabilities"
-    )
+    gateway_probabilities: list[GatewayProbabilities] = Field(description="The gateway probabilities")
 
 
 def _generate_bps_model(

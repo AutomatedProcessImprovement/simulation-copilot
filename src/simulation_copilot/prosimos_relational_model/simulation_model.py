@@ -1,10 +1,10 @@
 import sqlalchemy as sa
 import sqlalchemy.orm
 
-from simulation_copilot.prosimos_relational import CaseArrival
-from simulation_copilot.prosimos_relational.base import _Base
-from simulation_copilot.prosimos_relational.gateway import Gateway
-from simulation_copilot.prosimos_relational.resource_profile import ResourceProfile
+from simulation_copilot.prosimos_relational_model import CaseArrival
+from simulation_copilot.prosimos_relational_model.base import _Base
+from simulation_copilot.prosimos_relational_model.gateway import Gateway
+from simulation_copilot.prosimos_relational_model.resource_profile import ResourceProfile
 
 
 class SimulationModel(_Base):

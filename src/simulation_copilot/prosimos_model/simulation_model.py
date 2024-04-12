@@ -11,10 +11,10 @@ from pix_framework.discovery.resource_calendar_and_performance.fuzzy.resource_ca
 from pix_framework.discovery.resource_model import ResourceModel
 from pix_framework.io.bpmn import get_activities_ids_by_name_from_bpmn
 
-from simulation_copilot.prosimos.batching import BatchingRule
-from simulation_copilot.prosimos.case_attribute import CaseAttribute
-from simulation_copilot.prosimos.extraneous import ExtraneousDelay
-from simulation_copilot.prosimos.prioritization import PrioritizationRule
+from simulation_copilot.prosimos_model.batching import BatchingRule
+from simulation_copilot.prosimos_model.case_attribute import CaseAttribute
+from simulation_copilot.prosimos_model.extraneous import ExtraneousDelay
+from simulation_copilot.prosimos_model.prioritization import PrioritizationRule
 
 # Keys for serialization
 PROCESS_MODEL_KEY = "process_model"

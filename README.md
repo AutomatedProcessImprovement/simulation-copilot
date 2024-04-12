@@ -43,7 +43,15 @@ python src/simulation_copilot/sql_approach/main.py
 
 ![Relational simulation model](schema.png)
 
-## SQL approach: test outputs
+## Automated tests
+
+Run the tests with the following command:
+
+```shell
+python -m unittest discover -v
+```
+
+## SQL approach: manual test outputs
 
 <details><summary>Creating a calendar</summary>
 

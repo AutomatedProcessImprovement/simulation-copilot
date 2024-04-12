@@ -1,13 +1,13 @@
 import sqlalchemy as sa
 
-from simulation_copilot.prosimos_relational.base import _Base
+from simulation_copilot.prosimos_relational_model.base import _Base
 
 
 class DistributionParameter(_Base):
     __tablename__ = "distribution_parameter"
 
     id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)
-    distribution_id = sa.Column(sa.String, sa.ForeignKey("distribution.id"), nullable=False)
+    distribution_id = sa.Column(sa.Integer, sa.ForeignKey("distribution.id"), nullable=False)
     """The distribution to which this parameter belongs."""
     name = sa.Column(sa.String, nullable=False)
     """The name of the parameter, e.g. "mean" or "stddev"."""
