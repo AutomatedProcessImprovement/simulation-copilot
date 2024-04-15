@@ -47,8 +47,8 @@ class Resource(_Base):
     """The cost per hour of this resource."""
     calendar_id = sa.Column(sa.Integer, sa.ForeignKey("calendar.id"), nullable=False)
     """The calendar of availability for this resource."""
-    profile_id = sa.Column(sa.Integer, sa.ForeignKey("resource_profile.id"), nullable=False)
-    """The profile this resource belongs to."""
+    profile_id = sa.Column(sa.Integer, sa.ForeignKey("resource_profile.id"), nullable=True)
+    """The profile this resource belongs to. If None, the resource is not part of a profile."""
     assigned_activities = sa.orm.relationship(
         ActivityResourceDistribution, backref="resource", cascade="all, delete-orphan"
     )

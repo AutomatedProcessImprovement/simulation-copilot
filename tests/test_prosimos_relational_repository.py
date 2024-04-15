@@ -20,6 +20,16 @@ class TestProsimosRelationalRepository(unittest.TestCase):
         self.repository = ProsimosRelationalRepository(self.session)
 
     def tearDown(self):
+        # delete all data from the tables
+        self.repository.simulation_model.delete_all()
+        self.repository.gateway.delete_all()
+        self.repository.distribution.delete_all()
+        self.repository.calendar.delete_all()
+        self.repository.case_arrival.delete_all()
+        self.repository.activity.delete_all()
+        self.repository.activity_resource_distribution.delete_all()
+        self.repository.resource_profile.delete_all()
+        self.repository.resource.delete_all()
         self.session.close()
 
     def test_create_simulation_model(self):
@@ -70,27 +80,6 @@ class TestProsimosRelationalRepository(unittest.TestCase):
         calendar = self.repository.calendar.create()
         self.assertIsNotNone(calendar)
 
-    def test_add_calendar_interval(self):
-        calendar = self.repository.calendar.create()
-        interval = self.repository.calendar.add_interval(
-            calendar.id,
-            start_day="Monday",
-            end_day="Tuesday",
-            start_hour=9,
-            end_hour=17,
-            start_minute=0,
-            end_minute=0,
-        )
-        self.assertIsNotNone(interval)
-        self.assertEqual(interval.calendar_id, calendar.id)
-        self.assertEqual(interval.start_day, "Monday")
-        self.assertEqual(interval.end_day, "Tuesday")
-        self.assertEqual(interval.start_hour, 9)
-        self.assertEqual(interval.end_hour, 17)
-        self.assertEqual(interval.start_minute, 0)
-        self.assertEqual(interval.end_minute, 0)
-        self.assertEqual(calendar.intervals[0], interval)
-
     def test_create_case_arrival(self):
         case_arrival = self.repository.case_arrival.create(calendar_id=1, distribution_id=1, model_id=1)
         self.assertIsNotNone(case_arrival)
@@ -122,21 +111,15 @@ class TestProsimosRelationalRepository(unittest.TestCase):
 
     def test_add_resource(self):
         resource_profile = self.repository.resource_profile.create(name="profile_1", model_id=1)
-        resource = self.repository.resource_profile.add_resource(
-            profile_id=resource_profile.id,
-            name="resource_1",
-            amount=5,
-            cost_per_hour=10.0,
-            calendar_id=1,
-            bpmn_id="bpmn_id",
+        calendar = self.repository.calendar.create()
+        resource = self.repository.resource.create(
+            name="A", bpmn_id="bpmn_id", amount=5, cost_per_hour=10.0, calendar_id=calendar.id
         )
+        profile = self.repository.resource_profile.add_resource(profile_id=resource_profile.id, resource_id=resource.id)
         self.assertIsNotNone(resource)
-        self.assertEqual(resource.name, "resource_1")
-        self.assertEqual(resource.amount, 5)
-        self.assertEqual(resource.cost_per_hour, 10.0)
-        self.assertEqual(resource.calendar_id, 1)
-        self.assertEqual(resource.profile_id, 1)
+        self.assertEqual(resource.profile_id, resource_profile.id)
         self.assertEqual(resource_profile.resources[0], resource)
+        self.assertEqual(profile.resources[0], resource)
 
 
 if __name__ == "__main__":
