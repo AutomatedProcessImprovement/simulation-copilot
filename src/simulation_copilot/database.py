@@ -30,4 +30,4 @@ if db_url == "sqlite://" or db_url == "sqlite:///:memory:":
     in_memory = True
 
 engine = make_engine(db_url)
-session = make_session(engine)
+Session = sessionmaker(bind=engine)

@@ -1,7 +1,7 @@
 import os
 import unittest
 
-from simulation_copilot.database import create_tables, engine, session
+from simulation_copilot.database import create_tables, engine, Session
 from simulation_copilot.prosimos_relational_repository import (
     ProsimosRelationalRepository,
 )
@@ -16,7 +16,11 @@ class TestProsimosRelationalRepository(unittest.TestCase):
         create_tables(engine)
 
     def setUp(self):
-        self.repository = ProsimosRelationalRepository(session)
+        self.session = Session()
+        self.repository = ProsimosRelationalRepository(self.session)
+
+    def tearDown(self):
+        self.session.close()
 
     def test_create_simulation_model(self):
         model = self.repository.simulation_model.create()
