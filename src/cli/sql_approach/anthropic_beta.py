@@ -2,11 +2,11 @@
 
 from dotenv import load_dotenv
 
+from cli.sql_approach.init_db import tables_schema
 from simulation_copilot.anthropic import Claude3
 from simulation_copilot.anthropic import Conversation
 from simulation_copilot.database import create_tables
 from simulation_copilot.database import engine
-from simulation_copilot.sql_approach.init_db import tables_schema
 from simulation_copilot.tools.sql import run_sqlite3_query
 
 tools = [run_sqlite3_query]
