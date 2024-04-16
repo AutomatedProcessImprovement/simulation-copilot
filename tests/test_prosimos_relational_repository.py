@@ -7,6 +7,9 @@ from simulation_copilot.prosimos_relational_repository import (
 )
 
 
+# NOTE: perhaps, testing Repository isn't necessary if we have tested the Service
+
+
 class TestProsimosRelationalRepository(unittest.TestCase):
     repository: ProsimosRelationalRepository
 

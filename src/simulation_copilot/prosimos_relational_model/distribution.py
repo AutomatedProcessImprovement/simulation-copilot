@@ -10,7 +10,7 @@ class DistributionParameter(_Base):
     distribution_id = sa.Column(sa.Integer, sa.ForeignKey("distribution.id"), nullable=False)
     """The distribution to which this parameter belongs."""
     name = sa.Column(sa.String, nullable=False)
-    """The name of the parameter, e.g. "mean" or "stddev"."""
+    """The name of the parameter, it's one of "mean", "var", "std", "min", "max"."""
     value = sa.Column(sa.Float, nullable=False)
     """The value of the parameter."""
 

@@ -1,5 +1,6 @@
 import sqlalchemy as sa
 import sqlalchemy.orm
+from sqlalchemy.orm import Mapped
 
 from simulation_copilot.prosimos_relational_model import CaseArrival
 from simulation_copilot.prosimos_relational_model.base import _Base
@@ -18,5 +19,7 @@ class SimulationModel(_Base):
     """Resource profiles with resources and their assigned activities."""
     gateways = sa.orm.relationship(Gateway, backref="simulation_model", cascade="all, delete-orphan")
     """Gateways, their probabilities and sequence flows."""
-    case_arrival = sa.orm.relationship(CaseArrival, backref="simulation_model", cascade="all, delete-orphan")
+    case_arrival: Mapped[CaseArrival] = sa.orm.relationship(
+        CaseArrival, backref="simulation_model", cascade="all, delete-orphan"
+    )  # one-to-one relationship
     """The calendar of case arrivals and distribution of inter-arrival times."""

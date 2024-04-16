@@ -28,7 +28,7 @@ class TestProsimosRelationalService(unittest.TestCase):
 
     def test_add_new_gateway_with_sequence_flow_ok(self):
         model = self.service.create_simulation_model()
-        gateway = self.service.add_new_gateway_with_sequence_flows(
+        gateway = self.service.create_gateway_with_sequence_flows(
             model.id, "bpmn_id", [{"bpmn_id": "flow_id", "probability": 0.5}]
         )
         self.assertIsNotNone(gateway)
@@ -41,7 +41,7 @@ class TestProsimosRelationalService(unittest.TestCase):
 
     def test_add_new_gateway_with_sequence_flow_error(self):
         with self.assertRaises(ValueError):
-            self.service.add_new_gateway_with_sequence_flows(1, "bpmn_id", [{"bpmn_id": "flow_id", "probability": 0.5}])
+            self.service.create_gateway_with_sequence_flows(1, "bpmn_id", [{"bpmn_id": "flow_id", "probability": 0.5}])
 
     def test_create_distribution_with_parameters_ok(self):
         distribution = self.service.create_distribution_with_parameters("normal", [{"name": "mean", "value": 1}])
