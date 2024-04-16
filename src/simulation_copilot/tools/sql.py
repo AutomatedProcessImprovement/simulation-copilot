@@ -3,8 +3,11 @@ from typing import Optional, Sequence
 
 from langchain.tools import tool
 from langchain_core.pydantic_v1 import BaseModel, Field
-from simulation_copilot.db import session
 from sqlalchemy import text, Row
+
+from simulation_copilot.database import Session
+
+_session = Session()
 
 
 class RunSQLite3QueryInput(BaseModel):
@@ -16,8 +19,8 @@ def run_sqlite3_query(sql: str) -> Optional[Sequence[Row]]:
     """
     This functions runs a single SQLite3 statement and returns results.
     """
-    result = session.execute(text(sql))
-    session.commit()
+    result = _session.execute(text(sql))
+    _session.commit()
     if int(result.rowcount) == 0 or result.closed:
         return None
     try:

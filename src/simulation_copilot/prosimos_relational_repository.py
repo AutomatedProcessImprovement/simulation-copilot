@@ -206,7 +206,7 @@ class ActivityResourceDistributionRepository(BaseRepository):
 class ResourceRepository(BaseRepository):
     """Repository for the resources in the simulation model."""
 
-    def create(self, bpmn_id: str, name: str, calendar_id: int, amount: int = 1, cost_per_hour: float = 1):
+    def create(self, bpmn_id: str, name: str, calendar_id: int, amount: int = 1, cost_per_hour: float = 1) -> Resource:
         resource = Resource(
             bpmn_id=bpmn_id,
             name=name,
@@ -218,7 +218,7 @@ class ResourceRepository(BaseRepository):
         self.session.commit()
         return resource
 
-    def get(self, id: int):
+    def get(self, id: int) -> Resource:
         return self.session.query(Resource).filter(Resource.id == id).first()
 
     def delete(self, id: int):
