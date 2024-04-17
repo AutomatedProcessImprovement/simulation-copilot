@@ -7,6 +7,7 @@ TODO: ...
 
 import logging
 from dataclasses import dataclass
+from enum import Enum
 from functools import partial
 from typing import List, Optional, Dict, Union
 
@@ -17,7 +18,16 @@ from langchain_core.tools import StructuredTool
 from tenacity import retry, stop_after_attempt
 from termcolor import colored
 
-from simulation_copilot.anthropic import Role
+
+class Role(str, Enum):
+    USER = "user"
+    ASSISTANT = "assistant"
+
+
+class Claude3(str, Enum):
+    OPUS = "claude-3-opus-20240229"
+    SONNET = "claude-3-sonnet-20240229"
+    HAIKU = "claude-3-haiku-20240307"
 
 
 def pretty_print(msg: Union[ToolsBetaMessage, Dict]):
@@ -122,7 +132,7 @@ def _run_tool_block(block: ToolUseBlock, tools: List[StructuredTool]) -> Optiona
         print("Calling run_tool_block with empty block: %s" % block)
         return None
     tool = find_tool(block.name, tools)
-    output = tool.func(**block.input)
+    output = str(tool.func(**block.input))  # only str or a list of content blocks are allowed
     return _ToolResult(tool_block=block, output=output)
 
 

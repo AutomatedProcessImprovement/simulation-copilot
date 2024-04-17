@@ -7,17 +7,4 @@ Typical usage example:
 TODO: ...
 """
 
-from enum import Enum
-
-from .conversation import Conversation
-
-
-class Role(str, Enum):
-    USER = "user"
-    ASSISTANT = "assistant"
-
-
-class Claude3(str, Enum):
-    OPUS = "claude-3-opus-20240229"
-    SONNET = "claude-3-sonnet-20240229"
-    HAIKU = "claude-3-haiku-20240307"
+from .conversation import *
