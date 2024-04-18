@@ -1,8 +1,11 @@
 import os
 import unittest
 
-from simulation_copilot.database import Session, create_tables, engine
+from simulation_copilot.database import Session, create_tables
 from simulation_copilot.prosimos_relational_service import ProsimosRelationalService
+
+
+# Set TESTING environment variable to "true" when running tests.
 
 
 class TestProsimosRelationalService(unittest.TestCase):
@@ -11,7 +14,7 @@ class TestProsimosRelationalService(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         os.environ["DATABASE_URL"] = "sqlite:///:memory:"
-        create_tables(engine)
+        create_tables()
 
     def setUp(self):
         self.session = Session()

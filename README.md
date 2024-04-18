@@ -48,7 +48,7 @@ python src/simulation_copilot/sql_approach/main.py
 Run the tests with the following command:
 
 ```shell
-python -m unittest discover -v
+TESTING="true" python -m unittest discover -v
 ```
 
 ## SQL approach: manual test outputs

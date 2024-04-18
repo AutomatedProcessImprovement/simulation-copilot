@@ -66,6 +66,7 @@ termcolor = "*"
 [dev-packages]
 sqlalchemy-schemadisplay = "*"
 coverage = "*"
+pylint = "*"
 
 [requires]
 python_version = "3.9"

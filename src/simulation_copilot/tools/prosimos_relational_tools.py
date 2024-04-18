@@ -4,14 +4,15 @@ Example of high-level questions:
 
 - What if we increase or decrease the number of resources of a role?
 """
+
 from langchain_core.pydantic_v1 import BaseModel, Field
 from langchain_core.tools import tool
 
-from simulation_copilot.database import Session
+from simulation_copilot.database import get_session
 from simulation_copilot.prosimos_relational_model import SimulationModel
 from simulation_copilot.prosimos_relational_service import ProsimosRelationalService
 
-_session = Session()
+_session = get_session()
 _service = ProsimosRelationalService(_session)
 
 
@@ -71,6 +72,12 @@ class NewCalendarArgs(BaseModel):
     )
 
 
+class NewCaseArrivalArgs(BaseModel):
+    simulation_model_id: int = Field("Simulation model ID in the database.")
+    calendar_id: int = Field("Calendar ID in the database.")
+    inter_arrival_distribution_id: int = Field("Inter-arrival distribution ID in the database.")
+
+
 @tool("create_simulation_model")
 def create_simulation_model() -> int:
     """Creates a new simulation model in the database with empty parameters and returns its ID."""
@@ -111,7 +118,7 @@ def add_resource_to_profile(
     availability calendar ID and a list of resource-activity distributions.
     Returns True if the operation was successful.
     """
-    profile = _service.repository.profile.get(profile_id)
+    profile = _service.repository.resource_profile.get(profile_id)
     if profile is None:
         raise ValueError(f"Profile with ID {profile_id} not found.")
     resource = _service.create_resource_with_activity_distributions(
@@ -148,9 +155,47 @@ def create_calendar_with_intervals(intervals: list[dict]) -> int:
 
 
 @tool("create_distribution", args_schema=NewDistributionArgs)
-def create_distribution(distribution: NewDistributionArgs) -> int:
+def create_distribution(name: str, parameters: list[dict]) -> int:
     """Creates a distribution object from the given arguments.
     Returns the ID of the distribution."""
-    return _service.create_distribution_with_parameters(
-        name=distribution["name"], parameters=distribution["parameters"]
-    ).id
+    _ensure_all_distribution_parameters(name, parameters)
+    return _service.create_distribution_with_parameters(name=name, parameters=parameters).id
+
+
+@tool("add_case_arrival", args_schema=NewCaseArrivalArgs)
+def add_case_arrival(simulation_model_id: int, calendar_id: int, inter_arrival_distribution_id: int) -> bool:
+    """Adds case arrival model to the simulation model. Calendar and distribution must be created beforehand."""
+    _service.create_case_arrival(
+        model_id=simulation_model_id, calendar_id=calendar_id, distribution_id=inter_arrival_distribution_id
+    )
+    return True
+
+
+def _ensure_all_distribution_parameters(name: str, parameters: list[dict]):
+    if name in ("fix", "fixed"):
+        return
+    # all other distributions must have min, max
+    _ensure_min(parameters)
+    _ensure_max(parameters)
+
+
+def _ensure_max(parameters: list[dict]):
+    mean = 0
+    parameter_names = []
+    for p in parameters:
+        if p["name"] == "mean":
+            mean = p["value"]
+        parameter_names.append(p["name"])
+    if "max" not in parameter_names:  # NOTE: if max is missing, we take mean as max
+        parameters.append({"name": "max", "value": mean})
+
+
+def _ensure_min(parameters: list[dict]):
+    mean = 0
+    parameter_names = []
+    for p in parameters:
+        if p["name"] == "mean":
+            mean = p["value"]
+        parameter_names.append(p["name"])
+    if "min" not in parameter_names:  # NOTE: if min is missing, we take mean as min
+        parameters.append({"name": "min", "value": mean})

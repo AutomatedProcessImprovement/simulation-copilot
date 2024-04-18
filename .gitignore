@@ -11,3 +11,4 @@ pkg/
 models/
 poetry.lock
 *.db
+*.sqlite*

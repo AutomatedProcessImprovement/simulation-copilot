@@ -25,6 +25,7 @@ from pix_framework.statistics.distribution import (
 )
 from sqlalchemy.orm import Session
 
+from simulation_copilot.database import get_session
 from simulation_copilot.prosimos_model.simulation_model import BPSModel
 from simulation_copilot.prosimos_relational_model import (
     Gateway,
@@ -35,6 +36,18 @@ from simulation_copilot.prosimos_relational_model import (
     ResourceProfile,
 )
 from simulation_copilot.prosimos_relational_service import ProsimosRelationalService
+
+
+def print_all_simulation_models():
+    """Converts relational simulation models to BPSModel and prints out to stdout."""
+    session = get_session()
+    service = ProsimosRelationalService(session)
+    sql_models = service.get_all_simulation_models()
+    for model in sql_models:
+        pix_model = create_simulation_model_from_relational_data(session, model.id)
+        print("\nPIX simulation model dump:")
+        print(f"Model ID: {model.id}")
+        print(pix_model)
 
 
 def create_simulation_model_from_relational_data(session: Session, model_id: int) -> BPSModel:
@@ -111,9 +124,9 @@ def _resource_model_to_pix(resource_profiles: list[ResourceProfile], service: Pr
     pix_activity_resource_distributions = [
         PIXActivityResourceDistribution(
             activity_id=str(activity_id),
-            activity_resources_distributions=activity_resource_distributions_map[activity_id],
+            activity_resources_distributions=distribution,
         )
-        for activity_id in activity_resource_distributions_map
+        for (activity_id, distribution) in activity_resource_distributions_map.items()
     ]
     resource_model = PIXResourceModel(
         resource_calendars=pix_resource_calendars,
@@ -188,7 +201,9 @@ def _resource_to_pix(resource: Resource) -> PIXResource:
 
 
 def _resource_distribution_to_pix(
-    activity_resource_distribution: ActivityResourceDistribution, resource_id: int, service: ProsimosRelationalService
+    activity_resource_distribution: ActivityResourceDistribution,
+    resource_id: int,
+    service: ProsimosRelationalService,
 ) -> PIXResourceDistribution:
     distribution = service.get_distribution(activity_resource_distribution.distribution_id)
     return PIXResourceDistribution(

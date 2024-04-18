@@ -32,6 +32,10 @@ class ProsimosRelationalService:
         """Get a simulation model."""
         return self.repository.simulation_model.get(model_id)
 
+    def get_all_simulation_models(self) -> list[SimulationModel]:
+        """Get all simulation models."""
+        return self.repository.simulation_model.get_all()
+
     def delete_simulation_model(self, model_id: int):
         """Delete a simulation model."""
         self.repository.simulation_model.delete(model_id)

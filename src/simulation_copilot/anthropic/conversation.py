@@ -6,16 +6,15 @@ TODO: ...
 """
 
 import logging
-from dataclasses import dataclass
 from enum import Enum
 from functools import partial
-from typing import List, Optional, Dict, Union
+from typing import List, Optional, Dict, Union, Literal
 
 from anthropic import Anthropic
 from anthropic.types import TextBlock
 from anthropic.types.beta.tools import ToolsBetaMessage, ToolUseBlock
 from langchain_core.tools import StructuredTool
-from tenacity import retry, stop_after_attempt
+from pydantic import BaseModel
 from termcolor import colored
 
 
@@ -68,6 +67,10 @@ def pretty_print(msg: Union[ToolsBetaMessage, Dict]):
 
 
 def _print_blocks(blocks: List, role: str):
+    def print_text(text: str, role: str):
+        for line in text.splitlines():
+            _print_role(f"  {line}", role)
+
     for block in blocks:
         text = ""
         if isinstance(block, ToolUseBlock):
@@ -77,7 +80,7 @@ def _print_blocks(blocks: List, role: str):
             text = block.text
         elif "type" in block and block["type"] == "tool_result":
             role = "tool_result"
-            text = block["content"]
+            text = block["content"]  # List[TextBlock]
         else:
             logging.warning(f"Unknown text block: {block}")
 
@@ -87,8 +90,11 @@ def _print_blocks(blocks: List, role: str):
             else:
                 _print_role(f"  [no content]", role)
         else:
-            for line in text.splitlines():
-                _print_role(f"  {line}", role)
+            if isinstance(text, str):
+                print_text(text, role)
+            elif isinstance(text, list):  # tool_result, List[TextBlock] as dict
+                for text_block in text:
+                    print_text(text_block["text"], role)
 
 
 def _print_role(s: str, role: str):
@@ -121,8 +127,7 @@ def format_tools(tools: list[StructuredTool]):
     return [format_tool(tool) for tool in tools]
 
 
-@dataclass
-class _ToolResult:
+class _ToolResult(BaseModel):
     tool_block: ToolUseBlock
     output: object
 
@@ -154,17 +159,34 @@ def _simplify_tool_beta_message(msg: ToolsBetaMessage) -> dict:
     return {"role": msg.role, "content": msg.content}
 
 
-def _compose_message_from_tools_output(tools_output: List[_ToolResult]):
-    msg = {"role": Role.USER.value, "content": []}
-    for result in tools_output:
-        msg["content"].append(
-            {
-                "type": "tool_result",
-                "tool_use_id": result.tool_block.id,
-                "content": result.output,
-            }
-        )
-    return msg
+class ContentBlock(BaseModel):
+    type: Literal["tool_result"] = "tool_result"
+    content: List[TextBlock] = []
+    tool_use_id: Optional[str] = None
+    is_error: Optional[bool] = None
+
+    @staticmethod
+    def from_str(message: str, tool_use_id: str) -> "ContentBlock":
+        return ContentBlock(tool_use_id=tool_use_id, content=[TextBlock(type="text", text=message)])
+
+
+class RequestMessage(BaseModel):
+    role: Literal["user", "assistant"] = "user"
+    content: List[ContentBlock] = []
+
+    def to_json_dict(self) -> dict:
+        return self.model_dump(mode="json", exclude_none=True)
+
+
+def _compose_message_from_tools_output(
+    tools_output: List[_ToolResult],
+) -> RequestMessage:
+    return RequestMessage(
+        content=[
+            ContentBlock.from_str(message=str(result.output), tool_use_id=result.tool_block.id)
+            for result in tools_output
+        ]
+    )
 
 
 class Conversation:
@@ -210,9 +232,8 @@ class Conversation:
                 return
 
             tools_message = _compose_message_from_tools_output(tools_output)
-            response = self._request_and_append_messages(tools_message)
+            response = self._request_and_append_messages(tools_message.to_json_dict())
 
-    @retry(stop=stop_after_attempt(3))
     def _request_and_append_messages(self, message: Dict) -> ToolsBetaMessage:
         assert (
             message["role"] == Role.USER.value

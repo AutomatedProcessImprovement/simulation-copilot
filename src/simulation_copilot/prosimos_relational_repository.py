@@ -38,6 +38,9 @@ class SimulationModelRepository(BaseRepository):
     def get(self, id: int):
         return self.session.query(SimulationModel).filter(SimulationModel.id == id).first()
 
+    def get_all(self):
+        return self.session.query(SimulationModel).all()
+
     def delete(self, id: int):
         model = self.get(id)
         if model:

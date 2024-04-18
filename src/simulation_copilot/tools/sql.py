@@ -5,9 +5,9 @@ from langchain.tools import tool
 from langchain_core.pydantic_v1 import BaseModel, Field
 from sqlalchemy import text, Row
 
-from simulation_copilot.database import Session
+from simulation_copilot.database import get_session
 
-_session = Session()
+_session = get_session()
 
 
 class RunSQLite3QueryInput(BaseModel):

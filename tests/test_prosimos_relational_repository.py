@@ -1,7 +1,7 @@
 import os
 import unittest
 
-from simulation_copilot.database import create_tables, engine, Session
+from simulation_copilot.database import create_tables, Session
 from simulation_copilot.prosimos_relational_repository import (
     ProsimosRelationalRepository,
 )
@@ -16,7 +16,7 @@ class TestProsimosRelationalRepository(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         os.environ["DATABASE_URL"] = "sqlite:///:memory:"
-        create_tables(engine)
+        create_tables()
 
     def setUp(self):
         self.session = Session()

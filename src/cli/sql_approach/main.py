@@ -21,12 +21,8 @@ from langchain_core.runnables import Runnable, RunnablePassthrough
 from langchain_core.tools import BaseTool
 from langchain_openai import ChatOpenAI
 
-from cli.sql_approach.init_db import (
-    SQL_SCHEMA_PATH,
-    tables_schema,
-)
-from simulation_copilot.database import create_tables
-from simulation_copilot.database import engine
+from cli.sql_approach.init_db import SQL_SCHEMA_PATH
+from simulation_copilot.database import create_tables, tables_schema
 from simulation_copilot.tools.sql import run_sqlite3_query
 
 tools = [
@@ -238,7 +234,7 @@ def main():
     # OPENAI_ORGANIZATION_ID, OPENAI_API_KEY are required to be set in the .env file or as environment variables.
     load_dotenv()
 
-    create_tables(engine)
+    create_tables()
 
     agent = make_anthropic_claude3_agent(make_anthropic_prompt(), tools)
     executor = make_agent_executor(agent, tools)
