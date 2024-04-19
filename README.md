@@ -9,7 +9,7 @@ A prototype to explore a possibility to handle simulation scenario generation us
   - Using storage to make incremental changes (SQL)
 - Multi-agent when a single agent cannot handle the complexity
 
-## Milestones
+## Milestones. Sprint 1
 
 - [x] Generate a single component of the scenario with Python code (calendars)
 - [x] Generate a single component of the scenario with LLM (calendars)
@@ -21,6 +21,17 @@ A prototype to explore a possibility to handle simulation scenario generation us
 - [x] Try storing the simulation model in a SQL format
 - [x] Change average activity duration by N minutes (models should change the mean value of the distribution of a certain activity)
 - [ ] Increase complexity: add more components of the simulation scenario or more adjustments
+
+## Milestones. Sprint 2
+
+- [x] Provide templated SQL-based tools instead of using raw SQL.
+- [x] Make Anthropic Claude3 work with tools without LangChain on simple queries.
+- [ ] More complex test: 
+  - (a) provide initial simulation model before asking LLM; 
+  - (b) then comes the user's request to change something in the model; 
+  - (c) dump the new model ready for Prosimos simulation.  
+- [ ] Add either another agent or tool for running Prosimos simulation to compare the initial and updated simulation model.
+- [ ] Add simple UI because sometimes LLM asks reasonable clarification questions.
 
 ## Get started with the SQL approach
 
@@ -94,7 +105,7 @@ ASSISTANT [stop_reason=end_turn]:
 ```
 </details>
 
-<details><summary>(better) Creating a simulation model with case arrival model (temperature=0.1)</summary>
+<details><summary>Creating a simulation model with case arrival model (temperature=0.1)</summary>
 
 ```shell
 USER:

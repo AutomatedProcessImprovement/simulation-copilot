@@ -68,5 +68,6 @@ if __name__ == "__main__":
     main()
 
 
-# TODO: ensure Prosimos compatibility
 # TODO: handle error in tools
+# TODO: add UI
+# TODO: add another agent who runs the simulation and compares initial simulation model with the updated one
