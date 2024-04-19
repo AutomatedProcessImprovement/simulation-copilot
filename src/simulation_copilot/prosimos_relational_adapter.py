@@ -186,6 +186,12 @@ def _distribution_to_pix(distribution: Distribution) -> PIXDurationDistribution:
             d.max = parameter.value
         else:
             raise ValueError(f"Unknown distribution parameter: {parameter.name}")
+    # all distributions except "fixed" ("fix") should have "min" and "max" parameters
+    if distribution.name not in ("fix", "fixed"):
+        if d.min is None:
+            d.min = 0.0
+        if d.max is None:
+            d.max = 1.0
     return d
 
 
