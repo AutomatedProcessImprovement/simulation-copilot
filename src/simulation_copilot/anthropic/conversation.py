@@ -75,7 +75,7 @@ def _print_blocks(blocks: List, role: str):
         text = ""
         if isinstance(block, ToolUseBlock):
             role = "tool_use"  # role might be adjusted depending on the block type
-            text = f"[running tool '{block.name}' with input {block.input}]"
+            text = f"[wants to run '{block.name}' with input {block.input}]"
         elif isinstance(block, TextBlock):
             text = block.text
         elif "type" in block and block["type"] == "tool_result":
@@ -137,6 +137,7 @@ def _run_tool_block(block: ToolUseBlock, tools: List[StructuredTool]) -> Optiona
         print("Calling run_tool_block with empty block: %s" % block)
         return None
     tool = find_tool(block.name, tools)
+    print(f"* [running {tool} on {block}]")
     output = str(tool.func(**block.input))  # only str or a list of content blocks are allowed
     return _ToolResult(tool_block=block, output=output)
 
@@ -159,7 +160,7 @@ def _simplify_tool_beta_message(msg: ToolsBetaMessage) -> dict:
     return {"role": msg.role, "content": msg.content}
 
 
-class ContentBlock(BaseModel):
+class ContentBlock(BaseModel):  # ToolResultBlockParam from Anthropic
     type: Literal["tool_result"] = "tool_result"
     content: List[TextBlock] = []
     tool_use_id: Optional[str] = None
@@ -208,6 +209,7 @@ class Conversation:
             tools=format_tools(tools),
             max_tokens=max_tokens,
             system=system_instructions,
+            temperature=0.1,
         )  # partial function with most of the parameters pre-filled
         self._max_tools_invocations = max_tools_invocations
 
@@ -217,9 +219,6 @@ class Conversation:
         response = self._request_and_append_messages(message=message)
 
         # subsequent requests
-        tool_blocks = _tool_blocks_from_response(response)
-        if len(tool_blocks) == 0:
-            return
         while not (
             response.stop_reason == "end_turn"
             or response.stop_reason == "stop_sequence"
@@ -227,8 +226,21 @@ class Conversation:
         ):
             self._max_tools_invocations -= 1
 
+            tool_blocks = _tool_blocks_from_response(response)
+            if len(tool_blocks) == 0:
+                print("No tools blocks found")
+                return
+
+            # Avoid running many tools:
+            # often, Claude3 OPUS wants to execute several tools at once instead of running them sequentially,
+            # we pick only the first tool call here and execute it instead of all tool blocks,
+            # so that LLM can adjust input parameters for the next tools
+            if len(tool_blocks) > 1:
+                tool_blocks = tool_blocks[:1]
+
             tools_output = [_run_tool_block(block, self.tools) for block in tool_blocks]
             if len(tools_output) == 0:  # no tools output, nothing to send to LLM, exit
+                print("No tools results produced")
                 return
 
             tools_message = _compose_message_from_tools_output(tools_output)
