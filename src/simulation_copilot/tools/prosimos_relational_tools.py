@@ -73,9 +73,9 @@ class NewCalendarArgs(BaseModel):
 
 
 class NewCaseArrivalArgs(BaseModel):
-    simulation_model_id: int = Field("Simulation model ID in the database.")
-    calendar_id: int = Field("Calendar ID in the database.")
-    inter_arrival_distribution_id: int = Field("Inter-arrival distribution ID in the database.")
+    simulation_model_id: int = Field("Simulation model ID in the database. Type: integer.")
+    calendar_id: int = Field("Calendar ID in the database. Type: integer.")
+    inter_arrival_distribution_id: int = Field("Inter-arrival distribution ID in the database. Type: integer.")
 
 
 @tool("create_simulation_model")

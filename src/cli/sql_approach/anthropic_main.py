@@ -1,6 +1,6 @@
 """In this script, we use the Anthropic SDK instead of LangChain.
 """
-
+import anthropic
 from dotenv import load_dotenv
 
 from simulation_copilot.anthropic import Conversation
@@ -33,7 +33,7 @@ tools = [
 
 
 def instructions():
-    context = f"""You are an assistant who helps with preparing of a business process simulation model. The model is represented by a set of tables in a SQL database. Reuse calendars for whenever possible.
+    context = f"""You are an assistant who helps with preparing of a business process simulation model. The model is represented by a set of tables in a SQL database. Reuse calendars whenever possible.
 
 Note: In activity distributions, the distribution name is the name of the distribution and the parameters is a list of parameters for this specific distribution. The name and number of distribution parameters depend on the distribution.
 Note: If you are lacking some information, query the database using the provided tools. Always try to query the lacking information from the database first before asking the user.
@@ -43,6 +43,7 @@ Below is the SQL schema for simulation model tables;
 {tables_schema()}
 
 You don't need to query the database directly, but you can use the provided tools to interact with the database.
+Note: Use one tool at a time, then, wait for a new request to adjust input parameters for the next tool call if needed.
 """
     return context
 
@@ -56,6 +57,8 @@ def main():
         conversation.run(
             "Create a simulation model with case arrival calendar of 9am to 5pm on weekdays with a mean inter-arrival time of 30 minutes and exponential distribution."
         )
+    except anthropic.BadRequestError as e:
+        print(e)
     finally:
         print_all_simulation_models()
 
