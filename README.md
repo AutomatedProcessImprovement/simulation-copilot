@@ -51,7 +51,119 @@ Run the tests with the following command:
 TESTING="true" python -m unittest discover -v
 ```
 
-## SQL approach: manual test outputs
+## SQL approach with Anthropic's Claude 3 OPUS: manual test outputs
+
+<details><summary>Creating a simulation model with case arrival model (with default temperature=1.0)</summary>
+
+```shell
+USER:
+  Create a simulation model with case arrival calendar of 9am to 5pm on weekdays with a mean inter-arrival time of 30 minutes and exponential distribution.
+
+ASSISTANT [stop_reason=tool_use]:
+  <thinking>
+  To create a simulation model with the specified case arrival, we will need to use the following tools in order:
+  
+  1. create_simulation_model(): This will create a new simulation model in the database and return its ID.
+  
+  2. create_calendar_with_intervals(): This will create a calendar with the specified 9am-5pm weekday intervals. We have all the necessary information to call this - the intervals should be Monday through Friday, 9:00 to 17:00 each day.
+  
+  3. create_distribution(): This will create the exponential inter-arrival time distribution. The user specified a mean of 30 minutes. We also need min and max values for the exponential distribution, but the user did not provide those, so we will need to ask.
+  
+  4. add_case_arrival(): This will add the case arrival to the simulation model, linking the calendar and distribution. We will have the IDs needed after creating them in the previous steps. 
+  </thinking>
+  [wants to run 'create_simulation_model' with input {}]
+* [running name='create_simulation_model' description='create_simulation_model() -> int - Creates a new simulation model in the database with empty parameters and returns its ID.' args_schema=<class 'pydantic.v1.main.create_simulation_modelSchema'> func=<function create_simulation_model at 0x156485280> on ToolUseBlock(id='toolu_01Qw6SkY19toumcCobSfYAfm', input={}, name='create_simulation_model', type='tool_use')]
+
+USER:
+  12
+
+ASSISTANT [stop_reason=tool_use]:
+  [wants to run 'create_calendar_with_intervals' with input {'intervals': [{'start_day': 'Monday', 'end_day': 'Monday', 'start_hour': 9, 'start_minute': 0, 'end_hour': 17, 'end_minute': 0}, {'start_day': 'Tuesday', 'end_day': 'Tuesday', 'start_hour': 9, 'start_minute': 0, 'end_hour': 17, 'end_minute': 0}, {'start_day': 'Wednesday', 'end_day': 'Wednesday', 'start_hour': 9, 'start_minute': 0, 'end_hour': 17, 'end_minute': 0}, {'start_day': 'Thursday', 'end_day': 'Thursday', 'start_hour': 9, 'start_minute': 0, 'end_hour': 17, 'end_minute': 0}, {'start_day': 'Friday', 'end_day': 'Friday', 'start_hour': 9, 'start_minute': 0, 'end_hour': 17, 'end_minute': 0}]}]
+* [running name='create_calendar_with_intervals' description='create_calendar_with_intervals(intervals: list[dict]) -> int - Creates a new availability calendar with intervals and returns its ID.' args_schema=<class 'simulation_copilot.tools.prosimos_relational_tools.NewCalendarArgs'> func=<function create_calendar_with_intervals at 0x1564ac3a0> on ToolUseBlock(id='toolu_01HWtq3qLug9mH5drtLn9ZTy', input={'intervals': [{'start_day': 'Monday', 'end_day': 'Monday', 'start_hour': 9, 'start_minute': 0, 'end_hour': 17, 'end_minute': 0}, {'start_day': 'Tuesday', 'end_day': 'Tuesday', 'start_hour': 9, 'start_minute': 0, 'end_hour': 17, 'end_minute': 0}, {'start_day': 'Wednesday', 'end_day': 'Wednesday', 'start_hour': 9, 'start_minute': 0, 'end_hour': 17, 'end_minute': 0}, {'start_day': 'Thursday', 'end_day': 'Thursday', 'start_hour': 9, 'start_minute': 0, 'end_hour': 17, 'end_minute': 0}, {'start_day': 'Friday', 'end_day': 'Friday', 'start_hour': 9, 'start_minute': 0, 'end_hour': 17, 'end_minute': 0}]}, name='create_calendar_with_intervals', type='tool_use')]
+
+USER:
+  6
+
+ASSISTANT [stop_reason=end_turn]:
+  <thinking>
+  To create the exponential distribution, we are missing the minimum and maximum values. Let's ask the user to provide those.
+  </thinking>
+  
+  To create the exponential inter-arrival time distribution, please provide the minimum and maximum values in minutes for the exponential distribution with a mean of 30 minutes.
+
+```
+</details>
+
+<details><summary>(better) Creating a simulation model with case arrival model (temperature=0.1)</summary>
+
+```shell
+USER:
+  Create a simulation model with case arrival calendar of 9am to 5pm on weekdays with a mean inter-arrival time of 30 minutes and exponential distribution.
+
+ASSISTANT [stop_reason=tool_use]:
+  <thinking>
+  To create a simulation model with the specified case arrival, we need to:
+  1. Create a new simulation model using create_simulation_model()
+  2. Create a calendar with the specified intervals using create_calendar_with_intervals()
+  3. Create an exponential distribution with the given mean using create_distribution()
+  4. Add the case arrival to the simulation model using add_case_arrival()
+  
+  We have all the necessary information to perform these steps:
+  - Simulation model: no additional info needed 
+  - Calendar intervals: 
+    - 9am to 5pm on weekdays
+  - Exponential distribution:
+    - mean: 30 minutes
+  - Case arrival:
+    - simulation model ID: will get from step 1
+    - calendar ID: will get from step 2 
+    - distribution ID: will get from step 3
+  </thinking>
+  [wants to run 'create_simulation_model' with input {}]
+* [running name='create_simulation_model' description='create_simulation_model() -> int - Creates a new simulation model in the database with empty parameters and returns its ID.' args_schema=<class 'pydantic.v1.main.create_simulation_modelSchema'> func=<function create_simulation_model at 0x16e650280> on ToolUseBlock(id='toolu_01AVApmHSV9zhs7PurVnu5PP', input={}, name='create_simulation_model', type='tool_use')]
+
+USER:
+  13
+
+ASSISTANT [stop_reason=tool_use]:
+  [wants to run 'create_calendar_with_intervals' with input {'intervals': [{'start_day': 'Monday', 'end_day': 'Friday', 'start_hour': 9, 'start_minute': 0, 'end_hour': 17, 'end_minute': 0}]}]
+* [running name='create_calendar_with_intervals' description='create_calendar_with_intervals(intervals: list[dict]) -> int - Creates a new availability calendar with intervals and returns its ID.' args_schema=<class 'simulation_copilot.tools.prosimos_relational_tools.NewCalendarArgs'> func=<function create_calendar_with_intervals at 0x1069d43a0> on ToolUseBlock(id='toolu_015ujg9eY4odeGbdj1sBUKjV', input={'intervals': [{'start_day': 'Monday', 'end_day': 'Friday', 'start_hour': 9, 'start_minute': 0, 'end_hour': 17, 'end_minute': 0}]}, name='create_calendar_with_intervals', type='tool_use')]
+
+USER:
+  7
+
+ASSISTANT [stop_reason=tool_use]:
+  [wants to run 'create_distribution' with input {'name': 'exponential', 'parameters': [{'name': 'mean', 'value': 30}, {'name': 'min', 'value': 0}, {'name': 'max', 'value': 1000000}]}]
+* [running name='create_distribution' description='create_distribution(name: str, parameters: list[dict]) -> int - Creates a distribution object from the given arguments.\n    Returns the ID of the distribution.' args_schema=<class 'simulation_copilot.tools.prosimos_relational_tools.NewDistributionArgs'> func=<function create_distribution at 0x1069d44c0> on ToolUseBlock(id='toolu_01JDZ4E7X5Vi9aGatDGoztD3', input={'name': 'exponential', 'parameters': [{'name': 'mean', 'value': 30}, {'name': 'min', 'value': 0}, {'name': 'max', 'value': 1000000}]}, name='create_distribution', type='tool_use')]
+
+USER:
+  6
+
+ASSISTANT [stop_reason=tool_use]:
+  [wants to run 'add_case_arrival' with input {'simulation_model_id': 13, 'calendar_id': 7, 'inter_arrival_distribution_id': 6}]
+* [running name='add_case_arrival' description='add_case_arrival(simulation_model_id: int, calendar_id: int, inter_arrival_distribution_id: int) -> bool - Adds case arrival model to the simulation model. Calendar and distribution must be created beforehand.' args_schema=<class 'simulation_copilot.tools.prosimos_relational_tools.NewCaseArrivalArgs'> func=<function add_case_arrival at 0x1069d4430> on ToolUseBlock(id='toolu_01JQyej2qbHeiVTub8KNf7m2', input={'simulation_model_id': 13, 'calendar_id': 7, 'inter_arrival_distribution_id': 6}, name='add_case_arrival', type='tool_use')]
+
+USER:
+  True
+
+ASSISTANT [stop_reason=end_turn]:
+  The simulation model with the specified case arrival has been created successfully. The key steps were:
+  
+  1. Created a new simulation model with ID 13
+  2. Created a calendar with ID 7 that has working hours from 9am to 5pm on weekdays 
+  3. Created an exponential distribution with ID 6 that has a mean inter-arrival time of 30 minutes
+  4. Added the case arrival to the simulation model, linking it to the calendar and inter-arrival distribution
+  
+  Let me know if you need anything else for your simulation model!
+
+PIX simulation model dump:
+Model ID: 13
+BPSModel(process_model=None, gateway_probabilities=None, case_arrival_model=CaseArrivalModel(case_arrival_calendar=<pix_framework.discovery.resource_calendar_and_performance.crisp.resource_calendar.RCalendar object at 0x16dc03520>, inter_arrival_times={'distribution_name': 'expon', 'distribution_params': [{'value': 30.0}, {'value': 0.0}, {'value': 1000000.0}]}), resource_model=None, extraneous_delays=None, case_attributes=None, prioritization_rules=None, batching_rules=None, calendar_granularity=None)
+
+```
+</details>
+
+## SQL approach with OpenAI: manual test outputs
 
 <details><summary>Creating a calendar</summary>
 
