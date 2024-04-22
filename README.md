@@ -26,14 +26,14 @@ A prototype to explore a possibility to handle simulation scenario generation us
 
 - [x] Provide templated SQL-based tools instead of using raw SQL.
 - [x] Make Anthropic Claude3 work with tools without LangChain on simple queries.
-- [ ] More complex test: 
-  - (a) provide initial simulation model before asking LLM; 
-  - (b) then comes the user's request to change something in the model; 
-  - (c) dump the new model ready for Prosimos simulation.  
+- [ ] More complex test:
+  - (a) provide initial simulation model before asking LLM;
+  - (b) then comes the user's request to change something in the model;
+  - (c) dump the new model ready for Prosimos simulation.
 - [ ] Add either another agent or tool for running Prosimos simulation to compare the initial and updated simulation model.
 - [ ] Add simple UI because sometimes LLM asks reasonable clarification questions.
 
-## Get started with the SQL approach
+## Getting started with the SQL approach
 
 ```shell
 # set up the environment
@@ -54,7 +54,19 @@ python src/simulation_copilot/sql_approach/main.py
 
 ![Relational simulation model](schema.png)
 
-## Automated tests
+## For developers
+
+### Pre-commit checks
+
+Install pre-commit hooks configured in `.pre-commit-config.yaml` by running:
+
+```shell
+pre-commit install
+```
+
+After hitting the "commit" button, pre-commit will run the hooks on the files you are trying to commit. It may take some seconds before the commit is actually executed or rejected with a report of the issues found.
+
+### Automated tests
 
 Run the tests with the following command:
 
@@ -73,14 +85,14 @@ USER:
 ASSISTANT [stop_reason=tool_use]:
   <thinking>
   To create a simulation model with the specified case arrival, we will need to use the following tools in order:
-  
+
   1. create_simulation_model(): This will create a new simulation model in the database and return its ID.
-  
+
   2. create_calendar_with_intervals(): This will create a calendar with the specified 9am-5pm weekday intervals. We have all the necessary information to call this - the intervals should be Monday through Friday, 9:00 to 17:00 each day.
-  
+
   3. create_distribution(): This will create the exponential inter-arrival time distribution. The user specified a mean of 30 minutes. We also need min and max values for the exponential distribution, but the user did not provide those, so we will need to ask.
-  
-  4. add_case_arrival(): This will add the case arrival to the simulation model, linking the calendar and distribution. We will have the IDs needed after creating them in the previous steps. 
+
+  4. add_case_arrival(): This will add the case arrival to the simulation model, linking the calendar and distribution. We will have the IDs needed after creating them in the previous steps.
   </thinking>
   [wants to run 'create_simulation_model' with input {}]
 * [running name='create_simulation_model' description='create_simulation_model() -> int - Creates a new simulation model in the database with empty parameters and returns its ID.' args_schema=<class 'pydantic.v1.main.create_simulation_modelSchema'> func=<function create_simulation_model at 0x156485280> on ToolUseBlock(id='toolu_01Qw6SkY19toumcCobSfYAfm', input={}, name='create_simulation_model', type='tool_use')]
@@ -99,7 +111,7 @@ ASSISTANT [stop_reason=end_turn]:
   <thinking>
   To create the exponential distribution, we are missing the minimum and maximum values. Let's ask the user to provide those.
   </thinking>
-  
+
   To create the exponential inter-arrival time distribution, please provide the minimum and maximum values in minutes for the exponential distribution with a mean of 30 minutes.
 
 ```
@@ -118,16 +130,16 @@ ASSISTANT [stop_reason=tool_use]:
   2. Create a calendar with the specified intervals using create_calendar_with_intervals()
   3. Create an exponential distribution with the given mean using create_distribution()
   4. Add the case arrival to the simulation model using add_case_arrival()
-  
+
   We have all the necessary information to perform these steps:
-  - Simulation model: no additional info needed 
-  - Calendar intervals: 
+  - Simulation model: no additional info needed
+  - Calendar intervals:
     - 9am to 5pm on weekdays
   - Exponential distribution:
     - mean: 30 minutes
   - Case arrival:
     - simulation model ID: will get from step 1
-    - calendar ID: will get from step 2 
+    - calendar ID: will get from step 2
     - distribution ID: will get from step 3
   </thinking>
   [wants to run 'create_simulation_model' with input {}]
@@ -159,12 +171,12 @@ USER:
 
 ASSISTANT [stop_reason=end_turn]:
   The simulation model with the specified case arrival has been created successfully. The key steps were:
-  
+
   1. Created a new simulation model with ID 13
-  2. Created a calendar with ID 7 that has working hours from 9am to 5pm on weekdays 
+  2. Created a calendar with ID 7 that has working hours from 9am to 5pm on weekdays
   3. Created an exponential distribution with ID 6 that has a mean inter-arrival time of 30 minutes
   4. Added the case arrival to the simulation model, linking it to the calendar and inter-arrival distribution
-  
+
   Let me know if you need anything else for your simulation model!
 
 PIX simulation model dump:
