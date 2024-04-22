@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from simulation_copilot.anthropic import Conversation
 from simulation_copilot.anthropic.conversation import Claude3
 from simulation_copilot.database import create_tables, tables_schema
-from simulation_copilot.prosimos_relational_adapter import (
+from simulation_copilot.relational_to_prosimos_adapter import (
     print_all_simulation_models,
 )
 from simulation_copilot.tools.prosimos_relational_tools import (
@@ -33,6 +33,10 @@ tools = [
 
 
 def instructions():
+    """
+    System instructions for the assistant.
+    """
+    # pylint: disable=line-too-long
     context = f"""You are an assistant who helps with preparing of a business process simulation model. The model is represented by a set of tables in a SQL database. Reuse calendars whenever possible.
 
 Note: In activity distributions, the distribution name is the name of the distribution and the parameters is a list of parameters for this specific distribution. The name and number of distribution parameters depend on the distribution.
@@ -49,6 +53,8 @@ Note: Use one tool at a time, then, wait for a new request to adjust input param
 
 
 def main():
+    # pylint: disable=missing-function-docstring,line-too-long
+
     load_dotenv()
     create_tables()
 
@@ -67,7 +73,7 @@ if __name__ == "__main__":
     load_dotenv()
     main()
 
-
+# pylint: disable=fixme
 # TODO: handle error in tools
 # TODO: add UI
 # TODO: add another agent who runs the simulation and compares initial simulation model with the updated one

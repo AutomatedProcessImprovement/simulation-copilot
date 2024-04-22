@@ -1,12 +1,14 @@
+# pylint: disable=missing-module-docstring,missing-class-docstring,missing-function-docstring
+# pylint: disable=R0801
 import os
 import unittest
 
 from simulation_copilot.database import create_tables, Session
-from simulation_copilot.prosimos_relational_adapter import create_simulation_model_from_relational_data
 from simulation_copilot.prosimos_relational_service import ProsimosRelationalService
+from simulation_copilot.relational_to_prosimos_adapter import create_simulation_model_from_relational_data
 
 
-class TestProsimosRelationalAdapter(unittest.TestCase):
+class TestRelationalToProsimosAdapter(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         os.environ["DATABASE_URL"] = "sqlite:///:memory:"

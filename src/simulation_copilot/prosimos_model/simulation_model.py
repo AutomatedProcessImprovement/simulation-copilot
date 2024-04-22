@@ -1,4 +1,10 @@
-"""This file has been copied from Simod."""
+"""
+This file has been initially copied from Simod.
+
+Ideally, this API should be part of the PIX framework, but it is part of Simod for now.
+Additionally, this module includes new helper functions not present in the Simod's version, e.g.,
+the `BPSModel.from_prosimos_format` function helps to read the Prosimos JSON parameters and create a BPSModel object.
+"""
 
 import copy
 from dataclasses import dataclass
@@ -35,6 +41,7 @@ class BPSModel:
     """
     BPS model class containing all the components to simulate a business process model.
     """
+    # pylint: disable=too-many-instance-attributes
 
     process_model: Optional[Path] = None  # A path to the model for now, in future the loaded BPMN model
     gateway_probabilities: Optional[List[GatewayProbabilities]] = None
@@ -46,7 +53,65 @@ class BPSModel:
     batching_rules: Optional[List[BatchingRule]] = None
     calendar_granularity: Optional[int] = None
 
+    @staticmethod
+    def from_prosimos_format(attributes: dict, process_model: Optional[Path] = None) -> "BPSModel":
+        """
+        Constructs a BPSModel object from the Prosimos JSON parameters.
+        """
+        if not process_model:
+            process_model = Path(attributes.get(PROCESS_MODEL_KEY))
+        gateway_probabilities = [
+            GatewayProbabilities.from_dict(gateway_probability)
+            for gateway_probability in attributes.get(GATEWAY_PROBABILITIES_KEY, [])
+        ]
+        case_arrival_model = CaseArrivalModel.from_dict(
+            {
+                CASE_ARRIVAL_DISTRIBUTION_KEY: attributes.get(CASE_ARRIVAL_DISTRIBUTION_KEY),
+                CASE_ARRIVAL_CALENDAR_KEY: attributes.get(CASE_ARRIVAL_CALENDAR_KEY),
+            }
+        )
+        resource_model = ResourceModel.from_dict(
+            {
+                RESOURCE_PROFILES_KEY: attributes.get(RESOURCE_PROFILES_KEY),
+                RESOURCE_CALENDARS_KEY: attributes.get(RESOURCE_CALENDARS_KEY),
+                RESOURCE_ACTIVITY_PERFORMANCE_KEY: attributes.get(RESOURCE_ACTIVITY_PERFORMANCE_KEY),
+            }
+        )
+        extraneous_delays = [
+            ExtraneousDelay.from_dict(extraneous_delay)
+            for extraneous_delay in attributes.get(EXTRANEOUS_DELAYS_KEY, [])
+        ]
+        case_attributes = [
+            CaseAttribute.from_dict(case_attribute) for case_attribute in attributes.get(CASE_ATTRIBUTES_KEY, [])
+        ]
+        prioritization_rules = [
+            PrioritizationRule.from_prosimos(priority_rule)
+            for priority_rule in attributes.get(PRIORITIZATION_RULES_KEY, [])
+        ]
+        activities_ids_by_name = get_activities_ids_by_name_from_bpmn(process_model)
+        activities_names_by_id = {v: k for k, v in activities_ids_by_name.items()}
+        batching_rules = [
+            BatchingRule.from_prosimos(batching_rule, activities_names_by_id)
+            for batching_rule in attributes.get(BATCHING_RULES_KEY, [])
+        ]
+        calendar_granularity = attributes.get("granule_size", {}).get("value")
+
+        return BPSModel(
+            process_model=process_model,
+            gateway_probabilities=gateway_probabilities,
+            case_arrival_model=case_arrival_model,
+            resource_model=resource_model,
+            extraneous_delays=extraneous_delays,
+            case_attributes=case_attributes,
+            prioritization_rules=prioritization_rules,
+            batching_rules=batching_rules,
+            calendar_granularity=calendar_granularity,
+        )
+
     def to_prosimos_format(self) -> dict:
+        """
+        Converts the BPSModel object to the Prosimos dictionary which can be saved as JSON file for Prosimos use.
+        """
         # Get map activity label -> node ID
         activity_label_to_id = get_activities_ids_by_name_from_bpmn(self.process_model)
 
@@ -84,6 +149,7 @@ class BPSModel:
         return attributes
 
     def deep_copy(self) -> "BPSModel":
+        """Creates a deep copy of the BPSModel object."""
         return copy.deepcopy(self)
 
     def replace_activity_names_with_ids(self):

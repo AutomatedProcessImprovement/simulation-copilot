@@ -1,5 +1,9 @@
+"""
+Relational simulation model main class.
+
+The relational simulation model is a version of the Prosimos model that is stored in a relational database.
+"""
 import sqlalchemy as sa
-import sqlalchemy.orm
 from sqlalchemy.orm import Mapped
 
 from simulation_copilot.prosimos_relational_model import CaseArrival
@@ -9,7 +13,13 @@ from simulation_copilot.prosimos_relational_model.resource_profile import Resour
 
 
 class SimulationModel(_Base):
-    """The simulation model with all its components."""
+    """
+    The simulation model with its components.
+
+    NOTE: Only a fraction of the Prosimos model is supported: resource profiles, gateways, and case arrival.
+    """
+
+    # pylint: disable=too-few-public-methods
 
     __tablename__ = "simulation_model"
 

@@ -1,0 +1,2175 @@
+{
+  "process_model": "/Users/ihar/Projects/PIX/simod/outputs/20240226_141432_BDCBD013_868A_4597_807E_C98E4D58A514/best_result/LoanApp_simplified_train.bpmn",
+  "gateway_branching_probabilities": [
+    {
+      "gateway_id": "node_6eb39954-8dac-471d-bfd7-c9a59ac0428f",
+      "probabilities": [
+        {
+          "path_id": "node_3abc3268-47f3-4c9d-8214-ac8e9b09211e",
+          "value": 0.61
+        },
+        {
+          "path_id": "node_f1eb2413-8acd-420e-96c6-14ff1ef289e1",
+          "value": 0.39
+        }
+      ]
+    },
+    {
+      "gateway_id": "node_c31fe820-fa45-4fcb-99cb-91f41465eb9d",
+      "probabilities": [
+        {
+          "path_id": "node_403fc419-7950-4815-81e3-8bf839415a33",
+          "value": 0.41475409836065574
+        },
+        {
+          "path_id": "node_91017cf2-30d2-4424-b1bd-4b6972dd03ef",
+          "value": 0.5852459016393443
+        }
+      ]
+    },
+    {
+      "gateway_id": "node_2e8f09ac-2fd6-47fb-8157-e83326edb4b2",
+      "probabilities": [
+        {
+          "path_id": "node_41dbf762-243c-4b3a-8f7f-5e57ce20ba13",
+          "value": 0.9025270758122743
+        },
+        {
+          "path_id": "node_a6310207-484d-4842-af85-ef06eb14f14f",
+          "value": 0.09747292418772563
+        }
+      ]
+    }
+  ],
+  "arrival_time_calendar": [
+    {
+      "from": "MONDAY",
+      "to": "MONDAY",
+      "beginTime": "07:00:00",
+      "endTime": "16:00:00"
+    },
+    {
+      "from": "TUESDAY",
+      "to": "TUESDAY",
+      "beginTime": "07:00:00",
+      "endTime": "16:00:00"
+    },
+    {
+      "from": "WEDNESDAY",
+      "to": "WEDNESDAY",
+      "beginTime": "07:00:00",
+      "endTime": "16:00:00"
+    },
+    {
+      "from": "THURSDAY",
+      "to": "THURSDAY",
+      "beginTime": "07:00:00",
+      "endTime": "16:00:00"
+    },
+    {
+      "from": "FRIDAY",
+      "to": "FRIDAY",
+      "beginTime": "07:00:00",
+      "endTime": "16:00:00"
+    }
+  ],
+  "arrival_time_distribution": {
+    "distribution_name": "fix",
+    "distribution_params": [
+      {
+        "value": 1800.0
+      }
+    ]
+  },
+  "resource_profiles": [
+    {
+      "id": "AML Investigator-000001_profile",
+      "name": "AML Investigator-000001_profile",
+      "resource_list": [
+        {
+          "id": "AML Investigator-000001",
+          "name": "AML Investigator-000001",
+          "amount": 1,
+          "cost_per_hour": 20,
+          "calendar": "Undifferentiated_calendar",
+          "assignedTasks": [
+            "node_318bf1c1-b10d-4d30-93ce-7c6d0fda7224"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AML Investigator-000002_profile",
+      "name": "AML Investigator-000002_profile",
+      "resource_list": [
+        {
+          "id": "AML Investigator-000002",
+          "name": "AML Investigator-000002",
+          "amount": 1,
+          "cost_per_hour": 20,
+          "calendar": "Undifferentiated_calendar",
+          "assignedTasks": [
+            "node_318bf1c1-b10d-4d30-93ce-7c6d0fda7224"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Applicant-000001_profile",
+      "name": "Applicant-000001_profile",
+      "resource_list": [
+        {
+          "id": "Applicant-000001",
+          "name": "Applicant-000001",
+          "amount": 1,
+          "cost_per_hour": 20,
+          "calendar": "Undifferentiated_calendar",
+          "assignedTasks": [
+            "node_a3178f82-fc44-4d26-a94a-86e47728040a"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Appraiser-000001_profile",
+      "name": "Appraiser-000001_profile",
+      "resource_list": [
+        {
+          "id": "Appraiser-000001",
+          "name": "Appraiser-000001",
+          "amount": 1,
+          "cost_per_hour": 20,
+          "calendar": "Undifferentiated_calendar",
+          "assignedTasks": [
+            "node_bda3ed60-dcb4-4207-8275-8b09baded8c7"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Appraiser-000002_profile",
+      "name": "Appraiser-000002_profile",
+      "resource_list": [
+        {
+          "id": "Appraiser-000002",
+          "name": "Appraiser-000002",
+          "amount": 1,
+          "cost_per_hour": 20,
+          "calendar": "Undifferentiated_calendar",
+          "assignedTasks": [
+            "node_bda3ed60-dcb4-4207-8275-8b09baded8c7"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Clerk-000001_profile",
+      "name": "Clerk-000001_profile",
+      "resource_list": [
+        {
+          "id": "Clerk-000001",
+          "name": "Clerk-000001",
+          "amount": 1,
+          "cost_per_hour": 20,
+          "calendar": "Clerk-000001_profile_calendar",
+          "assignedTasks": [
+            "node_9b51c890-8f84-4994-92cb-56ded3c9ffbc",
+            "node_e30fba04-dbc4-4e70-8ec3-fea48077c7c9",
+            "node_3410f27a-7f09-4662-8284-f5127110aeed",
+            "node_1294ab19-f8ad-4b48-940b-f95c83c634d2",
+            "node_e8f54ca6-43b4-433c-b105-aa6c47239bc6",
+            "node_2aaab0df-1f8c-4bcc-b359-2b0c9561ffbc"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Clerk-000002_profile",
+      "name": "Clerk-000002_profile",
+      "resource_list": [
+        {
+          "id": "Clerk-000002",
+          "name": "Clerk-000002",
+          "amount": 1,
+          "cost_per_hour": 20,
+          "calendar": "Undifferentiated_calendar",
+          "assignedTasks": [
+            "node_2aaab0df-1f8c-4bcc-b359-2b0c9561ffbc",
+            "node_e30fba04-dbc4-4e70-8ec3-fea48077c7c9",
+            "node_9b51c890-8f84-4994-92cb-56ded3c9ffbc",
+            "node_e8f54ca6-43b4-433c-b105-aa6c47239bc6",
+            "node_3410f27a-7f09-4662-8284-f5127110aeed",
+            "node_1294ab19-f8ad-4b48-940b-f95c83c634d2"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Clerk-000003_profile",
+      "name": "Clerk-000003_profile",
+      "resource_list": [
+        {
+          "id": "Clerk-000003",
+          "name": "Clerk-000003",
+          "amount": 1,
+          "cost_per_hour": 20,
+          "calendar": "Clerk-000003_profile_calendar",
+          "assignedTasks": [
+            "node_9b51c890-8f84-4994-92cb-56ded3c9ffbc",
+            "node_e30fba04-dbc4-4e70-8ec3-fea48077c7c9",
+            "node_2aaab0df-1f8c-4bcc-b359-2b0c9561ffbc",
+            "node_1294ab19-f8ad-4b48-940b-f95c83c634d2",
+            "node_3410f27a-7f09-4662-8284-f5127110aeed",
+            "node_e8f54ca6-43b4-433c-b105-aa6c47239bc6"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Clerk-000004_profile",
+      "name": "Clerk-000004_profile",
+      "resource_list": [
+        {
+          "id": "Clerk-000004",
+          "name": "Clerk-000004",
+          "amount": 1,
+          "cost_per_hour": 20,
+          "calendar": "Clerk-000004_profile_calendar",
+          "assignedTasks": [
+            "node_e30fba04-dbc4-4e70-8ec3-fea48077c7c9",
+            "node_2aaab0df-1f8c-4bcc-b359-2b0c9561ffbc",
+            "node_9b51c890-8f84-4994-92cb-56ded3c9ffbc",
+            "node_3410f27a-7f09-4662-8284-f5127110aeed",
+            "node_e8f54ca6-43b4-433c-b105-aa6c47239bc6",
+            "node_1294ab19-f8ad-4b48-940b-f95c83c634d2"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Clerk-000005_profile",
+      "name": "Clerk-000005_profile",
+      "resource_list": [
+        {
+          "id": "Clerk-000005",
+          "name": "Clerk-000005",
+          "amount": 1,
+          "cost_per_hour": 20,
+          "calendar": "Clerk-000005_profile_calendar",
+          "assignedTasks": [
+            "node_9b51c890-8f84-4994-92cb-56ded3c9ffbc",
+            "node_1294ab19-f8ad-4b48-940b-f95c83c634d2",
+            "node_e30fba04-dbc4-4e70-8ec3-fea48077c7c9",
+            "node_e8f54ca6-43b4-433c-b105-aa6c47239bc6",
+            "node_3410f27a-7f09-4662-8284-f5127110aeed",
+            "node_2aaab0df-1f8c-4bcc-b359-2b0c9561ffbc"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Clerk-000006_profile",
+      "name": "Clerk-000006_profile",
+      "resource_list": [
+        {
+          "id": "Clerk-000006",
+          "name": "Clerk-000006",
+          "amount": 1,
+          "cost_per_hour": 20,
+          "calendar": "Undifferentiated_calendar",
+          "assignedTasks": [
+            "node_e30fba04-dbc4-4e70-8ec3-fea48077c7c9",
+            "node_1294ab19-f8ad-4b48-940b-f95c83c634d2",
+            "node_e8f54ca6-43b4-433c-b105-aa6c47239bc6",
+            "node_9b51c890-8f84-4994-92cb-56ded3c9ffbc",
+            "node_2aaab0df-1f8c-4bcc-b359-2b0c9561ffbc",
+            "node_3410f27a-7f09-4662-8284-f5127110aeed"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Clerk-000007_profile",
+      "name": "Clerk-000007_profile",
+      "resource_list": [
+        {
+          "id": "Clerk-000007",
+          "name": "Clerk-000007",
+          "amount": 1,
+          "cost_per_hour": 20,
+          "calendar": "Clerk-000007_profile_calendar",
+          "assignedTasks": [
+            "node_9b51c890-8f84-4994-92cb-56ded3c9ffbc",
+            "node_1294ab19-f8ad-4b48-940b-f95c83c634d2",
+            "node_e30fba04-dbc4-4e70-8ec3-fea48077c7c9",
+            "node_2aaab0df-1f8c-4bcc-b359-2b0c9561ffbc",
+            "node_3410f27a-7f09-4662-8284-f5127110aeed",
+            "node_e8f54ca6-43b4-433c-b105-aa6c47239bc6"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Clerk-000008_profile",
+      "name": "Clerk-000008_profile",
+      "resource_list": [
+        {
+          "id": "Clerk-000008",
+          "name": "Clerk-000008",
+          "amount": 1,
+          "cost_per_hour": 20,
+          "calendar": "Clerk-000008_profile_calendar",
+          "assignedTasks": [
+            "node_9b51c890-8f84-4994-92cb-56ded3c9ffbc",
+            "node_e30fba04-dbc4-4e70-8ec3-fea48077c7c9",
+            "node_1294ab19-f8ad-4b48-940b-f95c83c634d2",
+            "node_3410f27a-7f09-4662-8284-f5127110aeed",
+            "node_e8f54ca6-43b4-433c-b105-aa6c47239bc6",
+            "node_2aaab0df-1f8c-4bcc-b359-2b0c9561ffbc"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Loan Officer-000001_profile",
+      "name": "Loan Officer-000001_profile",
+      "resource_list": [
+        {
+          "id": "Loan Officer-000001",
+          "name": "Loan Officer-000001",
+          "amount": 1,
+          "cost_per_hour": 20,
+          "calendar": "Undifferentiated_calendar",
+          "assignedTasks": [
+            "node_23971f15-1ed3-4927-998b-2d1989825911",
+            "node_3642830c-a32f-4682-a3ab-e4d1a07a255c"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Loan Officer-000002_profile",
+      "name": "Loan Officer-000002_profile",
+      "resource_list": [
+        {
+          "id": "Loan Officer-000002",
+          "name": "Loan Officer-000002",
+          "amount": 1,
+          "cost_per_hour": 20,
+          "calendar": "Undifferentiated_calendar",
+          "assignedTasks": [
+            "node_3642830c-a32f-4682-a3ab-e4d1a07a255c",
+            "node_23971f15-1ed3-4927-998b-2d1989825911"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Loan Officer-000003_profile",
+      "name": "Loan Officer-000003_profile",
+      "resource_list": [
+        {
+          "id": "Loan Officer-000003",
+          "name": "Loan Officer-000003",
+          "amount": 1,
+          "cost_per_hour": 20,
+          "calendar": "Undifferentiated_calendar",
+          "assignedTasks": [
+            "node_23971f15-1ed3-4927-998b-2d1989825911",
+            "node_3642830c-a32f-4682-a3ab-e4d1a07a255c"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Loan Officer-000004_profile",
+      "name": "Loan Officer-000004_profile",
+      "resource_list": [
+        {
+          "id": "Loan Officer-000004",
+          "name": "Loan Officer-000004",
+          "amount": 1,
+          "cost_per_hour": 20,
+          "calendar": "Undifferentiated_calendar",
+          "assignedTasks": [
+            "node_3642830c-a32f-4682-a3ab-e4d1a07a255c",
+            "node_23971f15-1ed3-4927-998b-2d1989825911"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Senior Officer-000001_profile",
+      "name": "Senior Officer-000001_profile",
+      "resource_list": [
+        {
+          "id": "Senior Officer-000001",
+          "name": "Senior Officer-000001",
+          "amount": 1,
+          "cost_per_hour": 20,
+          "calendar": "Undifferentiated_calendar",
+          "assignedTasks": [
+            "node_14278c16-ac96-4123-8158-4e8a1a853081"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Senior Officer-000002_profile",
+      "name": "Senior Officer-000002_profile",
+      "resource_list": [
+        {
+          "id": "Senior Officer-000002",
+          "name": "Senior Officer-000002",
+          "amount": 1,
+          "cost_per_hour": 20,
+          "calendar": "Undifferentiated_calendar",
+          "assignedTasks": [
+            "node_14278c16-ac96-4123-8158-4e8a1a853081"
+          ]
+        }
+      ]
+    }
+  ],
+  "resource_calendars": [
+    {
+      "id": "Clerk-000001_profile_calendar",
+      "name": "Clerk-000001_profile_calendar",
+      "time_periods": [
+        {
+          "from": "MONDAY",
+          "to": "MONDAY",
+          "beginTime": "09:54:00",
+          "endTime": "10:00:00"
+        },
+        {
+          "from": "MONDAY",
+          "to": "MONDAY",
+          "beginTime": "11:24:00",
+          "endTime": "11:42:00"
+        },
+        {
+          "from": "MONDAY",
+          "to": "MONDAY",
+          "beginTime": "12:18:00",
+          "endTime": "12:36:00"
+        },
+        {
+          "from": "MONDAY",
+          "to": "MONDAY",
+          "beginTime": "14:24:00",
+          "endTime": "14:42:00"
+        },
+        {
+          "from": "TUESDAY",
+          "to": "TUESDAY",
+          "beginTime": "12:54:00",
+          "endTime": "13:00:00"
+        },
+        {
+          "from": "WEDNESDAY",
+          "to": "WEDNESDAY",
+          "beginTime": "09:54:00",
+          "endTime": "10:00:00"
+        },
+        {
+          "from": "WEDNESDAY",
+          "to": "WEDNESDAY",
+          "beginTime": "12:00:00",
+          "endTime": "12:18:00"
+        },
+        {
+          "from": "WEDNESDAY",
+          "to": "WEDNESDAY",
+          "beginTime": "12:54:00",
+          "endTime": "13:00:00"
+        },
+        {
+          "from": "THURSDAY",
+          "to": "THURSDAY",
+          "beginTime": "07:48:00",
+          "endTime": "08:00:00"
+        },
+        {
+          "from": "THURSDAY",
+          "to": "THURSDAY",
+          "beginTime": "12:00:00",
+          "endTime": "12:18:00"
+        },
+        {
+          "from": "THURSDAY",
+          "to": "THURSDAY",
+          "beginTime": "13:48:00",
+          "endTime": "14:00:00"
+        },
+        {
+          "from": "THURSDAY",
+          "to": "THURSDAY",
+          "beginTime": "10:30:00",
+          "endTime": "10:48:00"
+        },
+        {
+          "from": "FRIDAY",
+          "to": "FRIDAY",
+          "beginTime": "14:42:00",
+          "endTime": "15:00:00"
+        }
+      ]
+    },
+    {
+      "id": "Clerk-000003_profile_calendar",
+      "name": "Clerk-000003_profile_calendar",
+      "time_periods": [
+        {
+          "from": "MONDAY",
+          "to": "MONDAY",
+          "beginTime": "10:30:00",
+          "endTime": "10:48:00"
+        },
+        {
+          "from": "MONDAY",
+          "to": "MONDAY",
+          "beginTime": "11:24:00",
+          "endTime": "11:42:00"
+        },
+        {
+          "from": "MONDAY",
+          "to": "MONDAY",
+          "beginTime": "12:36:00",
+          "endTime": "12:54:00"
+        },
+        {
+          "from": "TUESDAY",
+          "to": "TUESDAY",
+          "beginTime": "09:00:00",
+          "endTime": "14:24:00"
+        },
+        {
+          "from": "WEDNESDAY",
+          "to": "WEDNESDAY",
+          "beginTime": "12:18:00",
+          "endTime": "12:36:00"
+        },
+        {
+          "from": "THURSDAY",
+          "to": "THURSDAY",
+          "beginTime": "06:54:00",
+          "endTime": "07:00:00"
+        },
+        {
+          "from": "THURSDAY",
+          "to": "THURSDAY",
+          "beginTime": "10:30:00",
+          "endTime": "10:48:00"
+        },
+        {
+          "from": "FRIDAY",
+          "to": "FRIDAY",
+          "beginTime": "10:48:00",
+          "endTime": "11:00:00"
+        },
+        {
+          "from": "FRIDAY",
+          "to": "FRIDAY",
+          "beginTime": "11:06:00",
+          "endTime": "11:24:00"
+        },
+        {
+          "from": "FRIDAY",
+          "to": "FRIDAY",
+          "beginTime": "12:36:00",
+          "endTime": "12:54:00"
+        }
+      ]
+    },
+    {
+      "id": "Clerk-000004_profile_calendar",
+      "name": "Clerk-000004_profile_calendar",
+      "time_periods": [
+        {
+          "from": "MONDAY",
+          "to": "MONDAY",
+          "beginTime": "12:00:00",
+          "endTime": "12:18:00"
+        },
+        {
+          "from": "MONDAY",
+          "to": "MONDAY",
+          "beginTime": "14:24:00",
+          "endTime": "14:42:00"
+        },
+        {
+          "from": "TUESDAY",
+          "to": "TUESDAY",
+          "beginTime": "10:30:00",
+          "endTime": "10:48:00"
+        },
+        {
+          "from": "TUESDAY",
+          "to": "TUESDAY",
+          "beginTime": "13:48:00",
+          "endTime": "14:00:00"
+        },
+        {
+          "from": "WEDNESDAY",
+          "to": "WEDNESDAY",
+          "beginTime": "07:48:00",
+          "endTime": "08:00:00"
+        },
+        {
+          "from": "THURSDAY",
+          "to": "THURSDAY",
+          "beginTime": "10:12:00",
+          "endTime": "10:30:00"
+        },
+        {
+          "from": "THURSDAY",
+          "to": "THURSDAY",
+          "beginTime": "14:24:00",
+          "endTime": "14:42:00"
+        },
+        {
+          "from": "FRIDAY",
+          "to": "FRIDAY",
+          "beginTime": "10:48:00",
+          "endTime": "11:00:00"
+        },
+        {
+          "from": "FRIDAY",
+          "to": "FRIDAY",
+          "beginTime": "12:00:00",
+          "endTime": "12:36:00"
+        },
+        {
+          "from": "FRIDAY",
+          "to": "FRIDAY",
+          "beginTime": "12:54:00",
+          "endTime": "13:00:00"
+        },
+        {
+          "from": "FRIDAY",
+          "to": "FRIDAY",
+          "beginTime": "13:30:00",
+          "endTime": "13:48:00"
+        },
+        {
+          "from": "FRIDAY",
+          "to": "FRIDAY",
+          "beginTime": "14:24:00",
+          "endTime": "14:42:00"
+        }
+      ]
+    },
+    {
+      "id": "Clerk-000005_profile_calendar",
+      "name": "Clerk-000005_profile_calendar",
+      "time_periods": [
+        {
+          "from": "MONDAY",
+          "to": "MONDAY",
+          "beginTime": "09:18:00",
+          "endTime": "09:36:00"
+        },
+        {
+          "from": "MONDAY",
+          "to": "MONDAY",
+          "beginTime": "10:48:00",
+          "endTime": "11:00:00"
+        },
+        {
+          "from": "MONDAY",
+          "to": "MONDAY",
+          "beginTime": "10:30:00",
+          "endTime": "10:48:00"
+        },
+        {
+          "from": "MONDAY",
+          "to": "MONDAY",
+          "beginTime": "12:54:00",
+          "endTime": "13:00:00"
+        },
+        {
+          "from": "TUESDAY",
+          "to": "TUESDAY",
+          "beginTime": "11:06:00",
+          "endTime": "11:24:00"
+        },
+        {
+          "from": "TUESDAY",
+          "to": "TUESDAY",
+          "beginTime": "12:54:00",
+          "endTime": "13:00:00"
+        },
+        {
+          "from": "TUESDAY",
+          "to": "TUESDAY",
+          "beginTime": "09:54:00",
+          "endTime": "10:00:00"
+        },
+        {
+          "from": "WEDNESDAY",
+          "to": "WEDNESDAY",
+          "beginTime": "09:18:00",
+          "endTime": "09:36:00"
+        },
+        {
+          "from": "THURSDAY",
+          "to": "THURSDAY",
+          "beginTime": "08:06:00",
+          "endTime": "14:24:00"
+        },
+        {
+          "from": "FRIDAY",
+          "to": "FRIDAY",
+          "beginTime": "12:54:00",
+          "endTime": "13:00:00"
+        },
+        {
+          "from": "FRIDAY",
+          "to": "FRIDAY",
+          "beginTime": "10:48:00",
+          "endTime": "11:00:00"
+        }
+      ]
+    },
+    {
+      "id": "Clerk-000007_profile_calendar",
+      "name": "Clerk-000007_profile_calendar",
+      "time_periods": [
+        {
+          "from": "MONDAY",
+          "to": "MONDAY",
+          "beginTime": "08:24:00",
+          "endTime": "08:42:00"
+        },
+        {
+          "from": "MONDAY",
+          "to": "MONDAY",
+          "beginTime": "09:54:00",
+          "endTime": "10:00:00"
+        },
+        {
+          "from": "MONDAY",
+          "to": "MONDAY",
+          "beginTime": "10:30:00",
+          "endTime": "10:48:00"
+        },
+        {
+          "from": "MONDAY",
+          "to": "MONDAY",
+          "beginTime": "13:30:00",
+          "endTime": "13:48:00"
+        },
+        {
+          "from": "TUESDAY",
+          "to": "TUESDAY",
+          "beginTime": "14:06:00",
+          "endTime": "15:18:00"
+        },
+        {
+          "from": "WEDNESDAY",
+          "to": "WEDNESDAY",
+          "beginTime": "13:30:00",
+          "endTime": "13:48:00"
+        },
+        {
+          "from": "WEDNESDAY",
+          "to": "WEDNESDAY",
+          "beginTime": "14:24:00",
+          "endTime": "14:42:00"
+        },
+        {
+          "from": "THURSDAY",
+          "to": "THURSDAY",
+          "beginTime": "09:00:00",
+          "endTime": "09:18:00"
+        },
+        {
+          "from": "THURSDAY",
+          "to": "THURSDAY",
+          "beginTime": "11:24:00",
+          "endTime": "11:42:00"
+        },
+        {
+          "from": "THURSDAY",
+          "to": "THURSDAY",
+          "beginTime": "13:30:00",
+          "endTime": "13:48:00"
+        },
+        {
+          "from": "FRIDAY",
+          "to": "FRIDAY",
+          "beginTime": "07:48:00",
+          "endTime": "08:00:00"
+        },
+        {
+          "from": "FRIDAY",
+          "to": "FRIDAY",
+          "beginTime": "09:18:00",
+          "endTime": "09:36:00"
+        },
+        {
+          "from": "FRIDAY",
+          "to": "FRIDAY",
+          "beginTime": "10:48:00",
+          "endTime": "11:00:00"
+        },
+        {
+          "from": "FRIDAY",
+          "to": "FRIDAY",
+          "beginTime": "13:30:00",
+          "endTime": "13:48:00"
+        }
+      ]
+    },
+    {
+      "id": "Clerk-000008_profile_calendar",
+      "name": "Clerk-000008_profile_calendar",
+      "time_periods": [
+        {
+          "from": "MONDAY",
+          "to": "MONDAY",
+          "beginTime": "12:00:00",
+          "endTime": "12:18:00"
+        },
+        {
+          "from": "MONDAY",
+          "to": "MONDAY",
+          "beginTime": "12:54:00",
+          "endTime": "13:00:00"
+        },
+        {
+          "from": "TUESDAY",
+          "to": "TUESDAY",
+          "beginTime": "13:30:00",
+          "endTime": "13:48:00"
+        },
+        {
+          "from": "WEDNESDAY",
+          "to": "WEDNESDAY",
+          "beginTime": "12:00:00",
+          "endTime": "12:18:00"
+        },
+        {
+          "from": "THURSDAY",
+          "to": "THURSDAY",
+          "beginTime": "10:30:00",
+          "endTime": "10:48:00"
+        },
+        {
+          "from": "THURSDAY",
+          "to": "THURSDAY",
+          "beginTime": "12:54:00",
+          "endTime": "13:00:00"
+        },
+        {
+          "from": "THURSDAY",
+          "to": "THURSDAY",
+          "beginTime": "13:30:00",
+          "endTime": "13:48:00"
+        },
+        {
+          "from": "THURSDAY",
+          "to": "THURSDAY",
+          "beginTime": "14:24:00",
+          "endTime": "14:42:00"
+        },
+        {
+          "from": "FRIDAY",
+          "to": "FRIDAY",
+          "beginTime": "12:54:00",
+          "endTime": "13:00:00"
+        },
+        {
+          "from": "FRIDAY",
+          "to": "FRIDAY",
+          "beginTime": "09:54:00",
+          "endTime": "10:00:00"
+        },
+        {
+          "from": "FRIDAY",
+          "to": "FRIDAY",
+          "beginTime": "14:24:00",
+          "endTime": "14:42:00"
+        }
+      ]
+    },
+    {
+      "id": "Undifferentiated_calendar",
+      "name": "Undifferentiated_calendar",
+      "time_periods": [
+        {
+          "from": "MONDAY",
+          "to": "MONDAY",
+          "beginTime": "07:48:00",
+          "endTime": "08:00:00"
+        },
+        {
+          "from": "MONDAY",
+          "to": "MONDAY",
+          "beginTime": "09:00:00",
+          "endTime": "14:42:00"
+        },
+        {
+          "from": "TUESDAY",
+          "to": "TUESDAY",
+          "beginTime": "07:48:00",
+          "endTime": "08:00:00"
+        },
+        {
+          "from": "TUESDAY",
+          "to": "TUESDAY",
+          "beginTime": "09:00:00",
+          "endTime": "14:42:00"
+        },
+        {
+          "from": "WEDNESDAY",
+          "to": "WEDNESDAY",
+          "beginTime": "07:48:00",
+          "endTime": "08:00:00"
+        },
+        {
+          "from": "WEDNESDAY",
+          "to": "WEDNESDAY",
+          "beginTime": "09:00:00",
+          "endTime": "12:54:00"
+        },
+        {
+          "from": "WEDNESDAY",
+          "to": "WEDNESDAY",
+          "beginTime": "13:12:00",
+          "endTime": "13:48:00"
+        },
+        {
+          "from": "WEDNESDAY",
+          "to": "WEDNESDAY",
+          "beginTime": "14:42:00",
+          "endTime": "15:00:00"
+        },
+        {
+          "from": "WEDNESDAY",
+          "to": "WEDNESDAY",
+          "beginTime": "14:24:00",
+          "endTime": "14:42:00"
+        },
+        {
+          "from": "THURSDAY",
+          "to": "THURSDAY",
+          "beginTime": "07:48:00",
+          "endTime": "08:00:00"
+        },
+        {
+          "from": "THURSDAY",
+          "to": "THURSDAY",
+          "beginTime": "08:06:00",
+          "endTime": "12:36:00"
+        },
+        {
+          "from": "THURSDAY",
+          "to": "THURSDAY",
+          "beginTime": "12:54:00",
+          "endTime": "13:00:00"
+        },
+        {
+          "from": "THURSDAY",
+          "to": "THURSDAY",
+          "beginTime": "13:12:00",
+          "endTime": "13:48:00"
+        },
+        {
+          "from": "THURSDAY",
+          "to": "THURSDAY",
+          "beginTime": "14:42:00",
+          "endTime": "15:00:00"
+        },
+        {
+          "from": "THURSDAY",
+          "to": "THURSDAY",
+          "beginTime": "14:24:00",
+          "endTime": "14:42:00"
+        },
+        {
+          "from": "FRIDAY",
+          "to": "FRIDAY",
+          "beginTime": "07:48:00",
+          "endTime": "08:00:00"
+        },
+        {
+          "from": "FRIDAY",
+          "to": "FRIDAY",
+          "beginTime": "08:06:00",
+          "endTime": "12:54:00"
+        },
+        {
+          "from": "FRIDAY",
+          "to": "FRIDAY",
+          "beginTime": "13:12:00",
+          "endTime": "13:48:00"
+        },
+        {
+          "from": "FRIDAY",
+          "to": "FRIDAY",
+          "beginTime": "14:24:00",
+          "endTime": "14:42:00"
+        }
+      ]
+    }
+  ],
+  "task_resource_distribution": [
+    {
+      "task_id": "node_318bf1c1-b10d-4d30-93ce-7c6d0fda7224",
+      "resources": [
+        {
+          "resource_id": "AML Investigator-000001",
+          "distribution_name": "gamma",
+          "distribution_params": [
+            {
+              "value": 1211.9671364367587
+            },
+            {
+              "value": 2066744.6745007234
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 9385.919
+            }
+          ]
+        },
+        {
+          "resource_id": "AML Investigator-000002",
+          "distribution_name": "gamma",
+          "distribution_params": [
+            {
+              "value": 1324.6237430242911
+            },
+            {
+              "value": 2254043.641190708
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 8800.315
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "task_id": "node_a3178f82-fc44-4d26-a94a-86e47728040a",
+      "resources": [
+        {
+          "resource_id": "Applicant-000001",
+          "distribution_name": "norm",
+          "distribution_params": [
+            {
+              "value": 2659.0497686574067
+            },
+            {
+              "value": 1257.9504068540755
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 3808.4010009999984
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "task_id": "node_bda3ed60-dcb4-4207-8275-8b09baded8c7",
+      "resources": [
+        {
+          "resource_id": "Appraiser-000001",
+          "distribution_name": "gamma",
+          "distribution_params": [
+            {
+              "value": 1330.4831660909088
+            },
+            {
+              "value": 2507061.767731942
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 9938.551
+            }
+          ]
+        },
+        {
+          "resource_id": "Appraiser-000002",
+          "distribution_name": "gamma",
+          "distribution_params": [
+            {
+              "value": 1300.9450588076916
+            },
+            {
+              "value": 2137630.4234247375
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 10329.807
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "task_id": "node_e8f54ca6-43b4-433c-b105-aa6c47239bc6",
+      "resources": [
+        {
+          "resource_id": "Clerk-000001",
+          "distribution_name": "lognorm",
+          "distribution_params": [
+            {
+              "value": 71.63964289285715
+            },
+            {
+              "value": 15202.887636612475
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 300.0
+            }
+          ]
+        },
+        {
+          "resource_id": "Clerk-000002",
+          "distribution_name": "gamma",
+          "distribution_params": [
+            {
+              "value": 223.56186670000002
+            },
+            {
+              "value": 25129.294515278107
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 720.0000010000003
+            }
+          ]
+        },
+        {
+          "resource_id": "Clerk-000003",
+          "distribution_name": "gamma",
+          "distribution_params": [
+            {
+              "value": 50.354032290322586
+            },
+            {
+              "value": 10919.95006755676
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 300.0
+            }
+          ]
+        },
+        {
+          "resource_id": "Clerk-000004",
+          "distribution_name": "gamma",
+          "distribution_params": [
+            {
+              "value": 43.19285714285714
+            },
+            {
+              "value": 10995.464591836739
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 300.0
+            }
+          ]
+        },
+        {
+          "resource_id": "Clerk-000005",
+          "distribution_name": "lognorm",
+          "distribution_params": [
+            {
+              "value": 17.08913888888889
+            },
+            {
+              "value": 3958.6294473973758
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 300.0
+            }
+          ]
+        },
+        {
+          "resource_id": "Clerk-000006",
+          "distribution_name": "norm",
+          "distribution_params": [
+            {
+              "value": 207.48403125
+            },
+            {
+              "value": 137.38306822996884
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 300.0
+            }
+          ]
+        },
+        {
+          "resource_id": "Clerk-000007",
+          "distribution_name": "gamma",
+          "distribution_params": [
+            {
+              "value": 78.10603448275862
+            },
+            {
+              "value": 14371.179726309156
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 300.0
+            }
+          ]
+        },
+        {
+          "resource_id": "Clerk-000008",
+          "distribution_name": "gamma",
+          "distribution_params": [
+            {
+              "value": 31.5055625
+            },
+            {
+              "value": 7810.602021683595
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 300.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "task_id": "node_1294ab19-f8ad-4b48-940b-f95c83c634d2",
+      "resources": [
+        {
+          "resource_id": "Clerk-000001",
+          "distribution_name": "gamma",
+          "distribution_params": [
+            {
+              "value": 55.846047619047624
+            },
+            {
+              "value": 12070.29828604535
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 300.0
+            }
+          ]
+        },
+        {
+          "resource_id": "Clerk-000002",
+          "distribution_name": "norm",
+          "distribution_params": [
+            {
+              "value": 207.1638095238095
+            },
+            {
+              "value": 133.94307393143484
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 300.0
+            }
+          ]
+        },
+        {
+          "resource_id": "Clerk-000003",
+          "distribution_name": "gamma",
+          "distribution_params": [
+            {
+              "value": 67.98471739130434
+            },
+            {
+              "value": 15295.567901420136
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 300.0
+            }
+          ]
+        },
+        {
+          "resource_id": "Clerk-000004",
+          "distribution_name": "gamma",
+          "distribution_params": [
+            {
+              "value": 52.41335294117647
+            },
+            {
+              "value": 12128.08671752249
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 300.0
+            }
+          ]
+        },
+        {
+          "resource_id": "Clerk-000005",
+          "distribution_name": "gamma",
+          "distribution_params": [
+            {
+              "value": 66.51908888888889
+            },
+            {
+              "value": 14939.224700169878
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 300.0
+            }
+          ]
+        },
+        {
+          "resource_id": "Clerk-000006",
+          "distribution_name": "norm",
+          "distribution_params": [
+            {
+              "value": 195.50687276363638
+            },
+            {
+              "value": 159.08637426951333
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 720.0000010000003
+            }
+          ]
+        },
+        {
+          "resource_id": "Clerk-000007",
+          "distribution_name": "gamma",
+          "distribution_params": [
+            {
+              "value": 68.16938302127646
+            },
+            {
+              "value": 14422.070095626172
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 300.0
+            }
+          ]
+        },
+        {
+          "resource_id": "Clerk-000008",
+          "distribution_name": "fix",
+          "distribution_params": [
+            {
+              "value": 0.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "task_id": "node_9b51c890-8f84-4994-92cb-56ded3c9ffbc",
+      "resources": [
+        {
+          "resource_id": "Clerk-000001",
+          "distribution_name": "gamma",
+          "distribution_params": [
+            {
+              "value": 67.82194594594596
+            },
+            {
+              "value": 40414.79898978087
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 1080.0000000000005
+            }
+          ]
+        },
+        {
+          "resource_id": "Clerk-000002",
+          "distribution_name": "lognorm",
+          "distribution_params": [
+            {
+              "value": 831.2300221102936
+            },
+            {
+              "value": 813354.8217528067
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 4417.937
+            }
+          ]
+        },
+        {
+          "resource_id": "Clerk-000003",
+          "distribution_name": "gamma",
+          "distribution_params": [
+            {
+              "value": 290.68906107633586
+            },
+            {
+              "value": 718442.2005393598
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 6028.41
+            }
+          ]
+        },
+        {
+          "resource_id": "Clerk-000004",
+          "distribution_name": "gamma",
+          "distribution_params": [
+            {
+              "value": 102.87393963087224
+            },
+            {
+              "value": 93709.59896560859
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 2160.0
+            }
+          ]
+        },
+        {
+          "resource_id": "Clerk-000005",
+          "distribution_name": "gamma",
+          "distribution_params": [
+            {
+              "value": 247.2080136190476
+            },
+            {
+              "value": 369668.1038369058
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 4242.764
+            }
+          ]
+        },
+        {
+          "resource_id": "Clerk-000006",
+          "distribution_name": "expon",
+          "distribution_params": [
+            {
+              "value": 766.3186460353982
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 6228.527
+            }
+          ]
+        },
+        {
+          "resource_id": "Clerk-000007",
+          "distribution_name": "gamma",
+          "distribution_params": [
+            {
+              "value": 177.7661560425533
+            },
+            {
+              "value": 113134.07472598233
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 1541.65
+            }
+          ]
+        },
+        {
+          "resource_id": "Clerk-000008",
+          "distribution_name": "gamma",
+          "distribution_params": [
+            {
+              "value": 80.72653847552448
+            },
+            {
+              "value": 57307.20218597644
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 1080.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "task_id": "node_e30fba04-dbc4-4e70-8ec3-fea48077c7c9",
+      "resources": [
+        {
+          "resource_id": "Clerk-000001",
+          "distribution_name": "gamma",
+          "distribution_params": [
+            {
+              "value": 94.72948785365841
+            },
+            {
+              "value": 55098.00410593831
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 1080.0
+            }
+          ]
+        },
+        {
+          "resource_id": "Clerk-000002",
+          "distribution_name": "expon",
+          "distribution_params": [
+            {
+              "value": 1188.3257620079362
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 6739.888
+            }
+          ]
+        },
+        {
+          "resource_id": "Clerk-000003",
+          "distribution_name": "gamma",
+          "distribution_params": [
+            {
+              "value": 425.32874583050875
+            },
+            {
+              "value": 1186464.286248705
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 7125.926
+            }
+          ]
+        },
+        {
+          "resource_id": "Clerk-000004",
+          "distribution_name": "gamma",
+          "distribution_params": [
+            {
+              "value": 145.8637025950415
+            },
+            {
+              "value": 86961.95092388235
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 1080.0000010000003
+            }
+          ]
+        },
+        {
+          "resource_id": "Clerk-000005",
+          "distribution_name": "gamma",
+          "distribution_params": [
+            {
+              "value": 273.54389089915946
+            },
+            {
+              "value": 629760.3811931245
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 6736.76
+            }
+          ]
+        },
+        {
+          "resource_id": "Clerk-000006",
+          "distribution_name": "gamma",
+          "distribution_params": [
+            {
+              "value": 1352.7958149111107
+            },
+            {
+              "value": 2380257.7264454667
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 8666.607
+            }
+          ]
+        },
+        {
+          "resource_id": "Clerk-000007",
+          "distribution_name": "gamma",
+          "distribution_params": [
+            {
+              "value": 151.58063283593754
+            },
+            {
+              "value": 113655.92956154887
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 2160.0
+            }
+          ]
+        },
+        {
+          "resource_id": "Clerk-000008",
+          "distribution_name": "gamma",
+          "distribution_params": [
+            {
+              "value": 105.65923858461416
+            },
+            {
+              "value": 66459.25265378112
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 1080.0000000000002
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "task_id": "node_3410f27a-7f09-4662-8284-f5127110aeed",
+      "resources": [
+        {
+          "resource_id": "Clerk-000001",
+          "distribution_name": "fix",
+          "distribution_params": [
+            {
+              "value": 0.0
+            }
+          ]
+        },
+        {
+          "resource_id": "Clerk-000002",
+          "distribution_name": "uniform",
+          "distribution_params": [
+            {
+              "value": 0.0
+            },
+            {
+              "value": 600.0
+            }
+          ]
+        },
+        {
+          "resource_id": "Clerk-000003",
+          "distribution_name": "gamma",
+          "distribution_params": [
+            {
+              "value": 136.55828333333332
+            },
+            {
+              "value": 59835.85998013641
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 600.0
+            }
+          ]
+        },
+        {
+          "resource_id": "Clerk-000004",
+          "distribution_name": "gamma",
+          "distribution_params": [
+            {
+              "value": 103.39685108510639
+            },
+            {
+              "value": 40219.16842504604
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 600.0
+            }
+          ]
+        },
+        {
+          "resource_id": "Clerk-000005",
+          "distribution_name": "gamma",
+          "distribution_params": [
+            {
+              "value": 134.60586363636364
+            },
+            {
+              "value": 58683.632811163225
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 600.0
+            }
+          ]
+        },
+        {
+          "resource_id": "Clerk-000006",
+          "distribution_name": "norm",
+          "distribution_params": [
+            {
+              "value": 420.7180909272727
+            },
+            {
+              "value": 264.5314860532626
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 720.0000010000003
+            }
+          ]
+        },
+        {
+          "resource_id": "Clerk-000007",
+          "distribution_name": "gamma",
+          "distribution_params": [
+            {
+              "value": 60.682437562499864
+            },
+            {
+              "value": 25947.52726307747
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 600.0
+            }
+          ]
+        },
+        {
+          "resource_id": "Clerk-000008",
+          "distribution_name": "gamma",
+          "distribution_params": [
+            {
+              "value": 85.45685365853657
+            },
+            {
+              "value": 37523.38531046639
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 600.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "task_id": "node_2aaab0df-1f8c-4bcc-b359-2b0c9561ffbc",
+      "resources": [
+        {
+          "resource_id": "Clerk-000001",
+          "distribution_name": "gamma",
+          "distribution_params": [
+            {
+              "value": 33.1479375
+            },
+            {
+              "value": 7843.023907558594
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 300.0
+            }
+          ]
+        },
+        {
+          "resource_id": "Clerk-000002",
+          "distribution_name": "norm",
+          "distribution_params": [
+            {
+              "value": 217.84105555555556
+            },
+            {
+              "value": 122.2846197862785
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 300.0
+            }
+          ]
+        },
+        {
+          "resource_id": "Clerk-000003",
+          "distribution_name": "gamma",
+          "distribution_params": [
+            {
+              "value": 65.21849999999999
+            },
+            {
+              "value": 14018.874680249999
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 300.0
+            }
+          ]
+        },
+        {
+          "resource_id": "Clerk-000004",
+          "distribution_name": "gamma",
+          "distribution_params": [
+            {
+              "value": 46.15384615384615
+            },
+            {
+              "value": 11715.97633136094
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 300.0
+            }
+          ]
+        },
+        {
+          "resource_id": "Clerk-000005",
+          "distribution_name": "gamma",
+          "distribution_params": [
+            {
+              "value": 37.50000006250002
+            },
+            {
+              "value": 9843.749995312497
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 300.0
+            }
+          ]
+        },
+        {
+          "resource_id": "Clerk-000006",
+          "distribution_name": "norm",
+          "distribution_params": [
+            {
+              "value": 247.82742857142856
+            },
+            {
+              "value": 106.53659737500958
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 300.0
+            }
+          ]
+        },
+        {
+          "resource_id": "Clerk-000007",
+          "distribution_name": "gamma",
+          "distribution_params": [
+            {
+              "value": 83.72954545454546
+            },
+            {
+              "value": 17575.004183884295
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 300.0
+            }
+          ]
+        },
+        {
+          "resource_id": "Clerk-000008",
+          "distribution_name": "expon",
+          "distribution_params": [
+            {
+              "value": 60.0
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 300.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "task_id": "node_23971f15-1ed3-4927-998b-2d1989825911",
+      "resources": [
+        {
+          "resource_id": "Loan Officer-000001",
+          "distribution_name": "norm",
+          "distribution_params": [
+            {
+              "value": 853.4028018189653
+            },
+            {
+              "value": 496.4875077694428
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 1495.4570010000025
+            }
+          ]
+        },
+        {
+          "resource_id": "Loan Officer-000002",
+          "distribution_name": "norm",
+          "distribution_params": [
+            {
+              "value": 885.4449887358487
+            },
+            {
+              "value": 471.5095392471232
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 1200.0
+            }
+          ]
+        },
+        {
+          "resource_id": "Loan Officer-000003",
+          "distribution_name": "norm",
+          "distribution_params": [
+            {
+              "value": 873.4933706679537
+            },
+            {
+              "value": 486.954265989376
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 1200.0
+            }
+          ]
+        },
+        {
+          "resource_id": "Loan Officer-000004",
+          "distribution_name": "norm",
+          "distribution_params": [
+            {
+              "value": 852.6802787459014
+            },
+            {
+              "value": 487.44995070260194
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 1394.731001
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "task_id": "node_3642830c-a32f-4682-a3ab-e4d1a07a255c",
+      "resources": [
+        {
+          "resource_id": "Loan Officer-000001",
+          "distribution_name": "lognorm",
+          "distribution_params": [
+            {
+              "value": 418.92250859999996
+            },
+            {
+              "value": 250458.62082472473
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 2198.851
+            }
+          ]
+        },
+        {
+          "resource_id": "Loan Officer-000002",
+          "distribution_name": "gamma",
+          "distribution_params": [
+            {
+              "value": 378.1026805763888
+            },
+            {
+              "value": 194921.15972285197
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 2734.817
+            }
+          ]
+        },
+        {
+          "resource_id": "Loan Officer-000003",
+          "distribution_name": "gamma",
+          "distribution_params": [
+            {
+              "value": 494.7417080729926
+            },
+            {
+              "value": 369161.679639368
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 3163.587
+            }
+          ]
+        },
+        {
+          "resource_id": "Loan Officer-000004",
+          "distribution_name": "gamma",
+          "distribution_params": [
+            {
+              "value": 419.6217857532465
+            },
+            {
+              "value": 228065.66448044448
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 2812.355
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "task_id": "node_14278c16-ac96-4123-8158-4e8a1a853081",
+      "resources": [
+        {
+          "resource_id": "Senior Officer-000001",
+          "distribution_name": "uniform",
+          "distribution_params": [
+            {
+              "value": 0.0
+            },
+            {
+              "value": 1526.067001000003
+            }
+          ]
+        },
+        {
+          "resource_id": "Senior Officer-000002",
+          "distribution_name": "norm",
+          "distribution_params": [
+            {
+              "value": 878.4471410229509
+            },
+            {
+              "value": 467.51737399013797
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "value": 1200.0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

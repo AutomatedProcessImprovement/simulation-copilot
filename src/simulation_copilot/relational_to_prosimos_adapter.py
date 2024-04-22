@@ -1,6 +1,5 @@
-"""Prosimos Relational Model to Prosimos Model adapter.
-
-It converts relational types to the Prosimos format.
+"""
+Relational-to-Prosimos adapter converts the relational simulation model to the original Prosimos format.
 """
 
 from pix_framework.discovery.case_arrival import CaseArrivalModel as PIXCaseArrivalModel
