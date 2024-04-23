@@ -37,6 +37,14 @@ class TestProsimosToRelationalAdapter(unittest.TestCase):
         self.assertTrue(len(relational_model.resource_profiles) == len(model["resource_profiles"]))
         self.assertTrue(len(relational_model.gateways) == len(model["gateway_branching_probabilities"]))
         self.assertTrue(relational_model.case_arrival is not None)
+        self.assertEqual(
+            relational_model.case_arrival.inter_arrival_distribution.name,
+            model["arrival_time_distribution"]["distribution_name"],
+        )
+        self.assertEqual(
+            len(relational_model.case_arrival.inter_arrival_distribution.parameters),
+            len(model["arrival_time_distribution"]["distribution_params"]),
+        )
 
 
 if __name__ == "__main__":
