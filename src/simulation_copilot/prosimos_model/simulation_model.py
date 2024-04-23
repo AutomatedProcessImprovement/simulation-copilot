@@ -41,6 +41,7 @@ class BPSModel:
     """
     BPS model class containing all the components to simulate a business process model.
     """
+
     # pylint: disable=too-many-instance-attributes
 
     process_model: Optional[Path] = None  # A path to the model for now, in future the loaded BPMN model
@@ -108,10 +109,13 @@ class BPSModel:
             calendar_granularity=calendar_granularity,
         )
 
-    def to_prosimos_format(self) -> dict:
+    def to_prosimos_format(self, process_model: Optional[Path] = None) -> dict:
         """
         Converts the BPSModel object to the Prosimos dictionary which can be saved as JSON file for Prosimos use.
         """
+        if process_model:
+            self.process_model = process_model
+
         # Get map activity label -> node ID
         activity_label_to_id = get_activities_ids_by_name_from_bpmn(self.process_model)
 

@@ -103,10 +103,10 @@ def _resource_model_to_pix(resource_profiles: list[ResourceProfile], service: Pr
                     activity_resource_distribution, resource.id, service
                 )
                 activity = service.get_activity(activity_resource_distribution.activity_id)
-                if activity.id not in activity_resource_distributions_map:
-                    activity_resource_distributions_map[activity.id] = [resource_distribution]
+                if activity.bpmn_id not in activity_resource_distributions_map:  # Prosimos simulator relies on BPMN ID
+                    activity_resource_distributions_map[activity.bpmn_id] = [resource_distribution]
                 else:
-                    activity_resource_distributions_map[activity.id].append(resource_distribution)
+                    activity_resource_distributions_map[activity.bpmn_id].append(resource_distribution)
                     # finish collecting resource profiles
         pix_resource_profiles.append(
             PIXResourceProfile(
@@ -154,7 +154,7 @@ def _case_arrival_to_pix(calendar: Calendar, distribution: Distribution) -> PIXC
 
 def _calendar_to_pix(calendar: Calendar) -> PIXCalendar:
     d = {
-        "id": calendar.id,
+        "id": str(calendar.id),  # PIX framework expects string IDs rather than integers
         "time_periods": [
             {
                 "from": interval.start_day.value.upper(),

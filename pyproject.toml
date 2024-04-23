@@ -17,3 +17,4 @@ Homepage = "https://github.com/AutomatedProcessImprovement/simulation-copilot"
 [tool.pylint.'MESSAGES CONTROL']
 max-line-length = 120
 disable = ""
+good-names = "i,j,k,ex,Run,_,f,d"

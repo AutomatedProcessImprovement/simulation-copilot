@@ -113,6 +113,13 @@ class TestRelationalToProsimosAdapter(unittest.TestCase):
         self.assertTrue(bps_model.resource_model.resource_profiles[0].resources[0].amount == 1)
         self.assertTrue(bps_model.resource_model.resource_profiles[0].resources[1].amount == 2)
         self.assertTrue(len(bps_model.resource_model.activity_resource_distributions) == 2)
+        self.assertTrue(
+            bps_model.resource_model.resource_profiles[0].resources[0].calendar_id == str(calendar.id),
+            f"Expected {bps_model.resource_model.resource_profiles[0].resources[0].calendar_id} "
+            f"to be equal to {calendar.id}, "
+            f"type {type(bps_model.resource_model.resource_profiles[0].resources[0].calendar_id)} == "
+            f"{type(calendar.id)}",
+        )
 
         self.service.delete_simulation_model(sql_model.id)
 

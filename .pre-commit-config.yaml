@@ -18,3 +18,4 @@ repos:
         types: [python]
         args:
           - "-rn"
+          - "--rcfile=pyproject.toml"
