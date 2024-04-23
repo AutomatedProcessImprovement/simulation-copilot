@@ -26,7 +26,7 @@ A prototype to explore a possibility to handle simulation scenario generation us
 
 - [x] Provide templated SQL-based tools instead of using raw SQL.
 - [x] Make Anthropic Claude3 work with tools without LangChain on simple queries.
-- [ ] More complex test:
+- [X] More complex test:
   - (a) provide initial simulation model before asking LLM;
   - (b) then comes the user's request to change something in the model;
   - (c) dump the new model ready for Prosimos simulation.
@@ -73,6 +73,134 @@ Run the tests with the following command:
 ```shell
 TESTING="true" python -m unittest discover -v
 ```
+
+## SQL approach with Antropic's Claude 3 OPUS: complex workflow
+
+- provide initial simulation model
+- run Prosimos simulation to get the baseline performance
+- ask LLM to modify resource amount
+- dump the new model
+- run Prosimos simulation to get the updated performance
+
+<details><summary>See full log</summary>
+
+```shell
+USER:
+  What if we increase the amount of resource named 'Sean Manney' to 10?
+
+ASSISTANT [stop_reason=tool_use]:
+  <thinking>
+  The relevant tool to answer this request is change_resource_amount(). It requires two parameters:
+  - resource_id: The ID of the resource to change the amount for. This is not directly provided, but we can infer it by looking up the resource ID for the resource named 'Sean Manney' using the get_resource_id_by_name() tool.
+  - amount: The new amount is directly provided by the user as 10.
+
+  So we have enough information to make the change_resource_amount() call after first looking up the resource ID.
+  </thinking>
+  [wants to run 'get_resource_id_by_name' with input {'name': 'Sean Manney'}]
+* [running name='get_resource_id_by_name' description='get_resource_id_by_name(name: str) -> int - Returns the ID of the resource with the given name.' args_schema=<class 'pydantic.v1.main.get_resource_id_by_nameSchema'> func=<function get_resource_id_by_name at 0x153d19160> on ToolUseBlock(id='toolu_015H4F6bRH1dpyDuDcoQW7P1', input={'name': 'Sean Manney'}, name='get_resource_id_by_name', type='tool_use')]
+
+USER:
+  19
+
+ASSISTANT [stop_reason=tool_use]:
+  [wants to run 'change_resource_amount' with input {'resource_id': 19, 'amount': 10}]
+* [running name='change_resource_amount' description='change_resource_amount(resource_id: int, amount: int) -> bool - Changes the amount of a resource in the simulation model.\n    Returns True if the operation was successful.' args_schema=<class 'simulation_copilot.tools.prosimos_relational_tools.ChangeResourceAmountArgs'> func=<function change_resource_amount at 0x153d21c10> on ToolUseBlock(id='toolu_01Kd8UzGUeDusWUyU6QAKgDN', input={'resource_id': 19, 'amount': 10}, name='change_resource_amount', type='tool_use')]
+
+USER:
+  True
+
+ASSISTANT [stop_reason=end_turn]:
+  The amount of the resource 'Sean Manney' has been increased to 10 in the simulation model.
+
+
+Initial performance
+-------------------
+started_at,2024-04-23 16:54:33.972210+00:00
+completed_at,2024-06-10 23:51:00.749730+00:00
+""
+Resource Utilization
+Resource ID,Resource name,Utilization Ratio,Tasks Allocated,Worked Time (seconds),Available Time (seconds),Pool ID,Pool name
+28,Kim Passa,0.0592278503162938,84,87883.87027426313,1483826.7775199998,2,Undifferentiated_resource_profile
+29,Immanuel Karagianni,0.10212655326127447,75,151538.11442490152,1483826.7775199998,2,Undifferentiated_resource_profile
+30,Karel de Groot,0.06484034709045274,84,96211.84327650478,1483826.7775199998,2,Undifferentiated_resource_profile
+31,Alberto Duport,0.16695725011197418,75,247735.63841725126,1483826.7775199998,2,Undifferentiated_resource_profile
+32,Fjodor Kowalski,0.1501716089919274,75,222828.65464548508,1483826.7775199998,2,Undifferentiated_resource_profile
+33,Esmana Liubiata,0.04633777406169804,88,68757.22996341923,1483826.7775199998,2,Undifferentiated_resource_profile
+34,Christian Francois,0.1597843959396007,73,237092.36532503745,1483826.7775199998,2,Undifferentiated_resource_profile
+35,Magdalena Predutta,0.05788178160138748,87,85886.5374707032,1483826.7775199998,2,Undifferentiated_resource_profile
+36,Francois de Perrier,0.1588011073884094,81,235633.33544275098,1483826.7775199998,2,Undifferentiated_resource_profile
+37,Tesca Lobes,0.06355229412430712,80,94300.59579447383,1483826.7775199998,2,Undifferentiated_resource_profile
+38,Maris Freeman,0.1277761866771873,74,189597.72732100473,1483826.7775199998,2,Undifferentiated_resource_profile
+39,Heinz Gutschmidt,0.14078132801255677,78,208895.1042798582,1483826.7775199998,2,Undifferentiated_resource_profile
+40,Penn Osterwalder,0.1216091638488401,75,180446.93371072607,1483826.7775199998,2,Undifferentiated_resource_profile
+41,Nico Ojenbeer,0.14264104145352968,76,211654.59688208764,1483826.7775199998,2,Undifferentiated_resource_profile
+42,Anne Olwada,0.27574286642604673,59,409154.64891308866,1483826.7775199998,2,Undifferentiated_resource_profile
+43,Francis Odell,0.14244158504111898,79,211358.63811640456,1483826.7775199998,2,Undifferentiated_resource_profile
+44,Miu Hanwan,0.1191599922686022,75,176812.7873372281,1483826.7775199998,2,Undifferentiated_resource_profile
+45,Anna Kaufmann,0.08504874085021838,79,126197.5990679131,1483826.7775199998,2,Undifferentiated_resource_profile
+46,Sean Manney,0.1103857846265087,78,163793.38308636914,1483826.7775199998,2,Undifferentiated_resource_profile
+47,Elvira Lores,0.13284626903224964,70,197120.8512836779,1483826.7775199998,2,Undifferentiated_resource_profile
+48,Clement Duchot,0.0968695335303159,81,143737.6077781542,1483826.7775199998,2,Undifferentiated_resource_profile
+49,Esmeralda Clay,0.10106242521489937,76,149959.1327349801,1483826.7775199998,2,Undifferentiated_resource_profile
+50,Carmen Finacse,0.07316186160782932,83,108559.52934690958,1483826.7775199998,2,Undifferentiated_resource_profile
+51,Karen Clarens,0.25433508972803537,74,377389.2166014107,1483826.7775199998,2,Undifferentiated_resource_profile
+52,Kiu Kan,0.12073414500653105,78,179148.55732167335,1483826.7775199998,2,Undifferentiated_resource_profile
+53,Karalda Nimwada,0.11008129567552975,87,163341.5742274476,1483826.7775199998,2,Undifferentiated_resource_profile
+""
+Overall Scenario Statistics
+KPI,Min,Max,Average,Accumulated Value,Trace Ocurrences
+cycle_time,8740.007122,184143.715663,66671.09035994,6667109.035994001,100
+processing_time,5285.60494,184143.715663,54569.93271251002,5456993.271251001,100
+idle_cycle_time,8740.007122,464163.550752,165472.31837971,16547231.837970998,100
+idle_processing_time,8740.007122,464163.550752,153371.16073227997,15337116.073227996,100
+waiting_time,0.0,76081.242636,12101.15764743,1210115.764743,100
+idle_time,0.0,286595.506416,98801.22801977003,9880122.801977003,100
+
+Updated performance
+-------------------
+started_at,2024-04-23 16:55:04.766563+00:00
+completed_at,2024-06-04 10:54:06.410877+00:00
+""
+Resource Utilization
+Resource ID,Resource name,Utilization Ratio,Tasks Allocated,Worked Time (seconds),Available Time (seconds),Pool ID,Pool name
+28,Kim Passa,0.189644065505929,73,247064.80749420612,1302781.6443140002,2,Undifferentiated_resource_profile
+29,Immanuel Karagianni,0.18234840275180908,83,237560.1519750334,1302781.6443140002,2,Undifferentiated_resource_profile
+30,Karel de Groot,0.09863936026608999,76,128505.54796153777,1302781.6443140002,2,Undifferentiated_resource_profile
+31,Alberto Duport,0.114120048101093,80,148673.50391433472,1302781.6443140002,2,Undifferentiated_resource_profile
+32,Fjodor Kowalski,0.134740888618116,78,175537.95643023873,1302781.6443140002,2,Undifferentiated_resource_profile
+33,Esmana Liubiata,0.054766087855805175,89,71348.25398943086,1302781.6443140002,2,Undifferentiated_resource_profile
+34,Christian Francois,0.28120008263074436,75,366342.30603091384,1302781.6443140002,2,Undifferentiated_resource_profile
+35,Magdalena Predutta,0.07259582347450927,88,94576.50627645008,1302781.6443140002,2,Undifferentiated_resource_profile
+36,Francois de Perrier,0.25298559938140397,82,329584.99514986837,1302781.6443140002,2,Undifferentiated_resource_profile
+37,Tesca Lobes,0.11066686530449016,83,144174.76075245967,1302781.6443140002,2,Undifferentiated_resource_profile
+38,Maris Freeman,0.12361361128310995,89,161041.54376700163,1302781.6443140002,2,Undifferentiated_resource_profile
+39,Heinz Gutschmidt,0.14946695150841582,75,194722.8008567349,1302781.6443140002,2,Undifferentiated_resource_profile
+40,Penn Osterwalder,0.1086234653848121,78,141512.65684511038,1302781.6443140002,2,Undifferentiated_resource_profile
+41,Nico Ojenbeer,0.12058870251660345,81,157100.74815027244,1302781.6443140002,2,Undifferentiated_resource_profile
+42,Anne Olwada,0.13302536975542678,76,173303.00994545277,1302781.6443140002,2,Undifferentiated_resource_profile
+43,Francis Odell,0.06269185444419552,90,81673.79721790299,1302781.6443140002,2,Undifferentiated_resource_profile
+44,Miu Hanwan,0.08849124828165379,86,115284.77394377138,1302781.6443140002,2,Undifferentiated_resource_profile
+45,Anna Kaufmann,0.11263616097331886,90,146740.32300203675,1302781.6443140002,2,Undifferentiated_resource_profile
+46,Sean Manney,0.26672318485746,61,347482.06934526877,1302781.6443140002,2,Undifferentiated_resource_profile
+47,Elvira Lores,0.10628711799188972,80,138468.90634687024,1302781.6443140002,2,Undifferentiated_resource_profile
+48,Clement Duchot,0.145197374384404,81,189160.47415058932,1302781.6443140002,2,Undifferentiated_resource_profile
+49,Esmeralda Clay,0.16411699250162684,83,213808.60535113784,1302781.6443140002,2,Undifferentiated_resource_profile
+50,Carmen Finacse,0.08970819722222605,91,116870.19268561626,1302781.6443140002,2,Undifferentiated_resource_profile
+51,Karen Clarens,0.08869727118321208,88,115553.17679822982,1302781.6443140002,2,Undifferentiated_resource_profile
+52,Kiu Kan,0.21557797285849176,72,280851.0259584648,1302781.6443140002,2,Undifferentiated_resource_profile
+53,Karalda Nimwada,0.1209172685027643,84,157528.79788598872,1302781.6443140002,2,Undifferentiated_resource_profile
+""
+Overall Scenario Statistics
+KPI,Min,Max,Average,Accumulated Value,Trace Ocurrences
+cycle_time,9191.032879000002,210964.94964300003,72275.36634961,7227536.634961001,100
+processing_time,7566.506685,210964.949643,55498.89454142,5549889.454142,100
+idle_cycle_time,15880.615266,502776.329823,191213.78873227,19121378.873227,100
+idle_processing_time,7566.506685,502776.329823,174437.31692408,17443731.692408,100
+waiting_time,0.0,98817.113649,16776.471808190003,1677647.1808190001,100
+idle_time,0.0,312060.0,118938.42238266,11893842.238266,100
+```
+</details>
+
 
 ## SQL approach with Anthropic's Claude 3 OPUS: manual test outputs
 

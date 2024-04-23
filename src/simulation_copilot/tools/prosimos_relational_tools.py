@@ -4,6 +4,7 @@ Example of high-level questions:
 
 - What if we increase or decrease the number of resources of a role?
 """
+# pylint: disable=missing-class-docstring
 
 from langchain_core.pydantic_v1 import BaseModel, Field
 from langchain_core.tools import tool
@@ -104,6 +105,7 @@ def change_resource_amount(resource_id: int, amount: int) -> bool:
     return True
 
 
+# pylint: disable=too-many-arguments
 @tool("add_resource_to_profile", args_schema=NewResourceArgs)
 def add_resource_to_profile(
     profile_id: int,
@@ -121,6 +123,7 @@ def add_resource_to_profile(
     profile = _service.repository.resource_profile.get(profile_id)
     if profile is None:
         raise ValueError(f"Profile with ID {profile_id} not found.")
+    # pylint: disable=duplicate-code
     resource = _service.create_resource_with_activity_distributions(
         bpmn_id=bpmn_id,
         name=name,
@@ -169,6 +172,15 @@ def add_case_arrival(simulation_model_id: int, calendar_id: int, inter_arrival_d
         model_id=simulation_model_id, calendar_id=calendar_id, distribution_id=inter_arrival_distribution_id
     )
     return True
+
+
+@tool("get_resource_id_by_name")
+def get_resource_id_by_name(name: str) -> int:
+    """Returns the ID of the resource with the given name."""
+    resource = _service.repository.resource.get_by_name(name)
+    if resource is None:
+        raise ValueError(f"Resource with name {name} not found.")
+    return resource.id
 
 
 def _ensure_all_distribution_parameters(name: str, parameters: list[dict]):

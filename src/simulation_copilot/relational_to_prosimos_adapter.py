@@ -24,7 +24,6 @@ from pix_framework.statistics.distribution import (
 )
 from sqlalchemy.orm import Session
 
-from simulation_copilot.database import get_session
 from simulation_copilot.prosimos_model.simulation_model import BPSModel
 from simulation_copilot.prosimos_relational_model import (
     Gateway,
@@ -35,18 +34,6 @@ from simulation_copilot.prosimos_relational_model import (
     ResourceProfile,
 )
 from simulation_copilot.prosimos_relational_service import ProsimosRelationalService
-
-
-def print_all_simulation_models():
-    """Converts relational simulation models to BPSModel and prints out to stdout."""
-    session = get_session()
-    service = ProsimosRelationalService(session)
-    sql_models = service.get_all_simulation_models()
-    for model in sql_models:
-        pix_model = create_simulation_model_from_relational_data(session, model.id)
-        print("\nPIX simulation model dump:")
-        print(f"Model ID: {model.id}")
-        print(pix_model)
 
 
 def create_simulation_model_from_relational_data(session: Session, model_id: int) -> BPSModel:

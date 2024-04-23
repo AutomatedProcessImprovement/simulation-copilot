@@ -1,3 +1,7 @@
+"""
+Provides the database access for the Prosimos relational simulation model.
+"""
+# pylint: disable=missing-function-docstring,redefined-builtin,invalid-name
 from sqlalchemy.orm import Session
 
 from simulation_copilot.prosimos_relational_model import (
@@ -17,6 +21,9 @@ from simulation_copilot.prosimos_relational_model import (
 
 
 class BaseRepository:
+    """Base repository class with common methods."""
+
+    # pylint: disable=too-few-public-methods
     def __init__(self, session: Session):
         self.session = session
 
@@ -209,6 +216,7 @@ class ActivityResourceDistributionRepository(BaseRepository):
 class ResourceRepository(BaseRepository):
     """Repository for the resources in the simulation model."""
 
+    # pylint: disable=too-many-arguments
     def create(self, bpmn_id: str, name: str, calendar_id: int, amount: int = 1, cost_per_hour: float = 1) -> Resource:
         resource = Resource(
             bpmn_id=bpmn_id,
@@ -223,6 +231,9 @@ class ResourceRepository(BaseRepository):
 
     def get(self, id: int) -> Resource:
         return self.session.query(Resource).filter(Resource.id == id).first()
+
+    def get_by_name(self, name: str) -> Resource:
+        return self.session.query(Resource).filter(Resource.name == name).first()
 
     def delete(self, id: int):
         resource = self.get(id)
@@ -281,6 +292,8 @@ class ResourceProfileRepository(BaseRepository):
 
 class ProsimosRelationalRepository:
     """Repository for the Prosimos relational simulation model."""
+
+    # pylint: disable=too-many-instance-attributes,too-few-public-methods
 
     def __init__(self, session: Session):
         self.session = session
