@@ -2,23 +2,21 @@
 """
 
 import json
-import tempfile
 from pathlib import Path
 
 import anthropic
 from dotenv import load_dotenv
-from prosimos.simulation_engine import run_simulation
 
 from simulation_copilot.anthropic import Conversation
 from simulation_copilot.anthropic.conversation import Claude3
-from simulation_copilot.database import (
-    create_tables,
-    tables_schema,
-    get_session,
+from simulation_copilot.database import create_tables, tables_schema, get_session
+from simulation_copilot.prosimos_to_relational_adapter import (
+    create_simulation_model_from_pix,
 )
-from simulation_copilot.prosimos_relational_service import ProsimosRelationalService
-from simulation_copilot.prosimos_to_relational_adapter import create_simulation_model_from_pix
-from simulation_copilot.relational_to_prosimos_adapter import create_simulation_model_from_relational_data
+from simulation_copilot.prosimos_utils import (
+    run_prosimos,
+    get_resource_utilization_and_overall_statistics,
+)
 from simulation_copilot.tools.prosimos_relational_tools import (
     create_simulation_model,
     get_simulation_model,
@@ -29,6 +27,10 @@ from simulation_copilot.tools.prosimos_relational_tools import (
     create_distribution,
     add_case_arrival,
     get_resource_id_by_name,
+    get_baseline_performance_report,
+    generate_performance_report,
+    set_baseline_performance_report,
+    set_process_path,
 )
 
 tools = [
@@ -41,6 +43,8 @@ tools = [
     create_calendar_with_intervals,
     create_distribution,
     add_case_arrival,
+    get_baseline_performance_report,
+    generate_performance_report,
 ]
 
 model_path = Path(__file__).parent.parent.parent.parent / "tests/test_data/PurchasingExample/simulation.json"
@@ -68,55 +72,12 @@ You don't need to query the database directly, but you can use the provided tool
 Note: Use one tool at a time, then, wait for a new request to adjust input parameters for the next tool call if needed.
 
 The initial simulation model ID is {simulation_model_id}. All further user requests will be based on this model.
+
+After you finished implementing the changes that the user has asked, at the end of the user session,
+generate a new performance report for the updated simulation model. Then, analyze the baseline performance
+with the updated performance and return a summary to the user if the change was effective or not.
 """
     return context
-
-
-def print_all_simulation_models():
-    """Converts relational simulation models to BPSModel and prints out to stdout."""
-    session = get_session()
-    service = ProsimosRelationalService(session)
-    sql_models = service.get_all_simulation_models()
-    for model in sql_models:
-        pix_model = create_simulation_model_from_relational_data(session, model.id)
-        print("\nPIX simulation model dump:")
-        print(f"Model ID: {model.id}")
-        print(pix_model)
-
-
-def print_simulation_model(model_id: int):
-    """Converts a relational simulation model to BPSModel and prints out to stdout."""
-    with get_session() as session:
-        bps_model = create_simulation_model_from_relational_data(session, model_id)
-        print("\nPIX simulation model dump:")
-        print(f"Model ID: {model_id}")
-        print(bps_model)
-
-
-def run_prosimos(model_id: int) -> str:
-    """
-    Runs the simulation with the given model ID. Returns the simulation performance report.
-    """
-    with get_session() as session:
-        bps_model = create_simulation_model_from_relational_data(session, model_id)
-        simulation_attributes = bps_model.to_prosimos_format(process_model=process_path)
-
-        with tempfile.NamedTemporaryFile(mode="w", suffix=".json") as f:
-            # save the simulation model to a temporary file
-            json.dump(simulation_attributes, f)
-            f.flush()  # otherwise, the file content is truncated
-            simulation_report_path = Path(f.name).with_suffix(".csv")
-
-            # run simulation
-            run_simulation(
-                bpmn_path=process_path,
-                json_path=f.name,
-                total_cases=100,
-                stat_out_path=simulation_report_path,
-            )
-            with open(simulation_report_path, "r", encoding="utf-8") as report_file:
-                report = report_file.read()
-    return report
 
 
 def load_initial_simulation_model() -> int:
@@ -130,13 +91,16 @@ def load_initial_simulation_model() -> int:
     return relational_model.id
 
 
+# pylint: disable=missing-function-docstring
 def main():
-    # pylint: disable=missing-function-docstring,line-too-long
-
     load_dotenv()
     create_tables()
+    # import initial simulation model
     simulation_model_id = load_initial_simulation_model()
-    initial_performance = run_prosimos(simulation_model_id)
+    baseline_performance = run_prosimos(simulation_model_id, process_path)
+    # init the tools module internal variables
+    set_baseline_performance_report(get_resource_utilization_and_overall_statistics(baseline_performance))
+    set_process_path(process_path)
 
     try:
         conversation = Conversation(
@@ -144,20 +108,15 @@ def main():
             tools=tools,
             system_instructions=compose_instructions(simulation_model_id),
         )
-        conversation.run("""What if we increase the amount of resource named 'Sean Manney' to 10?""")
+        conversation.run(
+            """What if we increase the amount of resource named 'Carmen Finacse' to 3 and 'Esmeralda Clay' to 3?"""
+        )
     except anthropic.BadRequestError as e:
         print(e)
 
-    updated_performance = run_prosimos(simulation_model_id)
-    print(f"\nInitial performance\n{initial_performance}")
-    print(f"\nUpdated performance\n{updated_performance}")
-
 
 if __name__ == "__main__":
-    load_dotenv()
     main()
 
 # pylint: disable=fixme
-# TODO: handle error in tools
-# TODO: add UI
 # TODO: add another agent who runs the simulation and compares initial simulation model with the updated one

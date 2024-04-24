@@ -6,9 +6,6 @@ from dotenv import load_dotenv
 from simulation_copilot.anthropic import Conversation
 from simulation_copilot.anthropic.conversation import Claude3
 from simulation_copilot.database import create_tables, tables_schema
-from simulation_copilot.relational_to_prosimos_adapter import (
-    print_all_simulation_models,
-)
 from simulation_copilot.tools.prosimos_relational_tools import (
     create_simulation_model,
     get_simulation_model,
@@ -19,7 +16,9 @@ from simulation_copilot.tools.prosimos_relational_tools import (
     create_distribution,
     add_case_arrival,
 )
+from utils import print_all_simulation_models  # pylint: disable=wrong-import-order
 
+# pylint: disable=duplicate-code
 tools = [
     create_simulation_model,
     get_simulation_model,
@@ -75,5 +74,4 @@ if __name__ == "__main__":
 
 # pylint: disable=fixme
 # TODO: handle error in tools
-# TODO: add UI
 # TODO: add another agent who runs the simulation and compares initial simulation model with the updated one

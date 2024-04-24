@@ -1,7 +1,9 @@
-# This is the second approach to generate simulation scenarios using LLM.
-#
-# The idea is to convert all the necessary data (e.g., a simulation model) into
-# SQL databases and operate it through SQL queries.
+"""
+This is the second approach to generate simulation scenarios using LLM.
+
+The idea is to convert all the necessary data (e.g., a simulation model) into
+SQL databases and operate it through SQL queries.
+"""
 from typing import Union, Sequence
 
 from dotenv import load_dotenv
@@ -21,9 +23,11 @@ from langchain_core.runnables import Runnable, RunnablePassthrough
 from langchain_core.tools import BaseTool
 from langchain_openai import ChatOpenAI
 
-from cli.sql_approach.init_db import SQL_SCHEMA_PATH
+from init_db import SQL_SCHEMA_PATH
 from simulation_copilot.database import create_tables, tables_schema
 from simulation_copilot.tools.sql import run_sqlite3_query
+
+# pylint: disable=line-too-long,missing-function-docstring,redefined-outer-name
 
 tools = [
     run_sqlite3_query,
@@ -31,7 +35,7 @@ tools = [
 
 
 def make_openai_instructions():
-    instructions = """You are an assistant who helps with preparing of a business process simulation model.
+    text = """You are an assistant who helps with preparing of a business process simulation model.
     The model is represented by a set of tables in a SQL database.
     Reuse calendars for resources if possible.
 
@@ -46,9 +50,9 @@ def make_openai_instructions():
     Note: If you are lacking some information, you can query the database given the table schemas below.
     Always try to figure out the information from the database first before asking the user.
     """
-    with open(SQL_SCHEMA_PATH) as f:
-        instructions += f.read()
-    return instructions
+    with open(SQL_SCHEMA_PATH, encoding="utf-8") as f:
+        text += f.read()
+    return text
 
 
 def make_anthropic_prompt():
@@ -123,6 +127,7 @@ def create_anthropic_functions_agent(
             "Prompt must have input variable `agent_scratchpad`, but wasn't found. "
             f"Found {prompt.input_variables} instead."
         )
+    # pylint: disable=unsupported-binary-operation
     agent = (
         RunnablePassthrough.assign(agent_scratchpad=lambda x: convert_intermediate_steps(x["intermediate_steps"]))
         | prompt.partial(tools=convert_tools(tools), chat_history="")
@@ -229,8 +234,6 @@ def test_five(agent_executor: AgentExecutor):
 
 
 def main():
-    global tools
-
     # OPENAI_ORGANIZATION_ID, OPENAI_API_KEY are required to be set in the .env file or as environment variables.
     load_dotenv()
 
