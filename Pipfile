@@ -63,6 +63,7 @@ yarl = "==1.9.2"
 openai = "*"
 termcolor = "*"
 prosimos = "*"
+langgraph = "*"
 
 [dev-packages]
 sqlalchemy-schemadisplay = "*"
